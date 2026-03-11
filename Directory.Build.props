@@ -1,0 +1,47 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
+
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+
+    <Deterministic>true</Deterministic>
+    <DebugType>portable</DebugType>
+
+    <Company>ADaxer</Company>
+    <Authors>Andreas Daxer</Authors>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/ADaxer/MvvmNav</RepositoryUrl>
+
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'MvvmNav.Abstractions' or
+                            '$(MSBuildProjectName)' == 'MvvmNav.Core' or
+                            '$(MSBuildProjectName)' == 'MvvmNav.Avalonia' or
+                            '$(MSBuildProjectName)' == 'MvvmNav.Wpf' or
+                            '$(MSBuildProjectName)' == 'MvvmNav.Maui'">
+
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'MvvmNav.Abstractions' or
+                        '$(MSBuildProjectName)' == 'MvvmNav.Core' or
+                        '$(MSBuildProjectName)' == 'MvvmNav.Avalonia' or
+                        '$(MSBuildProjectName)' == 'MvvmNav.Wpf' or
+                        '$(MSBuildProjectName)' == 'MvvmNav.Maui'">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'MvvmNav.Core.Tests'">
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+</Project>

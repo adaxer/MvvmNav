@@ -1,0 +1,38 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="Directory.Packages.props" />
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+  </Folder>
+  <Folder Name="/samples/" />
+  <Folder Name="/samples/Avalonia/" />
+  <Folder Name="/samples/Common/">
+    <Project Path="samples/Common/Sample.Common/Sample.Common.csproj" Id="b20c8895-0afc-4bb6-b9a0-7dc53c04412a" />
+  </Folder>
+  <Folder Name="/samples/Maui/" />
+  <Folder Name="/samples/Wpf/">
+    <Project Path="samples/Wpf/Sample.Wpf/Sample.Wpf.csproj" />
+  </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Abstractions/">
+    <Project Path="src/Abstractions/MvvmNav.Abstractions.csproj" />
+  </Folder>
+  <Folder Name="/src/Avalonia/">
+    <Project Path="src/Avalonia/MvvmNav.Avalonia.csproj" />
+  </Folder>
+  <Folder Name="/src/Core/">
+    <Project Path="src/Core/MvvmNav.Core.csproj" />
+  </Folder>
+  <Folder Name="/src/Maui/">
+    <Project Path="src/Maui/MvvmNav.Maui.csproj" />
+  </Folder>
+  <Folder Name="/src/Wpf/">
+    <Project Path="src/Wpf/MvvmNav.Wpf.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
+  <Folder Name="/tests/Core/">
+    <Project Path="tests/Core/MvvmNav.Core.Tests.csproj" />
+  </Folder>
+</Solution>

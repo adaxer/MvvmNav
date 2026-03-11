@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>ADaxer.MvvmNav.Abstractions</RootNamespace>
+  </PropertyGroup>
+</Project>

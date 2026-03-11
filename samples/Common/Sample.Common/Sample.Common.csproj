@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>ADaxer.MvvmNav.Sample.Common</RootNamespace>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>ADaxer.MvvmNav.Core</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\MvvmNav.Core.csproj" />
+    <ProjectReference Include="..\Abstractions\MvvmNav.Abstractions.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Navigation\" />
+  </ItemGroup>
+
+</Project>
