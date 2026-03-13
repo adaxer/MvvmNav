@@ -1,9 +1,7 @@
 ﻿using ADaxer.MvvmNav.Abstractions.Navigation;
-using ADaxer.MvvmNav.Avalonia.Navigation;
 using ADaxer.MvvmNav.Core.Navigation;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace ADaxer.MvvmNav.Avalonia;
+namespace Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
 /// Provides extension methods for registering the MvvmNav services
@@ -23,12 +21,12 @@ namespace ADaxer.MvvmNav.Avalonia;
 /// </item>
 /// <item>
 /// <description>
-/// <see cref="INavigationHost"/> implemented by <see cref="AvaloniaNavigationHost"/>
+/// <see cref="INavigationHost"/> implemented by <see cref="ShellNavigationHost"/>
 /// </description>
 /// </item>
 /// <item>
 /// <description>
-/// <see cref="IDialogHost"/> implemented by <see cref="AvaloniaDialogHost"/>
+/// <see cref="IDialogHost"/> implemented by <see cref="DialogHost"/>
 /// </description>
 /// </item>
 /// </list>
@@ -57,8 +55,6 @@ public static class ServiceCollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        services.AddSingleton<INavigationHost, AvaloniaNavigationHost>();
-        services.AddSingleton<IDialogHost, AvaloniaDialogHost>();
         services.AddSingleton<INavigationService, NavigationService>();
 
         return services;
