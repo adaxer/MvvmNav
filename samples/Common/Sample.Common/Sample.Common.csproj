@@ -2,4 +2,11 @@
   <PropertyGroup>
     <RootNamespace>ADaxer.MvvmNav.Sample.Common</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Abstractions\MvvmNav.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\src\Core\MvvmNav.Core.csproj" />
+  </ItemGroup>
 </Project>

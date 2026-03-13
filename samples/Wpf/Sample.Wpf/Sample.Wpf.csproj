@@ -6,6 +6,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <RootNamespace>ADaxer.MvvmNav.Sample.Wpf</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Wpf\MvvmNav.Wpf.csproj" />
+    <ProjectReference Include="..\..\Common\Sample.Common\Sample.Common.csproj" />
+  </ItemGroup>
 
 </Project>
