@@ -15,8 +15,9 @@
                 <ControlTemplate TargetType="{x:Type v:WpfDialog}">
                     <DockPanel Background="{TemplateBinding Background}">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom" Visibility="{TemplateBinding ShowCommands, Converter={StaticResource b2v}}">
-                            <Button Content="Yes" IsDefault="True" x:Name="PART_OkButton"/>
-                            <Button Content="No" IsCancel="True"/>
+                            <Button Content="Yes" IsDefault="True" x:Name="PART_YesButton"/>
+                            <Button Content="No" x:Name="PART_NoButton"/>
+                            <Button Content="Cancel" IsCancel="True" x:Name="PART_CancelButton"/>
                         </StackPanel>
                         <ContentPresenter Content="{Binding}"/>
                     </DockPanel>

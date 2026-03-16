@@ -9,7 +9,8 @@ public class AboutViewModel : DialogViewModelBase
     {
     }
 
-    public void CloseDialog(bool result)
+    public override void CloseDialog(DialogResult result)
     {
+        Title = result.ToString();
     }
 }

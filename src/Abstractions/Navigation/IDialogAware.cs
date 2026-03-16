@@ -2,5 +2,5 @@
 
 public interface IDialogAware
 {
-    void CloseDialog(bool result);
+    void CloseDialog(DialogResult result);
 }

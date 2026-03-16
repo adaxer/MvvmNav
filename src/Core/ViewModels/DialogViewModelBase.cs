@@ -5,22 +5,22 @@ namespace ADaxer.MvvmNav.Core.ViewModels;
 
 public abstract class DialogViewModelBase : ViewModelBase, IDialogAware, IDialogCompletionSource
 {
-    private TaskCompletionSource<bool>? _completionSource;
+    private TaskCompletionSource<DialogResult>? _completionSource;
 
     protected DialogViewModelBase()
     {
         Title = GetType().Name;
     }
 
-    Task<bool> IDialogCompletionSource.CompletionTask =>
-        _completionSource?.Task ?? Task.FromResult(false);
+    Task<DialogResult> IDialogCompletionSource.CompletionTask =>
+        _completionSource?.Task ?? Task.FromResult(DialogResult.None);
 
     void IDialogCompletionSource.ResetDialogCompletion()
     {
-        _completionSource = new TaskCompletionSource<bool>();
+        _completionSource = new TaskCompletionSource<DialogResult>();
     }
 
-    public void CloseDialog(bool result)
+    public virtual void CloseDialog(DialogResult result)
     {
         _completionSource?.TrySetResult(result);
     }

@@ -7,6 +7,8 @@ namespace ADaxer.MvvmNav.Wpf.Views;
 
 public class WpfDialog : Window
 {
+    private bool? _dialogResult = null;
+
     static WpfDialog()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(WpfDialog), new FrameworkPropertyMetadata(typeof(WpfDialog)));
@@ -18,6 +20,7 @@ public class WpfDialog : Window
         {
             if (DataContext is IDialogCompletionSource completion) CheckForCloseAsync(completion);
         };
+        _dialogResult = null;
     }
 
     private async void CheckForCloseAsync(IDialogCompletionSource completion)
@@ -42,9 +45,17 @@ public class WpfDialog : Window
 
     public override void OnApplyTemplate()
     {
-        if (GetTemplateChild("PART_OkButton") is Button okButton)
+        if (GetTemplateChild("PART_YesButton") is Button yesButton)
         {
-            okButton.Click += (s, e) => DialogResult = true;
+            yesButton.Click += (s, e) => DialogResult = _dialogResult = true;
+        }
+        if (GetTemplateChild("PART_NoButton") is Button noButton)
+        {
+            noButton.Click += (s, e) => DialogResult = _dialogResult = false;
+        }
+        if (GetTemplateChild("PART_CancelButton") is Button cancelButton)
+        {
+            cancelButton.Click += (s, e) => DialogResult = _dialogResult = null;
         }
         base.OnApplyTemplate();
     }
@@ -55,7 +66,7 @@ public class WpfDialog : Window
         {
             if (!completion.CompletionTask.IsCompleted)
             {
-                dialogAware.CloseDialog(false);
+                    dialogAware.CloseDialog(new Abstractions.Navigation.DialogResult(_dialogResult));
             }
         }
         base.OnClosed(e);

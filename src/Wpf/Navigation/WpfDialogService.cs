@@ -14,17 +14,17 @@ public class WpfDialogService : IDialogService
 
     public async Task<DialogResult<TResult>> ShowDialogAsync<TResult>(IDialogAware dialogContent, NavigationParameters parameters)
     {
-        var isOkresult = await CreateAndShowDialogAsync(dialogContent, parameters);
-        return new DialogResult<TResult>(isOkresult, dialogContent is IDialogResult<TResult> dialogResult ? dialogResult.Value : default(TResult));
+        var result = await CreateAndShowDialogAsync(dialogContent, parameters);
+        return new DialogResult<TResult>(result, dialogContent is IDialogResult<TResult> dialogResult ? dialogResult.Value : default(TResult));
     }
 
     async Task<DialogResult> IDialogService.ShowDialogAsync(IDialogAware dialogContent, NavigationParameters parameters)
     {
-        var isOkresult = await CreateAndShowDialogAsync(dialogContent, parameters);
-        return isOkresult ? DialogResult.Ok : DialogResult.Cancel;
+        var result = await CreateAndShowDialogAsync(dialogContent, parameters);
+        return result;
     }
 
-    private async Task<bool> CreateAndShowDialogAsync(IDialogAware dialogContent, NavigationParameters parameters)
+    private async Task<DialogResult> CreateAndShowDialogAsync(IDialogAware dialogContent, NavigationParameters parameters)
     {
         if (dialogContent is not IDialogCompletionSource completionSource)
             throw new InvalidOperationException(

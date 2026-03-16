@@ -8,7 +8,7 @@ public class SettingsViewModel : INavigationAware, ICanNavigateFrom
 
     public Task<NavigationGuardResult> CanNavigateFromAsync(NavigationRequest request, CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(NavigationGuardResult.Disallow());
+        return Task.FromResult(NavigationGuardResult.AskUser("Are you sure that you are sure"));
     }
 
     public Task OnNavigatedToAsync(NavigationParameters context)
