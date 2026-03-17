@@ -7,7 +7,7 @@ UI applications.
 
 It is a nuget package, and the project site is OSS on 
 https://github.com/adaxer/MvvmNav
- 
+
 It focuses on simplicity, clear responsibilities, and minimal
 infrastructure while integrating naturally with the UI platform.
 
@@ -229,17 +229,49 @@ Example: updating a shell status bar.
 
 # Future Extensions (not part of v1)
 
-Possible future additions:
+## Roadmap
 
--   `CanNavigateTo`
--   navigation redirect
--   nested navigation regions
--   wizard flows
--   authorization guards
+### Planned
 
-These are intentionally left out of version 1 to keep the framework
-simple.
+- **CanNavigateTo with Authorization and Redirect**  
+  Allows ViewModels to control whether navigation to a target is permitted and optionally redirect to another ViewModel (e.g. login flow).
 
+- **Initialization Lifecycle (early/late, sync/async)**  
+  Supports structured ViewModel initialization stages before and after navigation with both synchronous and asynchronous execution.
+
+- **SaveState / RestoreState**  
+  Enables persisting and restoring ViewModel or navigation state, useful for application restart or suspend/resume scenarios.
+
+- **IPubSub Service**  
+  Lightweight publish/subscribe messaging service for decoupled communication between ViewModels.
+
+- **Navigation Events**  
+  Exposes events such as `Navigating`, `Navigated`, and `NavigationFailed` for diagnostics, telemetry, and external orchestration.
+
+- **Typed Navigation Parameters**  
+  Supports strongly typed navigation parameters to avoid string-based parameter keys.
+
+---
+
+### Under Consideration
+
+- **Navigation Scopes**  
+  Allows creating scoped navigation contexts (e.g. wizard flows or multi-step processes) with isolated DI scopes.
+
+- **Navigation History API**  
+  Exposes navigation history and back stack information for debugging, breadcrumbs, or custom navigation UI.
+
+- **Navigation Cancellation Support**  
+  Adds `CancellationToken` support to navigation operations to cancel long-running initialization tasks.
+
+- **Diagnostics / Debug View**  
+  Provides a developer-oriented diagnostics API to inspect current navigation state, back stack, and active ViewModels.
+
+- **Optional Route-Based Navigation**  
+  Allows mapping routes (e.g. `/orders/42`) to ViewModels for scenarios where route-style navigation is desirable.
+
+- **ViewModel Activation Policies**  
+  Supports controlling ViewModel lifetime (e.g. reuse existing instances, single-instance ViewModels).
 ------------------------------------------------------------------------
 
 # Design Principles

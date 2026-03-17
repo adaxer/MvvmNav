@@ -40,10 +40,9 @@ public partial class ShellViewModel : ObservableObject, IShellViewModel
     private Task NavigateHome()
         => _navigation.NavigateAsync<HomeViewModel>();
 
-    [RelayCommand(CanExecute =nameof(CanShowAbout))]
+    [RelayCommand]
     private Task ShowAbout()
         => _navigation.ShowDialogAsync<AboutViewModel>();
-    private bool CanShowAbout() => true;
 
     [RelayCommand]
     private Task NavigateSettings()
