@@ -1,4 +1,4 @@
-namespace ADaxer.MvvmNav.Abstractions.Navigation;
+﻿namespace ADaxer.MvvmNav.Abstractions.Navigation;
 
 /// <summary>
 /// Represents a service responsible for displaying modal dialogs.
@@ -40,14 +40,12 @@ public interface IDialogService
         NavigationParameters parameters);
 
     /// <summary>
-    /// Displays a simple confirmation dialog.
+    /// Displays a confirmation dialog.
     /// </summary>
-    /// <param name="message">The message shown to the user.</param>
-    /// <param name="title">An optional title.</param>
+    /// <param name="context">The dialog type shown to the user. Either a string or an object defining a dialog</param>
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns><c>true</c> if the user confirms; otherwise <c>false</c>.</returns>
-    Task<bool> ConfirmAsync(
-        string message,
-        string? title = null,
+    Task<DialogResult> ConfirmAsync(
+        object context,
         CancellationToken cancellationToken = default);
 }

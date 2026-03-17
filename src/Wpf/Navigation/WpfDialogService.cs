@@ -1,15 +1,19 @@
 ﻿using System.Windows;
 using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Core.ViewModels;
+using ADaxer.MvvmNav.Wpf.ViewModels;
 using ADaxer.MvvmNav.Wpf.Views;
 
 namespace ADaxer.MvvmNav.Wpf.Navigation;
 
 public class WpfDialogService : IDialogService
 {
-    public Task<bool> ConfirmAsync(string message, string? title = null, CancellationToken cancellationToken = default)
+    public Task<DialogResult> ConfirmAsync(object context, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var dialogViewModel = context is string message
+            ? new MessageViewModel { Message = message }
+            : context as IDialogAware; ;
+        return ShowDialogAsync(dialogViewModel, NavigationParameters.Empty);
     }
 
     public async Task<DialogResult<TResult>> ShowDialogAsync<TResult>(IDialogAware dialogContent, NavigationParameters parameters)
@@ -18,7 +22,7 @@ public class WpfDialogService : IDialogService
         return new DialogResult<TResult>(result, dialogContent is IDialogResult<TResult> dialogResult ? dialogResult.Value : default(TResult));
     }
 
-    async Task<DialogResult> IDialogService.ShowDialogAsync(IDialogAware dialogContent, NavigationParameters parameters)
+    public async Task<DialogResult> ShowDialogAsync(IDialogAware dialogContent, NavigationParameters parameters)
     {
         var result = await CreateAndShowDialogAsync(dialogContent, parameters);
         return result;
@@ -42,7 +46,7 @@ public class WpfDialogService : IDialogService
             DataContext = dialogContent
         };
 
-        dlg.SetBinding(WpfDialog.ContentProperty, "Content");
+        dlg.SetBinding(WpfDialog.ContentProperty, ".");
 
         dlg.ShowDialog();
 

@@ -11,6 +11,7 @@ public class AboutViewModel : DialogViewModelBase
 
     public override void CloseDialog(DialogResult result)
     {
+        base.CloseDialog(result);
         Title = result.ToString();
     }
 }

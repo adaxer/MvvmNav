@@ -5,6 +5,9 @@ using ADaxer.MvvmNav.Core.ViewModels;
 
 namespace ADaxer.MvvmNav.Wpf.Views;
 
+[TemplatePart(Name = "PART_YesButton", Type = typeof(Button))]
+[TemplatePart(Name = "PART_NoButton", Type = typeof(Button))]
+[TemplatePart(Name = "PART_CancelButton", Type = typeof(Button))]
 public class WpfDialog : Window
 {
     private bool? _dialogResult = null;
