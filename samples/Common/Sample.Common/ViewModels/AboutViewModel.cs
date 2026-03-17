@@ -8,4 +8,10 @@ public class AboutViewModel : DialogViewModelBase
     public async Task OnNavigatedToAsync(NavigationParameters context)
     {
     }
+
+    public override void CloseDialog(DialogResult result)
+    {
+        base.CloseDialog(result);
+        Title = result.ToString();
+    }
 }

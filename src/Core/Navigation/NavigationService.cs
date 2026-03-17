@@ -60,8 +60,11 @@ public sealed class NavigationService : INavigationService
             IsBackNavigation = false
         };
 
-        if (!await CanLeaveCurrentAsync(request))
+        var canLeave = await CanLeaveCurrentAsync(request);
+        if (canLeave.IsConfirmed.HasValue == false)
+        {
             return;
+        }
 
         var target = _services.GetRequiredService(targetType);
 
@@ -87,7 +90,7 @@ public sealed class NavigationService : INavigationService
             IsBackNavigation = true
         };
 
-        if (!await CanLeaveCurrentAsync(request))
+        if ((await CanLeaveCurrentAsync(request)) != DialogResult.True)
             return;
 
         var target = _backStack.Pop();
@@ -141,28 +144,30 @@ public sealed class NavigationService : INavigationService
             await aware.OnNavigatedToAsync(context);
     }
 
-    private async Task<bool> CanLeaveCurrentAsync(NavigationRequest request)
+    private async Task<DialogResult> CanLeaveCurrentAsync(NavigationRequest request)
     {
         if (Shell.CurrentModule is not ICanNavigateFrom guarded)
-            return true;
+            return DialogResult.True;
 
         var result = await guarded.CanNavigateFromAsync(request);
 
         return result.Decision switch
         {
-            NavigationGuardDecision.Allow => true,
-            NavigationGuardDecision.Disallow => false,
+            NavigationGuardDecision.Allow => DialogResult.True,
+            NavigationGuardDecision.Disallow => DialogResult.False,
             NavigationGuardDecision.AskUser => await ConfirmNavigationAsync(result),
-            _ => false
+            _ => DialogResult.None
         };
     }
 
-    private Task<bool> ConfirmNavigationAsync(NavigationGuardResult result)
+    private async Task<DialogResult> ConfirmNavigationAsync(NavigationGuardResult result)
     {
-        var message = string.IsNullOrWhiteSpace(result.Message)
-            ? "You have unsaved changes. Do you want to continue?"
-            : result.Message;
-
-        return _dialogService.ConfirmAsync(message);
+        if(result.Context is null)
+        {
+            throw new ArgumentNullException(nameof(result.Context), "Context can not be null, it is needed to show the ask user dialog");
+        }
+        var confirmation = await _dialogService.ConfirmAsync(result.Context);
+        await result.ContinueAsync(confirmation, CancellationToken.None);
+        return confirmation;
     }
 }

@@ -1,4 +1,5 @@
-﻿using ADaxer.MvvmNav.Abstractions.Navigation;
+﻿using System.Diagnostics;
+using ADaxer.MvvmNav.Abstractions.Navigation;
 
 namespace ADaxer.MvvmNav.Sample.Common.ViewModels;
 
@@ -8,7 +9,12 @@ public class SettingsViewModel : INavigationAware, ICanNavigateFrom
 
     public Task<NavigationGuardResult> CanNavigateFromAsync(NavigationRequest request, CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(NavigationGuardResult.Disallow());
+        return Task.FromResult(NavigationGuardResult.AskUser("Are you sure that you are sure", OnConfirmedOrNotAsync));
+    }
+
+    private async Task OnConfirmedOrNotAsync(DialogResult result, CancellationToken token)
+    {
+        Trace.TraceInformation("Confirmation Dialog said: {0}", result.IsConfirmed.HasValue ? result.IsConfirmed : "None");
     }
 
     public Task OnNavigatedToAsync(NavigationParameters context)

@@ -1,8 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:ADaxer.MvvmNav.Wpf.ViewModels"
                     xmlns:v="clr-namespace:ADaxer.MvvmNav.Wpf.Views">
 
     <BooleanToVisibilityConverter x:Key="b2v" />
+
+    <DataTemplate DataType="{x:Type vm:MessageViewModel}">
+        <v:MessageView/>
+    </DataTemplate>
 
     <Style TargetType="{x:Type v:WpfDialog}">
         <Setter Property="SizeToContent" Value="WidthAndHeight" />
