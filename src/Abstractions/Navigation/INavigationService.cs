@@ -57,4 +57,6 @@ public interface INavigationService
     Task<DialogResult<TResult>> ShowDialogAsync<TDialog, TResult>(
         NavigationParameters? context = null)
         where TDialog : class;
+
+    event EventHandler? NavigationStateChanged;
 }

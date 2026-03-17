@@ -227,11 +227,54 @@ Example: updating a shell status bar.
 
 ------------------------------------------------------------------------
 
-# Future Extensions (not part of v1)
+# Roadmap
 
-## Roadmap
+## Featureset v1
 
-### Planned
+- **ViewModel-first navigation**  
+  Navigate between ViewModels without coupling them to concrete views.
+
+- **Platform-agnostic core**  
+  The navigation engine resides in a UI-independent Core library.
+
+- **Native view resolution**  
+  Views are resolved using the platform’s native mechanisms (e.g. WPF `DataTemplate`), not a custom view locator.
+
+- **Navigation parameters**  
+  Pass parameters when navigating between ViewModels.
+
+- **Back navigation with stack management**  
+  Built-in back stack with support for clearing or suppressing entries.
+
+- **Navigation guards**  
+  ViewModels can intercept navigation using `ICanNavigateFrom` to allow, deny, or request user confirmation.
+
+- **Dialog integration**  
+  Unified dialog workflow via `IDialogService` with typed results.
+
+- **Async navigation lifecycle**  
+  `INavigationAware` enables asynchronous initialization after navigation.
+
+- **Generic factory support (`IFactory<T>`)**  
+  Provides a reusable DI-backed factory abstraction for creating ViewModels or other services.
+
+- **Microsoft.Extensions.DependencyInjection integration**  
+  Designed to work naturally with the standard .NET dependency injection container.
+
+- **Microsoft.Extensions.Logging support**  
+  Built-in logging using the standard .NET logging abstractions.
+
+- **Navigation state notifications**  
+  The navigation service exposes events when the navigation state changes, enabling UI elements (e.g. back buttons) to update automatically.
+
+- **Optional WPF host builder**  
+  `WpfNavigationHostBuilder` enables quick setup with fluent configuration.
+
+- **Framework-agnostic usage**  
+  Can be integrated into existing bootstrapping processes without using the host builder.
+
+
+## Planned
 
 - **CanNavigateTo with Authorization and Redirect**  
   Allows ViewModels to control whether navigation to a target is permitted and optionally redirect to another ViewModel (e.g. login flow).
