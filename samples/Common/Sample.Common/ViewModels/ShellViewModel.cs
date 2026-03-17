@@ -15,6 +15,8 @@ public partial class ShellViewModel : ObservableObject, IShellViewModel
     {
         _navigation = navigation;
 
+        navigation.NavigationStateChanged += (_,_) => (GoBackCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+
         NavigationItems =
         [
             new NavigationItem("Home", NavigateHomeCommand),
@@ -33,8 +35,6 @@ public partial class ShellViewModel : ObservableObject, IShellViewModel
     private bool isBusy;
 
     public ObservableCollection<NavigationItem> NavigationItems { get; }
-
-    public ICommand? ShowItemCommand => GoBackCommand;
 
     [RelayCommand]
     private Task NavigateHome()

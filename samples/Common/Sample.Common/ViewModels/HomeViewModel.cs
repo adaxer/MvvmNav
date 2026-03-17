@@ -1,6 +1,25 @@
-﻿namespace ADaxer.MvvmNav.Sample.Common.ViewModels;
+﻿using System.ComponentModel;
+using ADaxer.MvvmNav.Abstractions.Navigation;
+using ADaxer.MvvmNav.Sample.Common.Interfaces;
 
-public class HomeViewModel
+namespace ADaxer.MvvmNav.Sample.Common.ViewModels;
+
+public class HomeViewModel : INavigationAware, INotifyPropertyChanged
 {
+    private readonly IFileService _fileService;
+
+    public HomeViewModel(IFileService fileService)
+    {
+        _fileService = fileService;
+    }
     public string Title => GetType().Name;
+    public string Markdown {  get; set; } = string.Empty;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public  async Task OnNavigatedToAsync(NavigationParameters context)
+    {
+        Markdown = await _fileService.GetFileAsync(".\\Markdown\\shell.md");
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Markdown)));
+    }
 }

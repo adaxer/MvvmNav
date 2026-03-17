@@ -3,6 +3,15 @@
     <RootNamespace>ADaxer.MvvmNav.Sample.Common</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Markdown\shell.md" />
+    <None Remove="Markdown\ShellViewModel.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Markdown\shell.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" />
   </ItemGroup>
   <ItemGroup>

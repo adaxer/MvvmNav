@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Markdig.Wpf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\src\Wpf\MvvmNav.Wpf.csproj" />
     <ProjectReference Include="..\..\Common\Sample.Common\Sample.Common.csproj" />
   </ItemGroup>

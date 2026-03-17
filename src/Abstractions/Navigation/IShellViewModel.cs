@@ -27,16 +27,4 @@ public interface IShellViewModel
     /// property.
     /// </remarks>
     object? CurrentModule { get; set; }
-
-    /// <summary>
-    /// Gets a command whose executable state may depend on the current
-    /// navigation state.
-    /// </summary>
-    /// <remarks>
-    /// This is commonly used for commands such as "Back".
-    /// If the underlying command implementation supports explicit
-    /// executable-state notifications, platform hosts may trigger such
-    /// a refresh after navigation changes.
-    /// </remarks>
-    ICommand? ShowItemCommand { get; }
 }

@@ -16,6 +16,7 @@ public sealed class NavigationService : INavigationService
 
     private IShellViewModel? _shell;
 
+
     public NavigationService(
         IServiceProvider services,
         IDialogService dialogService,
@@ -29,6 +30,8 @@ public sealed class NavigationService : INavigationService
         _dialogService = dialogService;
         _logger = logger;
     }
+
+    public event EventHandler? NavigationStateChanged;
 
     private IShellViewModel Shell =>
         _shell ??= _services.GetRequiredService<IShellViewModel>();
@@ -111,12 +114,13 @@ public sealed class NavigationService : INavigationService
 
         var request = new NavigationRequest
         {
-            TargetType = null,
+            TargetType = _backStack.Peek().GetType(),
             Parameters = NavigationParameters.Empty,
             IsBackNavigation = true
         };
 
-        if ((await CanLeaveCurrentAsync(request)) != DialogResult.True)
+        var canLeave = await CanLeaveCurrentAsync(request);
+        if (canLeave.IsConfirmed.HasValue == false)
         {
             _logger.LogInformation("Back navigation cancelled by guard.");
             return;
@@ -213,6 +217,8 @@ public sealed class NavigationService : INavigationService
         {
             await aware.OnNavigatedToAsync(context);
         }
+
+        NavigationStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private async Task<DialogResult> CanLeaveCurrentAsync(NavigationRequest request)

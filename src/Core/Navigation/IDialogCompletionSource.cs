@@ -1,7 +1,9 @@
-﻿namespace ADaxer.MvvmNav.Core.ViewModels;
+﻿using ADaxer.MvvmNav.Abstractions.Navigation;
+
+namespace ADaxer.MvvmNav.Core.ViewModels;
 
 public interface IDialogCompletionSource
 {
-    Task<bool> CompletionTask { get; }
+    Task<DialogResult> CompletionTask { get; }
     void ResetDialogCompletion();
 }
