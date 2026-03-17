@@ -1,5 +1,6 @@
 ﻿using ADaxer.MvvmNav.Abstractions.Navigation;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ADaxer.MvvmNav.Core.Navigation;
 
@@ -10,39 +11,36 @@ public sealed class NavigationService : INavigationService
 {
     private readonly IServiceProvider _services;
     private readonly IDialogService _dialogService;
+    private readonly ILogger<NavigationService> _logger;
     private readonly Stack<object> _backStack = new();
-    private IShellViewModel _shell;
+
+    private IShellViewModel? _shell;
 
     public NavigationService(
         IServiceProvider services,
-        IDialogService dialogService)
+        IDialogService dialogService,
+        ILogger<NavigationService> logger)
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(dialogService);
+        ArgumentNullException.ThrowIfNull(logger);
 
         _services = services;
         _dialogService = dialogService;
+        _logger = logger;
     }
 
-    IShellViewModel Shell => _shell??= _services.GetRequiredService<IShellViewModel>();
+    private IShellViewModel Shell =>
+        _shell ??= _services.GetRequiredService<IShellViewModel>();
 
-    ///// <inheritdoc/>
-    //public object? Current { get; private set; }
-
-    ///// <inheritdoc/>
-    //public event EventHandler<object?>? CurrentChanged;
-
-    /// <inheritdoc/>
     public bool CanGoBack() => _backStack.Count > 0;
 
-    /// <inheritdoc/>
     public Task NavigateAsync<TTarget>(
         NavigationParameters? context = null,
         NavigationOptions? options = null)
         where TTarget : class
         => NavigateAsync(typeof(TTarget), context, options);
 
-    /// <inheritdoc/>
     public async Task NavigateAsync(
         Type targetType,
         NavigationParameters? context = null,
@@ -53,6 +51,12 @@ public sealed class NavigationService : INavigationService
         context ??= NavigationParameters.Empty;
         options ??= NavigationOptions.Default;
 
+        _logger.LogDebug(
+            "Navigation requested. Target={TargetType}, ClearBackStack={ClearBackStack}, AddToBackStack={AddToBackStack}",
+            targetType.FullName,
+            options.ClearBackStack,
+            options.AddToBackStack);
+
         var request = new NavigationRequest
         {
             TargetType = targetType,
@@ -60,25 +64,50 @@ public sealed class NavigationService : INavigationService
             IsBackNavigation = false
         };
 
-        if (!await CanLeaveCurrentAsync(request))
+        var canLeave = await CanLeaveCurrentAsync(request);
+
+        if (canLeave.IsConfirmed.HasValue == false)
+        {
+            _logger.LogInformation(
+                "Navigation cancelled by guard. Target={TargetType}",
+                targetType.FullName);
+
             return;
+        }
 
         var target = _services.GetRequiredService(targetType);
 
         if (options.ClearBackStack)
+        {
+            _logger.LogDebug("Clearing back stack before navigation.");
             _backStack.Clear();
+        }
 
         if (options.AddToBackStack && Shell.CurrentModule is not null)
+        {
+            _logger.LogDebug(
+                "Pushing current module onto back stack. CurrentType={CurrentType}",
+                Shell.CurrentModule.GetType().FullName);
+
             _backStack.Push(Shell.CurrentModule);
+        }
 
         await ActivateAsync(target, context);
+
+        _logger.LogInformation(
+            "Navigation completed. Target={TargetType}",
+            targetType.FullName);
     }
 
-    /// <inheritdoc/>
     public async Task GoBackAsync()
     {
         if (!CanGoBack())
+        {
+            _logger.LogDebug("GoBack requested, but back stack is empty.");
             return;
+        }
+
+        _logger.LogDebug("Back navigation requested.");
 
         var request = new NavigationRequest
         {
@@ -87,82 +116,161 @@ public sealed class NavigationService : INavigationService
             IsBackNavigation = true
         };
 
-        if (!await CanLeaveCurrentAsync(request))
+        if ((await CanLeaveCurrentAsync(request)) != DialogResult.True)
+        {
+            _logger.LogInformation("Back navigation cancelled by guard.");
             return;
+        }
 
         var target = _backStack.Pop();
+
+        _logger.LogDebug(
+            "Back navigation target resolved. TargetType={TargetType}",
+            target.GetType().FullName);
+
         await ActivateAsync(target, NavigationParameters.Empty);
+
+        _logger.LogInformation(
+            "Back navigation completed. TargetType={TargetType}",
+            target.GetType().FullName);
     }
 
-    /// <inheritdoc/>
-    public Task<DialogResult> ShowDialogAsync<TDialog>(
-        NavigationParameters? context = null)
+    public Task<DialogResult> ShowDialogAsync<TDialog>(NavigationParameters? context = null)
         where TDialog : class
         => ShowDialogAsync(typeof(TDialog), context);
 
-    /// <inheritdoc/>
     public async Task<DialogResult<TResult>> ShowDialogAsync<TDialog, TResult>(
         NavigationParameters? context = null)
         where TDialog : class
     {
+        _logger.LogDebug(
+            "Dialog requested. DialogType={DialogType}",
+            typeof(TDialog).FullName);
+
         var dialog = _services.GetRequiredService<TDialog>();
 
         if (dialog is not IDialogAware dialogAware)
+        {
+            _logger.LogError(
+                "Resolved dialog does not implement IDialogAware. DialogType={DialogType}",
+                typeof(TDialog).FullName);
+
             throw new InvalidOperationException(
                 $"Dialog type '{typeof(TDialog).FullName}' must implement IDialogAware.");
+        }
 
-        return await _dialogService.ShowDialogAsync<TResult>(
+        var result = await _dialogService.ShowDialogAsync<TResult>(
             dialogAware,
             context ?? NavigationParameters.Empty);
+
+        _logger.LogInformation(
+            "Dialog completed. DialogType={DialogType}, Confirmed={Confirmed}",
+            typeof(TDialog).FullName,
+            result.IsConfirmed);
+
+        return result;
     }
 
-    private async Task<DialogResult> ShowDialogAsync(
-        Type dialogType,
-        NavigationParameters? context)
+    private async Task<DialogResult> ShowDialogAsync(Type dialogType, NavigationParameters? context)
     {
+        _logger.LogDebug(
+            "Dialog requested. DialogType={DialogType}",
+            dialogType.FullName);
+
         var dialog = _services.GetRequiredService(dialogType);
 
         if (dialog is not IDialogAware dialogAware)
+        {
+            _logger.LogError(
+                "Resolved dialog does not implement IDialogAware. DialogType={DialogType}",
+                dialogType.FullName);
+
             throw new InvalidOperationException(
                 $"Dialog type '{dialogType.FullName}' must implement IDialogAware.");
+        }
 
-        return await _dialogService.ShowDialogAsync(
+        var result = await _dialogService.ShowDialogAsync(
             dialogAware,
             context ?? NavigationParameters.Empty);
+
+        _logger.LogInformation(
+            "Dialog completed. DialogType={DialogType}, Confirmed={Confirmed}",
+            dialogType.FullName,
+            result.IsConfirmed);
+
+        return result;
     }
 
-    private async Task ActivateAsync(
-        object target,
-        NavigationParameters context)
+    private async Task ActivateAsync(object target, NavigationParameters context)
     {
+        _logger.LogDebug(
+            "Activating target. TargetType={TargetType}",
+            target.GetType().FullName);
+
         Shell.CurrentModule = target;
 
         if (target is INavigationAware aware)
+        {
             await aware.OnNavigatedToAsync(context);
+        }
     }
 
-    private async Task<bool> CanLeaveCurrentAsync(NavigationRequest request)
+    private async Task<DialogResult> CanLeaveCurrentAsync(NavigationRequest request)
     {
         if (Shell.CurrentModule is not ICanNavigateFrom guarded)
-            return true;
+        {
+            _logger.LogDebug("Current module has no navigation guard.");
+            return DialogResult.True;
+        }
+
+        if (Shell.CurrentModule.GetType().Equals(request.TargetType))
+        {
+            _logger.LogDebug("Cannot navigate to the same type.");
+            return DialogResult.None;
+        }
+
+        _logger.LogDebug(
+            "Evaluating navigation guard for current module. CurrentType={CurrentType}, IsBackNavigation={IsBackNavigation}",
+            Shell.CurrentModule.GetType().FullName,
+            request.IsBackNavigation);
 
         var result = await guarded.CanNavigateFromAsync(request);
 
+        _logger.LogDebug(
+            "Navigation guard returned decision {Decision}.",
+            result.Decision);
+
         return result.Decision switch
         {
-            NavigationGuardDecision.Allow => true,
-            NavigationGuardDecision.Disallow => false,
+            NavigationGuardDecision.Allow => DialogResult.True,
+            NavigationGuardDecision.Disallow => DialogResult.False,
             NavigationGuardDecision.AskUser => await ConfirmNavigationAsync(result),
-            _ => false
+            _ => DialogResult.None
         };
     }
 
-    private Task<bool> ConfirmNavigationAsync(NavigationGuardResult result)
+    private async Task<DialogResult> ConfirmNavigationAsync(NavigationGuardResult result)
     {
-        var message = string.IsNullOrWhiteSpace(result.Message)
-            ? "You have unsaved changes. Do you want to continue?"
-            : result.Message;
+        if (result.Context is null)
+        {
+            _logger.LogError(
+                "Navigation guard requested AskUser, but context was null.");
 
-        return _dialogService.ConfirmAsync(message);
+            throw new ArgumentNullException(
+                nameof(result.Context),
+                "Context can not be null, it is needed to show the ask user dialog");
+        }
+
+        _logger.LogDebug("Showing navigation confirmation dialog.");
+
+        var confirmation = await _dialogService.ConfirmAsync(result.Context);
+
+        await result.ContinueAsync(confirmation, CancellationToken.None);
+
+        _logger.LogInformation(
+            "Navigation confirmation completed. Confirmed={Confirmed}",
+            confirmation.IsConfirmed);
+
+        return confirmation;
     }
 }

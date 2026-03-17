@@ -15,14 +15,18 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        (_services, _, _) = Bootstrapper.BuildAndStart<ShellWindow, ShellViewModel>(services =>
-        {
-            services.AddTransient<HomeViewModel>();
-            services.AddTransient<SettingsViewModel>();
-            services.AddTransient<AboutViewModel>();
-        });
+        var host = WpfNavigationHostBuilder<ShellWindow, ShellViewModel>
+            .BuildDefault()
+            .WithServices(services =>
+            {
+                services.AddTransient<HomeViewModel>();
+                services.AddTransient<SettingsViewModel>();
+                services.AddTransient<AboutViewModel>();
+            })
+            .Start();
 
-        var navigation = _services.GetRequiredService<INavigationService>();
+        _services = host.Services;
+        var navigation = _services!.GetRequiredService<INavigationService>();
         await navigation.NavigateAsync<HomeViewModel>();
     }
 }
