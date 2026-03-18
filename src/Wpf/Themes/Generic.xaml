@@ -17,6 +17,8 @@
             </Style>
         </Style.Resources>
         <Setter Property="SizeToContent" Value="WidthAndHeight" />
+        <Setter Property="MaxWidth" Value="800"/>
+        <Setter Property="MaxHeight" Value="450"/>
         <Setter Property="Background" Value="White" />
         <Setter Property="Title" Value="{Binding Title}" />
         <Setter Property="WindowStyle" Value="ToolWindow" />
@@ -25,11 +27,13 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type v:WpfDialog}">
                     <DockPanel Background="{TemplateBinding Background}">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" DockPanel.Dock="Bottom" Visibility="{TemplateBinding ShowCommands, Converter={StaticResource b2v}}">
-                            <Button Content="Yes" IsDefault="True" x:Name="PART_YesButton"/>
-                            <Button Content="No" x:Name="PART_NoButton"/>
-                            <Button Content="Cancel" IsCancel="True" x:Name="PART_CancelButton"/>
-                        </StackPanel>
+                        <Grid DockPanel.Dock="Bottom" Background="#ddd">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" Visibility="{TemplateBinding ShowCommands, Converter={StaticResource b2v}}">
+                                <Button Content="Yes" IsDefault="True" x:Name="PART_YesButton"/>
+                                <Button Content="No" x:Name="PART_NoButton"/>
+                                <Button Content="Cancel" IsCancel="True" x:Name="PART_CancelButton"/>
+                            </StackPanel>
+                        </Grid>
                         <ContentPresenter Content="{Binding}"/>
                     </DockPanel>
                 </ControlTemplate>

@@ -12,14 +12,15 @@ public class HomeViewModel : INavigationAware, INotifyPropertyChanged
     {
         _fileService = fileService;
     }
-    public string Title => GetType().Name;
+    public string Title => "🏠 Welcome to MvvmNav!";
+
     public string Markdown {  get; set; } = string.Empty;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public  async Task OnNavigatedToAsync(NavigationParameters context)
     {
-        Markdown = await _fileService.GetFileAsync(".\\Markdown\\shell.md");
+        Markdown = await _fileService.GetFileAsync(".\\Markdown\\home.md");
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Markdown)));
     }
 }

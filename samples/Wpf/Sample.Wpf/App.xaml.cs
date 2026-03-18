@@ -22,8 +22,10 @@ public partial class App : Application
             .WithServices(services =>
             {
                 services.AddTransient<HomeViewModel>();
-                services.AddTransient<SettingsViewModel>();
+                services.AddSingleton<SettingsViewModel>();
                 services.AddTransient<AboutViewModel>();
+                services.AddTransient<FeaturesViewModel>();
+                services.AddTransient<DetailsViewModel>();
                 services.AddSingleton<IFileService, FileService>();
             })
             .Start();

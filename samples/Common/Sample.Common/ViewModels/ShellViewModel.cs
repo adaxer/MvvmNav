@@ -2,12 +2,13 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ADaxer.MvvmNav.Abstractions.Navigation;
+using ADaxer.MvvmNav.Core.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace ADaxer.MvvmNav.Sample.Common.ViewModels;
 
-public partial class ShellViewModel : ObservableObject, IShellViewModel
+public partial class ShellViewModel : ViewModelBase, IShellViewModel
 {
     private readonly INavigationService _navigation;
 
@@ -15,24 +16,41 @@ public partial class ShellViewModel : ObservableObject, IShellViewModel
     {
         _navigation = navigation;
 
-        navigation.NavigationStateChanged += (_,_) => (GoBackCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+        navigation.NavigationStateChanged += NavigationStateChanged; ;
 
         NavigationItems =
         [
-            new NavigationItem("Home", NavigateHomeCommand),
-            new NavigationItem("About", ShowAboutCommand),
-            new NavigationItem("Settings", NavigateSettingsCommand)
+            new NavigationItem("🏠 Home","Overview", NavigateHomeCommand),
+            new NavigationItem("ℹ️ About", "Simple dialog example", ShowAboutCommand),
+            new NavigationItem("⚙️ Settings", "Back Navigation example", NavigateSettingsCommand),
+            new NavigationItem("✨ Features", "Framework overview", NavigateFeaturesCommand)
         ];
     }
 
-    [ObservableProperty]
-    private object? currentModule;
+    private void NavigationStateChanged(object? sender, EventArgs e)
+    {
+        (GoBackCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+        Title = GetTitle();
+    }
+
+    private string GetTitle()
+    {
+        if(CurrentModule is null)
+        {
+               return "MvvmNav Sample";
+        }
+
+        var currentType = CurrentModule.GetType();
+        return (CurrentModule as ViewModelBase)?.Title ?? 
+            currentType.GetProperty("Title")?.GetValue(CurrentModule)?.ToString() ??
+            currentType.Name;
+    }
 
     [ObservableProperty]
-    private string title = "MvvmNav Sample";
+    private object? _currentModule;
 
     [ObservableProperty]
-    private bool isBusy;
+    private object? _title;
 
     public ObservableCollection<NavigationItem> NavigationItems { get; }
 
@@ -48,6 +66,10 @@ public partial class ShellViewModel : ObservableObject, IShellViewModel
     private Task NavigateSettings()
         => _navigation.NavigateAsync<SettingsViewModel>();
 
+    [RelayCommand]
+    private Task NavigateFeatures()
+        => _navigation.NavigateAsync<FeaturesViewModel>();
+
     [RelayCommand(CanExecute = nameof(CanGoBack))]
     private Task GoBack()
         => _navigation.GoBackAsync();
@@ -62,4 +84,4 @@ public partial class ShellViewModel : ObservableObject, IShellViewModel
 /// </summary>
 /// <param name="Title">The title of the navigation item.</param>
 /// <param name="Command">The command to execute when the navigation item is selected.</param>
-public sealed record NavigationItem(string Title, ICommand Command);
+public sealed record NavigationItem(string Title, string Subtitle, ICommand Command);

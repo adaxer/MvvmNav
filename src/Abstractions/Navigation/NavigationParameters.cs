@@ -43,6 +43,4 @@ public sealed class NavigationParameters
     {
         return TryGetValue<T>(key, out var value) ? value : default;
     }
-
-    public static NavigationParameters From(params (string key, object? value)[] values) => new NavigationParameters(values);
 }
