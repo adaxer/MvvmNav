@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ADaxer.MvvmNav.Sample.Common.Interfaces;
 
-namespace ADaxer.MvvmNav.Sample.Common;
+namespace ADaxer.MvvmNav.Sample.Common.Services;
 
 public class FileService : IFileService
 {

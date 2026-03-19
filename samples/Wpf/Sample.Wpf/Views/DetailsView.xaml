@@ -7,5 +7,23 @@
              xmlns:markdig="clr-namespace:Markdig.Wpf;assembly=Markdig.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <markdig:MarkdownViewer Markdown="{Binding Markdown}"/>
+    <UserControl.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource RoundButton}">
+            <Setter Property="Width" Value="24" />
+            <Setter Property="Height" Value="24" />
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Padding" Value="0 -4 0 0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="8"/>
+        </Style>
+    </UserControl.Resources>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Margin="-40 0 0 20">
+            <Button Content="←" Command="{Binding PreviousCommand}" ToolTip="Previous Feature - this shows the navigation to the same DataType - normally forbidden - but possible with different parameters"/>
+            <Button  Content="→" Command="{Binding NextCommand}" ToolTip="Previous Feature - this shows the navigation to the same DataType - normally forbidden - but possible with different parameters"/>
+        </StackPanel>
+        <markdig:MarkdownViewer Markdown="{Binding Markdown}"/>
+    </DockPanel>
 </UserControl>

@@ -6,6 +6,7 @@ using ADaxer.MvvmNav.Wpf;
 using ADaxer.MvvmNav.Sample.Wpf.Views;
 using ADaxer.MvvmNav.Sample.Common.Interfaces;
 using ADaxer.MvvmNav.Sample.Common;
+using Microsoft.Extensions.Logging;
 
 namespace ADaxer.MvvmNav.Sample.Wpf;
 
@@ -21,12 +22,21 @@ public partial class App : Application
             .BuildDefault()
             .WithServices(services =>
             {
-                services.AddTransient<HomeViewModel>();
-                services.AddSingleton<SettingsViewModel>();
-                services.AddTransient<AboutViewModel>();
-                services.AddTransient<FeaturesViewModel>();
-                services.AddTransient<DetailsViewModel>();
-                services.AddSingleton<IFileService, FileService>();
+                services.RegisterCommonServices();
+            })
+            .WithLogging(logging =>
+            {
+                // An example how to configure logging via code
+                // To configure via appsettings.json, the wpf app would need its own host to have appsettings. 
+                // It could then initialize services and add the MvvmNav goodness via the UseMvvmNav extension method,
+                // which would then read the logging configuration from appsettings and apply it to the MvvmNav logging configuration.
+                logging.AddFilter((category, level) =>
+                {
+                    if (category == typeof(DetailsViewModel).FullName)
+                        return level >= LogLevel.Debug;
+
+                    return level >= LogLevel.Information;
+                });
             })
             .Start();
 

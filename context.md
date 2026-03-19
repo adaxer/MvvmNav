@@ -1,5 +1,7 @@
 # ADaxer.MvvmNav -- Context Summary
 
+This document reflects the current architectural direction and recent design decisions.
+
 ## Project Goal
 
 **ADaxer.MvvmNav** is a lightweight MVVM navigation framework for .NET
@@ -54,6 +56,47 @@ Responsible for:
 
 Dialog views are resolved using the platform's native templating system.
 
+## Recent Decisions / Current State
+
+### Logging
+- The framework supports `Microsoft.Extensions.Logging`.
+- Core services (e.g. `NavigationService`) may use `ILogger<T>`.
+- Concrete logging providers are configured at application/bootstrap level.
+- The framework itself does not enforce a specific logging provider.
+
+### Registration Order
+- Recommended registration order:
+  1. Core
+  2. Platform
+  3. Application
+- Later registrations override earlier ones.
+- This allows application-level customization without modifying the framework.
+
+### WPF Host Builder
+- WPF provides an optional fluent host builder:
+  `WpfNavigationHostBuilder`
+- Intended usage:
+  - `WpfNavigationHostBuilder.BuildDefault<TShellView, TShellViewModel>().Start()`
+  - `WpfNavigationHostBuilder.Build<TShellView, TShellViewModel>().WithLogging(...).WithServices(...).Start()`
+- The host builder is optional and serves as a convenience layer.
+- Existing applications can integrate MvvmNav without using it.
+
+### Navigation State Notifications
+- `INavigationService` exposes navigation state change notifications.
+- These are triggered after:
+  - successful navigation
+  - successful back navigation
+- Not triggered for dialogs.
+- Typical use case:
+  - updating shell commands (e.g. Back button)
+  - refreshing `CanExecute` state
+
+### Navigation Parameter Convenience
+- Navigation can be invoked using tuple-based parameters:
+  `NavigateAsync<TTarget>(("Key", value), ("Other", 42))`
+- This avoids explicit construction of `NavigationParameters` in common scenarios.
+- Implemented via extension methods on `INavigationService`.
+
 ------------------------------------------------------------------------
 
 # View Resolution Strategy
@@ -78,6 +121,7 @@ Example:
 
 This keeps the framework simple and predictable for developers familiar
 with the platform.
+
 
 ------------------------------------------------------------------------
 
@@ -396,7 +440,47 @@ Demonstrates:
 
 Demonstrates usage **without framework base classes**, using only
 interfaces.
+## Sample App – Current Direction
 
+### General Approach
+- Prefer a single conceptual sample application shared across platforms.
+- Platform-specific integration is demonstrated per platform:
+  - WPF: `WpfNavigationHostBuilder` + Serilog
+  - Avalonia: default builder
+  - MAUI: integration into existing app bootstrap
+  - Uno: planned after WPF/Avalonia/MAUI
+
+### Shell Navigation
+- The shell provides a left navigation menu.
+- Each menu item consists of:
+  - Title
+  - Subtitle
+  - Command
+- Current modules:
+  - Home
+  - About
+  - Settings
+  - Features
+
+### Markdown-based Explanations
+- Sample pages use markdown for inline documentation.
+- Markdown is bound via a ViewModel property (`string Markdown`).
+- Each platform uses a platform-specific markdown renderer.
+- Feature detail pages load markdown files based on a navigation parameter key.
+
+### Sample Content Focus
+- Home:
+  - MvvmNav SampleApp overview
+  - ViewModel-first navigation
+  - ShellView / ShellViewModel only require framework interfaces
+  - NavigationService is injected into the ShellViewModel
+  - Views are resolved via DataTemplates
+- About:
+  - Demonstrates dialog usage
+- Settings:
+  - Demonstrates navigation and back navigation
+- Features:
+  - Overview page with links to detail pages
 ------------------------------------------------------------------------
 
 # Optional Sample Features

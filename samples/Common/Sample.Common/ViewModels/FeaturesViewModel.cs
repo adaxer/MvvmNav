@@ -2,6 +2,7 @@
 using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Core.ViewModels;
 using ADaxer.MvvmNav.Sample.Common.Interfaces;
+using ADaxer.MvvmNav.Sample.Common.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -11,11 +12,13 @@ public partial class FeaturesViewModel : ViewModelBase, INavigationAware
 {
     private readonly IFileService _fileService;
     private readonly INavigationService _navigationService;
+    private readonly FeatureService _featureService;
 
-    public FeaturesViewModel(IFileService fileService, INavigationService navigationService)
+    public FeaturesViewModel(IFileService fileService, INavigationService navigationService, FeatureService featureService)
     {
         _fileService = fileService;
         _navigationService = navigationService;
+        _featureService = featureService;
         Title= "✨ Features";
     }
 
@@ -24,35 +27,18 @@ public partial class FeaturesViewModel : ViewModelBase, INavigationAware
 
 
     [ObservableProperty]
-    private FeatureItem[] _features =
-        [
-            new FeatureItem { Name = "All Platforms", Key = "detail_platforms.md" },
-            new FeatureItem { Name = "ViewModel-first navigation", Key = "detail_navigation.md" },
-            new FeatureItem { Name = "Native view resolution", Key = "detail_navigation.md" },
-            new FeatureItem { Name = "Navigation parameters", Key = "detail_navigation.md" },
-            new FeatureItem { Name = "Back navigation", Key = "detail_navigation.md" },
-            new FeatureItem { Name = "Navigation guards", Key = "detail_guards.md" },
-            new FeatureItem { Name = "Dialog integration", Key = "detail_dialogs.md" },
-            new FeatureItem { Name = "Generic factory support", Key = "detail_factory.md" },
-            new FeatureItem { Name = "Dependency injection integration", Key = "detail_DI.md" },
-            new FeatureItem { Name = "Logging support", Key = "detail_logging.md" }
-        ];
+    private FeatureItem[] _features =Array.Empty<FeatureItem>();
 
     [RelayCommand]
     private async Task ShowFeatureAsync(string name)
     {
         var feature = Features.SingleOrDefault(f => f.Name == name);
-        await _navigationService.NavigateAsync<DetailsViewModel>([("Key", feature?.Key ?? "notfound"), ("Referrer", feature?.Name ?? "notfound")]);
+        await _navigationService.NavigateAsync<DetailsViewModel>([("Id", feature?.Id), ("Referrer", feature?.Name ?? "notfound")]);
     }
 
     public async Task OnNavigatedToAsync(NavigationParameters context)
     {
+        Features = await _featureService.GetFeaturesAsync();
         Markdown = await _fileService.GetFileAsync(".\\Markdown\\features.md");
     }
-}
-
-public class FeatureItem
-{
-    public string Name { get; internal set; } = string.Empty;
-    public string Key { get; internal set; } = string.Empty;
 }
