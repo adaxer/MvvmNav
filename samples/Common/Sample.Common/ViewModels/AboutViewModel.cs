@@ -21,9 +21,9 @@ public partial class AboutViewModel : DialogViewModelBase, INavigationAware
         Markdown = await _fileService.GetFileAsync(".\\Markdown\\about.md");
     }
 
-    public override void CloseDialog(DialogResult result)
-    {
-        base.CloseDialog(result);
-        Title = result.ToString();
-    }
+    //public override void CloseDialog(DialogResult result)
+    //{
+    //    base.CloseDialog(result);
+    //    Title = result.ToString();
+    //}
 }

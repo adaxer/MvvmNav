@@ -215,6 +215,58 @@ This base class hides the dialog completion infrastructure.
 
 # Navigation Lifecycle
 
+## Navigation Semantics
+
+- Navigation is ViewModel-to-ViewModel via `NavigateAsync(...)`.
+- Back navigation uses `GoBackAsync()`.
+- Dialogs are separate via `ShowDialogAsync(...)` (no modal flag on navigation).
+
+### Target Identity
+
+A navigation target is identified by:
+- `TargetType`
+- `NavigationKey`
+
+Navigation to the same target is blocked only if **both match**.
+
+Examples:
+- Same type, different key (e.g. different Id) → allowed
+- Same type, same key → blocked
+
+### NavigationKey
+
+- Default: `TargetType + normalized NavigationParameters`
+- Custom: `NavigationOptions.WithKey("...")`
+
+Use a custom key when:
+- only a subset of parameters defines identity
+- parameters contain complex objects
+- `ToString()` is not stable enough
+
+### NavigationParameters
+
+- Immutable parameter bag
+- Used to pass context and (by default) define identity
+- Prefer primitive/value-like data (Id, Filter, Page, Mode)
+- For complex cases, provide a custom `NavigationKey`
+
+### Back Stack
+
+Each entry stores:
+- Target instance
+- TargetType
+- Parameters
+- NavigationKey
+
+`GoBackAsync()` restores the original semantic target (type + parameters + key).
+
+### Detail Paging Scenario
+
+- Same ViewModel type is allowed if the target identity changes
+- Example: `Detail(Id=10)` → `Detail(Id=11)` allowed
+- `Detail(Id=10)` → `Detail(Id=10)` blocked
+
+
 ViewModels may implement:
 
     INavigationAware
@@ -535,3 +587,62 @@ The framework aims to be:
 -   easy to integrate
 
 This constitutes a solid **version 1 architecture**.
+
+------------------------------------------------------------------------
+
+# Testing
+
+## Next Steps for `NavigationService`-Tests
+
+### `NavigationService_BackNavigation__`
+
+- `CanGoBack_WithoutPreviousNavigation_ShouldReturnFalse`
+- `CanGoBack_AfterSecondNavigation_ShouldReturnTrue`
+- `GoBackAsync_AfterNavigatingToSecondTarget_ShouldRestorePreviousTarget`
+- `GoBackAsync_ShouldRestorePreviousParameters`
+- `GoBackAsync_WhenBackStackBecomesEmpty_ShouldUpdateCanGoBack`
+- `GoBackAsync_WhenCurrentTargetDisallowsNavigation_ShouldNotGoBack`
+- `GoBackAsync_WhenCurrentTargetRequestsConfirmation_AndUserDeclines_ShouldNotGoBack`
+- `GoBackAsync_WhenCurrentTargetRequestsConfirmation_AndUserConfirms_ShouldGoBack`
+- `GoBackAsync_ShouldPassIsBackNavigationTrueToNavigationGuard`
+
+### `NavigationService_Guards__`
+
+- `NavigateAsync_WhenCurrentTargetAllowsNavigation_ShouldNavigate`
+- `NavigateAsync_WhenCurrentTargetDisallowsNavigation_ShouldNotNavigate`
+- `NavigateAsync_WhenCurrentTargetRequestsConfirmation_AndUserDeclines_ShouldNotNavigate`
+- `NavigateAsync_WhenCurrentTargetRequestsConfirmation_AndUserConfirms_ShouldNavigate`
+- `NavigateAsync_WhenGuardRequestsConfirmationWithoutContext_ShouldThrow`
+- `NavigateAsync_WhenNavigationIsBlocked_ShouldNotRaiseNavigationStateChanged`
+- `NavigateAsync_WhenNavigationIsBlocked_ShouldNotPushCurrentTargetToBackStack`
+
+### `NavigationService_BackStackOptions__`
+
+- `NavigateAsync_WithAddToBackStackFalse_ShouldNotAddCurrentTargetToBackStack`
+- `NavigateAsync_WithAddToBackStackFalse_ShouldMakeGoBackUnavailable`
+- `NavigateAsync_WithClearBackStackTrue_ShouldClearExistingBackStack`
+- `NavigateAsync_WithClearBackStackTrue_AndThenNavigate_ShouldLeaveOnlyExpectedBackState`
+- `NavigateAsync_WithExplicitNavigationKey_ShouldUseItForBackStackIdentity`
+
+### `NavigationService_Events__`
+
+- `NavigateAsync_AfterSuccessfulNavigation_ShouldRaiseNavigationStateChanged`
+- `GoBackAsync_AfterSuccessfulBackNavigation_ShouldRaiseNavigationStateChanged`
+- `NavigateAsync_WhenNavigatingToSameTargetAndSameKey_ShouldNotRaiseNavigationStateChanged`
+- `ShowDialogAsync_ShouldNotRaiseNavigationStateChanged`
+
+### `NavigationService_Activation__`
+
+- `NavigateAsync_ShouldSetShellCurrentModuleToResolvedTarget`
+- `NavigateAsync_WithNavigationAwareTarget_ShouldPassParametersToOnNavigatedToAsync`
+- `NavigateAsync_WithTargetNotImplementingNavigationAware_ShouldStillActivate`
+- `GoBackAsync_WithNavigationAwareTarget_ShouldPassRestoredParametersToOnNavigatedToAsync`
+
+### `DialogViewModelBase__`
+
+- `CompletionTask_WithoutReset_ShouldReturnNone`
+- `ResetDialogCompletion_ShouldCreateFreshCompletionTask`
+- `CloseDialog_ShouldCompleteCompletionTask_WithResult`
+- `CloseDialog_WithoutReset_ShouldNotThrow`
+
+------------------------------------------------------------------------

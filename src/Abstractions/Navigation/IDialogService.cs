@@ -14,7 +14,7 @@ public interface IDialogService
     /// </summary>
     /// <param name="dialogContent">
     /// The dialog instance to display. This is typically a dialog view model.
-    /// It is required to implement the <see cref="IDialogAware"/> interface.
+    /// It is required to implement the <see cref="IDialogController"/> interface.
     /// </param>
     /// <param name="parameters">
     /// Optional parameters passed to the dialog.
@@ -23,7 +23,7 @@ public interface IDialogService
     /// A <see cref="DialogResult"/> describing the outcome.
     /// </returns>
     Task<DialogResult> ShowDialogAsync(
-        IDialogAware dialogContent,
+        IDialogController dialogContent,
         NavigationParameters parameters);
 
     /// <summary>
@@ -36,7 +36,7 @@ public interface IDialogService
     /// A <see cref="DialogResult{TResult}"/> describing the outcome.
     /// </returns>
     Task<DialogResult<TResult>> ShowDialogAsync<TResult>(
-        IDialogAware dialogContent,
+        IDialogController dialogContent,
         NavigationParameters parameters);
 
     /// <summary>

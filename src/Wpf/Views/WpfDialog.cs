@@ -65,7 +65,7 @@ public class WpfDialog : Window
 
     protected override void OnClosed(EventArgs e)
     {
-        if (DataContext is IDialogCompletionSource completion && DataContext is IDialogAware dialogAware)
+        if (DataContext is IDialogCompletionSource completion && DataContext is IDialogController dialogAware)
         {
             if (!completion.CompletionTask.IsCompleted)
             {

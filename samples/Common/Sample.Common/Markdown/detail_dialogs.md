@@ -4,7 +4,7 @@ Dialogs are handled via the `IDialogService`.
 
 ### How it works
 
-- A dialog ViewModel implements `IDialogAware`
+- A dialog ViewModel implements `IDialogController`
 - The dialog is opened from another ViewModel
 - Dialog content is resolved via DataTemplates (being a ViewModel)
 - A `DialogResult` is returned

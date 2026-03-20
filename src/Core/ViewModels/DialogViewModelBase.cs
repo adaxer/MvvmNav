@@ -3,7 +3,7 @@ using ADaxer.MvvmNav.Abstractions.Navigation;
 
 namespace ADaxer.MvvmNav.Core.ViewModels;
 
-public abstract class DialogViewModelBase : ViewModelBase, IDialogAware, IDialogCompletionSource
+public abstract class DialogViewModelBase : ViewModelBase, IDialogController, IDialogCompletionSource
 {
     private TaskCompletionSource<DialogResult>? _completionSource;
 

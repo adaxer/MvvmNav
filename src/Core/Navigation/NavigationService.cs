@@ -182,14 +182,19 @@ public sealed class NavigationService : INavigationService
 
         var dialog = _services.GetRequiredService<TDialog>();
 
-        if (dialog is not IDialogAware dialogAware)
+        if (dialog is not IDialogController dialogAware)
         {
             _logger.LogError(
-                "Resolved dialog does not implement IDialogAware. DialogType={DialogType}",
+                "Resolved dialog does not implement IDialogController. DialogType={DialogType}",
                 typeof(TDialog).FullName);
 
             throw new InvalidOperationException(
-                $"Dialog type '{typeof(TDialog).FullName}' must implement IDialogAware.");
+                $"Dialog type '{typeof(TDialog).FullName}' must implement IDialogController.");
+        }
+
+        if (dialog is INavigationAware aware)
+        {
+            await aware.OnNavigatedToAsync(context ?? NavigationParameters.Empty);
         }
 
         var result = await _dialogService.ShowDialogAsync<TResult>(
@@ -212,14 +217,19 @@ public sealed class NavigationService : INavigationService
 
         var dialog = _services.GetRequiredService(dialogType);
 
-        if (dialog is not IDialogAware dialogAware)
+        if (dialog is not IDialogController dialogAware)
         {
             _logger.LogError(
-                "Resolved dialog does not implement IDialogAware. DialogType={DialogType}",
+                "Resolved dialog does not implement IDialogController. DialogType={DialogType}",
                 dialogType.FullName);
 
             throw new InvalidOperationException(
-                $"Dialog type '{dialogType.FullName}' must implement IDialogAware.");
+                $"Dialog type '{dialogType.FullName}' must implement IDialogController.");
+        }
+
+        if (dialog is INavigationAware aware)
+        {
+            await aware.OnNavigatedToAsync(context??NavigationParameters.Empty);
         }
 
         var result = await _dialogService.ShowDialogAsync(
