@@ -1,4 +1,4 @@
-﻿using ADaxer.MvvmNav.Abstractions.Navigation;
+using ADaxer.MvvmNav.Abstractions.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -7,6 +7,12 @@ namespace ADaxer.MvvmNav.Wpf;
 /// <summary>
 /// Builds and starts WPF navigation hosts that use MvvmNav.
 /// </summary>
+/// <typeparam name="TShellView">
+/// The shell view type.
+/// </typeparam>
+/// <typeparam name="TShellViewModel">
+/// The shell view model type.
+/// </typeparam>
 public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
     where TShellView : class, IShellView
     where TShellViewModel : class, IShellViewModel
@@ -29,7 +35,7 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
     }
 
     /// <summary>
-    /// Creates a builder with default logging configured.
+    /// Creates a builder with default debug logging configured.
     /// </summary>
     public static WpfNavigationHostBuilder<TShellView, TShellViewModel> BuildDefault()
     {
@@ -42,6 +48,9 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
     /// <summary>
     /// Adds logging configuration to the host builder.
     /// </summary>
+    /// <param name="configureLogging">
+    /// The logging configuration callback.
+    /// </param>
     public WpfNavigationHostBuilder<TShellView, TShellViewModel> WithLogging(
         Action<ILoggingBuilder> configureLogging)
     {
@@ -54,6 +63,9 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
     /// <summary>
     /// Adds service registrations to the host builder.
     /// </summary>
+    /// <param name="configureServices">
+    /// The service registration callback.
+    /// </param>
     public WpfNavigationHostBuilder<TShellView, TShellViewModel> WithServices(
         Action<IServiceCollection> configureServices)
     {

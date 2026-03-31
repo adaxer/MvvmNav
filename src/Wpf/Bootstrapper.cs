@@ -1,4 +1,4 @@
-﻿using ADaxer.MvvmNav.Abstractions.Navigation;
+using ADaxer.MvvmNav.Abstractions.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +12,15 @@ public static class Bootstrapper
     /// <summary>
     /// Builds a service provider for a WPF application that uses MvvmNav.
     /// </summary>
+    /// <typeparam name="TShellView">
+    /// The shell view type.
+    /// </typeparam>
+    /// <typeparam name="TShellViewModel">
+    /// The shell view model type.
+    /// </typeparam>
+    /// <param name="configureServices">
+    /// Optional application-specific service registrations.
+    /// </param>
     public static IServiceProvider Build<TShellView, TShellViewModel>(
         Action<IServiceCollection>? configureServices = null)
         where TShellView : class, IShellView
@@ -41,7 +50,16 @@ public static class Bootstrapper
     /// <summary>
     /// Resolves and displays the application shell.
     /// </summary>
-    public static (TShellView, TShellViewModel) Start<TShellView, TShellViewModel>(IServiceProvider services)
+    /// <typeparam name="TShellView">
+    /// The shell view type.
+    /// </typeparam>
+    /// <typeparam name="TShellViewModel">
+    /// The shell view model type.
+    /// </typeparam>
+    /// <param name="services">
+    /// The service provider used to resolve the shell.
+    /// </param>
+    public static (TShellView Shell, TShellViewModel ShellViewModel) Start<TShellView, TShellViewModel>(IServiceProvider services)
         where TShellView : class, IShellView
         where TShellViewModel : class, IShellViewModel
     {
@@ -59,7 +77,16 @@ public static class Bootstrapper
     /// <summary>
     /// Builds the service provider and immediately starts the application shell.
     /// </summary>
-    public static (IServiceProvider, TShellView, TShellViewModel) BuildAndStart<TShellView, TShellViewModel>(
+    /// <typeparam name="TShellView">
+    /// The shell view type.
+    /// </typeparam>
+    /// <typeparam name="TShellViewModel">
+    /// The shell view model type.
+    /// </typeparam>
+    /// <param name="configureServices">
+    /// Optional application-specific service registrations.
+    /// </param>
+    public static (IServiceProvider Services, TShellView Shell, TShellViewModel ShellViewModel) BuildAndStart<TShellView, TShellViewModel>(
         Action<IServiceCollection>? configureServices = null)
         where TShellView : class, IShellView
         where TShellViewModel : class, IShellViewModel

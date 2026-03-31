@@ -35,8 +35,7 @@ public partial class SettingsViewModel : ViewModelBase, INavigationAware, ICanNa
     public Task<NavigationGuardResult> CanNavigateFromAsync(NavigationRequest request, CancellationToken cancellationToken = default)
     {
         var result = IsDirty
-           //? NavigationGuardResult.AskUser("There are changes. Do you want to keep them?", OnConfirmedOrNotAsync)
-           ? NavigationGuardResult.Disallow()
+           ? NavigationGuardResult.AskUser("There are changes. Do you want to keep them?", OnConfirmedOrNotAsync)
            : NavigationGuardResult.Allow();
         return Task.FromResult(result);
     }
