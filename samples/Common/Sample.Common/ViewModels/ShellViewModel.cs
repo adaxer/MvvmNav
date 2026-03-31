@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using ADaxer.MvvmNav.Abstractions;
 using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Core.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,8 +16,7 @@ public partial class ShellViewModel : ViewModelBase, IShellViewModel
     public ShellViewModel(INavigationService navigation)
     {
         _navigation = navigation;
-
-        navigation.NavigationStateChanged += NavigationStateChanged; ;
+        navigation.NavigationStateChanged += NavigationStateChanged;
 
         NavigationItems =
         [

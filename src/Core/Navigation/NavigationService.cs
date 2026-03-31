@@ -83,10 +83,10 @@ public sealed class NavigationService : INavigationService
 
         var canLeave = await CanLeaveCurrentAsync(request);
 
-        if (canLeave.IsConfirmed.HasValue == false)
+        if (canLeave.result.IsConfirmed.HasValue == false || (canLeave.wasUserAsked==false && canLeave.result.IsConfirmed==false))
         {
             _logger.LogInformation(
-                "Navigation cancelled by guard. Target={TargetType}, NavigationKey={NavigationKey}",
+                "Navigation cancelled/disallowed by guard. Target={TargetType}, NavigationKey={NavigationKey}",
                 targetType.FullName,
                 navigationKey);
 
@@ -141,10 +141,10 @@ public sealed class NavigationService : INavigationService
         };
 
         var canLeave = await CanLeaveCurrentAsync(request);
-        if (canLeave.IsConfirmed.HasValue == false)
+        if (canLeave.result.IsConfirmed.HasValue == false || (canLeave.wasUserAsked == false && canLeave.result.IsConfirmed == false))
         {
             _logger.LogInformation(
-                "Back navigation cancelled by guard. Target={TargetType}, NavigationKey={NavigationKey}",
+                "Back navigation cancelled/disallowed by guard. Target={TargetType}, NavigationKey={NavigationKey}",
                 targetEntry.TargetType.FullName,
                 targetEntry.NavigationKey);
 
@@ -267,7 +267,7 @@ public sealed class NavigationService : INavigationService
         NavigationStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    private async Task<DialogResult> CanLeaveCurrentAsync(NavigationRequest request)
+    private async Task<(DialogResult result, bool wasUserAsked)> CanLeaveCurrentAsync(NavigationRequest request)
     {
         if (_currentEntry is not null &&
             _currentEntry.TargetType == request.TargetType &&
@@ -278,13 +278,13 @@ public sealed class NavigationService : INavigationService
                 request.TargetType?.FullName,
                 request.NavigationKey);
 
-            return DialogResult.None;
+            return (DialogResult.None, false);
         }
 
         if (Shell.CurrentModule is not ICanNavigateFrom guarded)
         {
             _logger.LogDebug("Current module has no navigation guard.");
-            return DialogResult.True;
+            return (DialogResult.True, false);
         }
 
         _logger.LogDebug(
@@ -302,10 +302,10 @@ public sealed class NavigationService : INavigationService
 
         return result.Decision switch
         {
-            NavigationGuardDecision.Allow => DialogResult.True,
-            NavigationGuardDecision.Disallow => DialogResult.False,
-            NavigationGuardDecision.AskUser => await ConfirmNavigationAsync(result),
-            _ => DialogResult.None
+            NavigationGuardDecision.Allow => (DialogResult.True, false),
+            NavigationGuardDecision.Disallow => (DialogResult.False, false),
+            NavigationGuardDecision.AskUser => (await ConfirmNavigationAsync(result), true),
+            _ => (DialogResult.None, false)
         };
     }
 

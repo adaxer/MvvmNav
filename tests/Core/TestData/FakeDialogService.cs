@@ -1,5 +1,4 @@
 ﻿using ADaxer.MvvmNav.Abstractions.Navigation;
-using ADaxer.MvvmNav.Core.ViewModels;
 
 namespace ADaxer.MvvmNav.Core.Tests.TestData;
 
@@ -8,6 +7,10 @@ public sealed class FakeDialogService : IDialogService
     public int ShowDialogCallCount { get; private set; }
     public object? LastDialog { get; private set; }
     public NavigationParameters? LastParameters { get; private set; }
+
+    public int ConfirmCallCount { get; private set; }
+    public object? LastConfirmationContext { get; private set; }
+    public DialogResult NextConfirmationResult { get; set; } = DialogResult.True;
 
     public async Task<DialogResult> ShowDialogAsync(
         IDialogController dialog,
@@ -62,6 +65,9 @@ public sealed class FakeDialogService : IDialogService
 
     public Task<DialogResult> ConfirmAsync(object context, CancellationToken cancellationToken)
     {
-        throw new NotSupportedException("ConfirmAsync is not used by these dialog tests.");
+        LastConfirmationContext = context;
+        ConfirmCallCount++;
+
+        return Task.FromResult(NextConfirmationResult);
     }
 }

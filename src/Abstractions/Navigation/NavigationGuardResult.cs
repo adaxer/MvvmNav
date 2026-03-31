@@ -5,25 +5,28 @@
 /// </summary>
 public sealed class NavigationGuardResult
 {
+    public NavigationGuardResult(NavigationGuardDecision decision, NavigationParameters? context, Func<DialogResult, CancellationToken, Task>? continueAsync, CancellationToken cancellationToken)
+    {
+        Decision = decision;
+        Context = context;
+        ContinueAsync = continueAsync;
+    }
+
     /// <summary>
     /// Gets the guard decision.
     /// </summary>
     public NavigationGuardDecision Decision { get; init; }
-    public object? Context { get; private set; }
+
+    public NavigationParameters? Context { get; private set; }
     public Func<DialogResult, CancellationToken, Task>? ContinueAsync { get; init; }
 
     public static NavigationGuardResult Allow() =>
-        new() { Decision = NavigationGuardDecision.Allow };
+        new(NavigationGuardDecision.Allow, null, null, CancellationToken.None);
 
     public static NavigationGuardResult Disallow() =>
-        new() { Decision = NavigationGuardDecision.Disallow };
+        new(NavigationGuardDecision.Disallow, null, null, CancellationToken.None);
     public static NavigationGuardResult AskUser(object context,
         Func<DialogResult, CancellationToken, Task> continueAsync)
-        => new()
-        {
-            Decision = NavigationGuardDecision.AskUser,
-            Context = context,
-            ContinueAsync = continueAsync
-        };
+        => new(NavigationGuardDecision.AskUser, context as NavigationParameters, continueAsync, CancellationToken.None);
 }
 

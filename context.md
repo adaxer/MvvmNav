@@ -83,11 +83,13 @@ Dialog views are resolved using the platform's native templating system.
 
 ### Navigation State Notifications
 - `INavigationService` exposes navigation state change notifications.
-- These are triggered after:
+- Raised after:
   - successful navigation
   - successful back navigation
-- Not triggered for dialogs.
-- Typical use case:
+- Not raised when:
+  - navigation is blocked by a guard
+  - navigation is cancelled (e.g. AskUser → None)
+  - dialogs are shown- Typical use case:
   - updating shell commands (e.g. Back button)
   - refreshing `CanExecute` state
 
@@ -158,6 +160,17 @@ Callback signature:
 
 This allows the ViewModel to continue the decision asynchronously
 (e.g. saving changes).
+
+When a navigation guard returns `AskUser`, the result of the confirmation dialog determines the outcome:
+
+- `DialogResult.True` → proceed with navigation
+- `DialogResult.False` → proceed with navigation
+- `DialogResult.None` → cancel navigation
+
+This enables scenarios like:
+- Save changes (True)
+- Discard changes (False)
+- Cancel navigation (None)
 
 ------------------------------------------------------------------------
 
@@ -260,6 +273,18 @@ Each entry stores:
 
 `GoBackAsync()` restores the original semantic target (type + parameters + key).
 
+#### Back Stack Options Interaction
+
+- `ClearBackStack = true` clears all existing back stack entries.
+- `AddToBackStack = true` is still evaluated independently.
+
+If both are set:
+- The previous back stack is cleared
+- The current entry is added as the sole back stack entry
+
+This allows scenarios like:
+- Reset navigation history but still allow a single back navigation
+
 ### Detail Paging Scenario
 
 - Same ViewModel type is allowed if the target identity changes
@@ -276,6 +301,13 @@ Lifecycle method:
     Task OnNavigatedToAsync(NavigationParameters parameters)
 
 The same hook is used for both normal navigation and dialog navigation.
+
+### Navigation Event
+When navigation is blocked due to identical target identity
+(same type + same NavigationKey):
+
+- Navigation is not performed
+- NavigationStateChanged is NOT raised
 
 ------------------------------------------------------------------------
 
@@ -592,57 +624,12 @@ This constitutes a solid **version 1 architecture**.
 
 # Testing
 
-## Next Steps for `NavigationService`-Tests
+## TestFramework
+TestFramework is TUnit
 
-### `NavigationService_BackNavigation__`
-
-- `CanGoBack_WithoutPreviousNavigation_ShouldReturnFalse`
-- `CanGoBack_AfterSecondNavigation_ShouldReturnTrue`
-- `GoBackAsync_AfterNavigatingToSecondTarget_ShouldRestorePreviousTarget`
-- `GoBackAsync_ShouldRestorePreviousParameters`
-- `GoBackAsync_WhenBackStackBecomesEmpty_ShouldUpdateCanGoBack`
-- `GoBackAsync_WhenCurrentTargetDisallowsNavigation_ShouldNotGoBack`
-- `GoBackAsync_WhenCurrentTargetRequestsConfirmation_AndUserDeclines_ShouldNotGoBack`
-- `GoBackAsync_WhenCurrentTargetRequestsConfirmation_AndUserConfirms_ShouldGoBack`
-- `GoBackAsync_ShouldPassIsBackNavigationTrueToNavigationGuard`
-
-### `NavigationService_Guards__`
-
-- `NavigateAsync_WhenCurrentTargetAllowsNavigation_ShouldNavigate`
-- `NavigateAsync_WhenCurrentTargetDisallowsNavigation_ShouldNotNavigate`
-- `NavigateAsync_WhenCurrentTargetRequestsConfirmation_AndUserDeclines_ShouldNotNavigate`
-- `NavigateAsync_WhenCurrentTargetRequestsConfirmation_AndUserConfirms_ShouldNavigate`
-- `NavigateAsync_WhenGuardRequestsConfirmationWithoutContext_ShouldThrow`
-- `NavigateAsync_WhenNavigationIsBlocked_ShouldNotRaiseNavigationStateChanged`
-- `NavigateAsync_WhenNavigationIsBlocked_ShouldNotPushCurrentTargetToBackStack`
-
-### `NavigationService_BackStackOptions__`
-
-- `NavigateAsync_WithAddToBackStackFalse_ShouldNotAddCurrentTargetToBackStack`
-- `NavigateAsync_WithAddToBackStackFalse_ShouldMakeGoBackUnavailable`
-- `NavigateAsync_WithClearBackStackTrue_ShouldClearExistingBackStack`
-- `NavigateAsync_WithClearBackStackTrue_AndThenNavigate_ShouldLeaveOnlyExpectedBackState`
-- `NavigateAsync_WithExplicitNavigationKey_ShouldUseItForBackStackIdentity`
-
-### `NavigationService_Events__`
-
-- `NavigateAsync_AfterSuccessfulNavigation_ShouldRaiseNavigationStateChanged`
-- `GoBackAsync_AfterSuccessfulBackNavigation_ShouldRaiseNavigationStateChanged`
-- `NavigateAsync_WhenNavigatingToSameTargetAndSameKey_ShouldNotRaiseNavigationStateChanged`
-- `ShowDialogAsync_ShouldNotRaiseNavigationStateChanged`
-
-### `NavigationService_Activation__`
-
-- `NavigateAsync_ShouldSetShellCurrentModuleToResolvedTarget`
-- `NavigateAsync_WithNavigationAwareTarget_ShouldPassParametersToOnNavigatedToAsync`
-- `NavigateAsync_WithTargetNotImplementingNavigationAware_ShouldStillActivate`
-- `GoBackAsync_WithNavigationAwareTarget_ShouldPassRestoredParametersToOnNavigatedToAsync`
-
-### `DialogViewModelBase__`
-
-- `CompletionTask_WithoutReset_ShouldReturnNone`
-- `ResetDialogCompletion_ShouldCreateFreshCompletionTask`
-- `CloseDialog_ShouldCompleteCompletionTask_WithResult`
-- `CloseDialog_WithoutReset_ShouldNotThrow`
+## Conventions
+- Test Classes are to be named like the Type to be tested with two trailing underscrores, eg. DialogViewModelBase__
+- When external references are necessary, they should be injected into the test class. Here the DIClassConstructor is to be adapted and used. Warn if that class gets too big
+- The comments // Arrange, // Act and // Assert are to be used and put together if those states overlap
 
 ------------------------------------------------------------------------
