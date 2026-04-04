@@ -4,8 +4,6 @@ using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Sample.Common.ViewModels;
 using ADaxer.MvvmNav.Wpf;
 using ADaxer.MvvmNav.Sample.Wpf.Views;
-using ADaxer.MvvmNav.Sample.Common.Interfaces;
-using ADaxer.MvvmNav.Sample.Common;
 using Microsoft.Extensions.Logging;
 
 namespace ADaxer.MvvmNav.Sample.Wpf;

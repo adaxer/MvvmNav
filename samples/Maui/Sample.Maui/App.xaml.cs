@@ -1,16 +1,30 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using ADaxer.MvvmNav.Abstractions.Navigation;
+using ADaxer.MvvmNav.Sample.Common.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using Sample.Maui.Views;
 
 namespace Sample.Maui;
 
 public partial class App : Application
 {
-	public App()
-	{
-		InitializeComponent();
-	}
+    internal IServiceProvider _serviceProvider = default!;
 
-	protected override Window CreateWindow(IActivationState? activationState)
-	{
-		return new Window(new AppShell());
-	}
+    public App()
+    {
+        InitializeComponent();
+    }
+
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        return new Window(_serviceProvider.GetRequiredService<ShellPage>());
+    }
+
+    protected override async void OnStart()
+    {
+        base.OnStart();
+        var navigation = _serviceProvider.GetRequiredService<INavigationService>();
+        await navigation.NavigateAsync<HomeViewModel>();
+    }
+
+
 }

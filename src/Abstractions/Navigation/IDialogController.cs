@@ -10,7 +10,7 @@
 ///
 /// The actual completion mechanism is handled internally via
 /// <see cref="IDialogCompletionSource"/> and is typically not implemented directly
-/// by consumers. Instead, inheriting from <see cref="DialogViewModelBase"/> is recommended.
+/// by consumers. Instead, inheriting from a suitable base class like a DialogViewModelBase is recommended.
 /// </remarks>
 public interface IDialogController
 {

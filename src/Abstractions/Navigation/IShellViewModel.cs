@@ -7,24 +7,28 @@ namespace ADaxer.MvvmNav.Abstractions.Navigation;
 /// </summary>
 /// <remarks>
 /// The shell view model acts as the root of the application's visual
-/// composition and hosts the currently active navigation target.
+/// composition and hosts both the currently active navigation target
+/// and the currently active dialog.
 /// 
 /// UI frameworks typically bind the shell view to this view model and
 /// display the current module using a content control or similar
 /// mechanism.
 /// 
-/// The navigation infrastructure updates <see cref="CurrentModule"/>
-/// whenever navigation occurs.
+/// The current dialog may be hosted in different ways depending on the
+/// platform:
+/// <list type="bullet">
+/// <item><description>
+/// As an overlay within the main UI (typical for MAUI and modern desktop applications)
+/// </description></item>
+/// <item><description>
+/// As a separate window (traditional desktop behavior, e.g. classic WPF dialogs)
+/// </description></item>
+/// </list>
+/// 
+/// In MvvmNav, dialogs are typically rendered as an overlay using a
+/// <c>ContentView</c>-based host that resolves the dialog view from the
+/// dialog view model, although you can fall back to the more traditional way.
 /// </remarks>
-public interface IShellViewModel
+public interface IShellViewModel : IModuleHost, IDialogHost
 {
-    /// <summary>
-    /// Gets or sets the currently active navigation target.
-    /// </summary>
-    /// <remarks>
-    /// The value is typically a view model representing the active screen.
-    /// UI frameworks usually bind a content presenter or region to this
-    /// property.
-    /// </remarks>
-    object? CurrentModule { get; set; }
 }

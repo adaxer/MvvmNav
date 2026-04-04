@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ADaxer.MvvmNav.Sample.Common.ViewModels;
 
-public partial class AboutViewModel : DialogViewModelBase, INavigationAware
+public partial class AboutViewModel : DialogViewModelBase, INavigationAware, IDialogExchange
 {
     private readonly IFileService _fileService;
 
@@ -16,14 +16,11 @@ public partial class AboutViewModel : DialogViewModelBase, INavigationAware
     {
         _fileService = fileService;
     }
+
+    public DialogExchangeInfo DialogExchange => new();
+
     public async Task OnNavigatedToAsync(NavigationParameters context)
     {
         Markdown = await _fileService.GetFileAsync(".\\Markdown\\about.md");
     }
-
-    //public override void CloseDialog(DialogResult result)
-    //{
-    //    base.CloseDialog(result);
-    //    Title = result.ToString();
-    //}
 }

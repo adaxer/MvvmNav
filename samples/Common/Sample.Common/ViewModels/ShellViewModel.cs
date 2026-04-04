@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ADaxer.MvvmNav.Sample.Common.ViewModels;
 
-public partial class ShellViewModel : ViewModelBase, IShellViewModel
+public partial class ShellViewModel : ViewModelBase, IShellViewModel, IDialogHost
 {
     private readonly INavigationService _navigation;
 
@@ -48,6 +48,9 @@ public partial class ShellViewModel : ViewModelBase, IShellViewModel
 
     [ObservableProperty]
     private object? _currentModule;
+
+    [ObservableProperty]
+    private object? _currentDialog;
 
     [ObservableProperty]
     private object? _title;

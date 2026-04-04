@@ -1,0 +1,37 @@
+﻿using ADaxer.MvvmNav.Abstractions.Navigation;
+using ADaxer.MvvmNav.Core.ViewModels;
+using ADaxer.MvvmNav.Maui.Views;
+using ADaxer.MvvmNav.Sample.Common.ViewModels;
+using Sample.Maui;
+using Sample.Maui.Views;
+
+namespace Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// Provides extension methods for registering the core services for the sample app.
+/// </summary>
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection RegisterPlatformServices(this IServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        services.AddSingleton<ShellViewModel>();
+        services.AddSingleton<IShellViewModel>(sp => sp.GetRequiredService<ShellViewModel>());
+        services.AddSingleton<IDialogHost>(sp => sp.GetRequiredService<ShellViewModel>());
+
+        services.AddSingleton<ShellPage>();
+        services.AddSingleton<IShellView>(sp => sp.GetRequiredService<ShellPage>());
+
+        services.RegisterView<SettingsViewModel, SettingsView>();
+        services.RegisterView<HomeViewModel, HomeView>();
+        services.RegisterView<AboutViewModel, AboutView>();
+        services.RegisterView<SettingsViewModel, SettingsView>();
+        services.RegisterView<FeaturesViewModel, FeaturesView>();
+        services.RegisterView<DetailsViewModel, DetailsView>();
+
+        services.RegisterDialog<DialogViewModelBase, MauiDialog>();
+
+        return services;
+    }
+}

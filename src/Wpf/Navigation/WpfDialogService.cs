@@ -1,6 +1,6 @@
-using System.Windows;
+﻿using System.Windows;
 using ADaxer.MvvmNav.Abstractions.Navigation;
-using ADaxer.MvvmNav.Wpf.ViewModels;
+using ADaxer.MvvmNav.Core.ViewModels;
 using ADaxer.MvvmNav.Wpf.Views;
 
 namespace ADaxer.MvvmNav.Wpf.Navigation;

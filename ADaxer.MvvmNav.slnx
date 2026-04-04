@@ -11,7 +11,11 @@
   <Folder Name="/samples/Common/">
     <Project Path="samples/Common/Sample.Common/Sample.Common.csproj" Id="b20c8895-0afc-4bb6-b9a0-7dc53c04412a" />
   </Folder>
-  <Folder Name="/samples/Maui/" />
+  <Folder Name="/samples/Maui/">
+    <Project Path="samples/Maui/Sample.Maui/Sample.Maui.csproj" Id="ac962385-b0d4-4a4d-9b38-7c285c548f5b">
+      <Deploy Solution="Debug|*" />
+    </Project>
+  </Folder>
   <Folder Name="/samples/Wpf/">
     <Project Path="samples/Wpf/Sample.Wpf/Sample.Wpf.csproj" />
   </Folder>

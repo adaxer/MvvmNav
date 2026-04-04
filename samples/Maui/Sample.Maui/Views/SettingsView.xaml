@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:idk="clr-namespace:Indiko.Maui.Controls.Markdown;assembly=Indiko.Maui.Controls.Markdown"
+             x:Class="Sample.Maui.Views.SettingsView">
+    <VerticalStackLayout Spacing="0">
+
+        <Border Margin="10"
+            BackgroundColor="#FFDDDD"
+            Padding="10">
+
+            <HorizontalStackLayout Spacing="8"
+                               VerticalOptions="Center">
+
+                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                      VerticalOptions="Center" />
+
+                <Label Text="Check or uncheck to change state"
+                   VerticalOptions="Center" />
+
+                <Label Text="Enter text:"
+                   VerticalOptions="Center"
+                   Margin="8,0,0,0" />
+
+                <Entry Text="{Binding State, Mode=TwoWay}"
+                   BackgroundColor="Transparent"
+                   HorizontalOptions="FillAndExpand"
+                   VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </Border>
+
+        <idk:MarkdownView   MarkdownText="{Binding Markdown}" TextFontSize="18" Margin="8"/>
+
+    </VerticalStackLayout>
+</ContentView>

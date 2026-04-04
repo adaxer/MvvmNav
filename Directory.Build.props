@@ -35,8 +35,7 @@
   <ItemGroup Condition="'$(MSBuildProjectName)' == 'MvvmNav.Abstractions' or
                         '$(MSBuildProjectName)' == 'MvvmNav.Core' or
                         '$(MSBuildProjectName)' == 'MvvmNav.Avalonia' or
-                        '$(MSBuildProjectName)' == 'MvvmNav.Wpf' or
-                        '$(MSBuildProjectName)' == 'MvvmNav.Maui'">
+                        '$(MSBuildProjectName)' == 'MvvmNav.Wpf'">
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
   </ItemGroup>
 

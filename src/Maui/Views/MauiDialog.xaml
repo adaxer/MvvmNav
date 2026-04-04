@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="ADaxer.MvvmNav.Maui.Views.MauiDialog"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:abstractions="clr-namespace:ADaxer.MvvmNav.Abstractions.Navigation;assembly=MvvmNav.Abstractions"
+    xmlns:c="clr-namespace:ADaxer.MvvmNav.Maui.Views;assembly=MvvmNav.Maui"
+    x:Name="Root">
+
+    <Grid Padding="24">
+        <Border Stroke="#C8C8C8"
+                StrokeThickness="1"
+                BackgroundColor="White"
+                MaximumWidthRequest="700"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Padding="20">
+
+            <Grid RowDefinitions="*,Auto"
+                  RowSpacing="16">
+
+                <c:ContentControl Grid.Row="0"
+                                  BindingContext="{Binding Source={x:Reference Root}, Path=BindingContext}" />
+
+                <CollectionView Grid.Row="1"
+                                ItemsSource="{Binding Source={x:Reference Root}, Path=EffectiveCommands}"
+                                SelectionMode="None"
+                                HorizontalOptions="End">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal"
+                                           ItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="abstractions:DialogCommandInfo">
+                            <Button Text="{Binding Text}"
+                                    Command="{Binding Source={x:Reference Root}, Path=ExecuteDialogCommand}"
+                                    CommandParameter="{Binding .}">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding IsPrimary}"
+                                                 Value="True">
+                                        <Setter Property="FontAttributes"
+                                                Value="Bold" />
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
+        </Border>
+    </Grid>
+</ContentView>

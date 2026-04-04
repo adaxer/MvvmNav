@@ -17,7 +17,7 @@ namespace ADaxer.MvvmNav.Core.Navigation;
 /// <item><description>activation of navigation-aware targets</description></item>
 /// </list>
 /// </remarks>
-public sealed class NavigationService : INavigationService
+public class NavigationService : INavigationService
 {
     private readonly IServiceProvider _services;
     private readonly IDialogService _dialogService;
@@ -446,7 +446,7 @@ public sealed class NavigationService : INavigationService
     /// <param name="navigationKey">
     /// The semantic navigation key of the target.
     /// </param>
-    private async Task ActivateAsync(object target, NavigationParameters context, string navigationKey)
+    protected virtual async Task ActivateAsync(object target, NavigationParameters context, string navigationKey)
     {
         _logger.LogDebug(
             "Activating target. TargetType={TargetType}, NavigationKey={NavigationKey}",

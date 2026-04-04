@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:idk="clr-namespace:Indiko.Maui.Controls.Markdown;assembly=Indiko.Maui.Controls.Markdown"
+             x:Class="Sample.Maui.Views.FeaturesView">
+    <Grid Margin="12"
+      RowDefinitions="Auto,*">
+
+        <idk:MarkdownView  MarkdownText="{Binding Markdown}" TextFontSize="18" Margin="8"/>
+
+        <CollectionView Grid.Row="1"
+                Margin="16,0,16,16"
+                ItemsSource="{Binding Features}"
+                SelectionMode="None">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalOptions="Fill">
+                        <Label Text="{Binding Name}"
+                       TextColor="Blue"
+                       TextDecorations="Underline"
+                       Margin="4"
+                       HorizontalOptions="Fill"
+                       HorizontalTextAlignment="Start">
+
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentView}}, Path=BindingContext.ShowFeatureCommand}"
+                            CommandParameter="{Binding Name}" />
+                            </Label.GestureRecognizers>
+
+                        </Label>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+    </Grid>
+</ContentView>
