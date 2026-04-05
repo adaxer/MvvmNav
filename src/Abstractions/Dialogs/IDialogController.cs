@@ -1,4 +1,4 @@
-﻿namespace ADaxer.MvvmNav.Abstractions.Navigation;
+﻿namespace ADaxer.MvvmNav.Abstractions.Dialogs;
 
 /// <summary>
 /// Represents a dialog that can actively close itself and provide a result.

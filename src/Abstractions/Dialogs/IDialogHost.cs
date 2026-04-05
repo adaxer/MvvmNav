@@ -1,4 +1,4 @@
-﻿namespace ADaxer.MvvmNav.Abstractions.Navigation;
+﻿namespace ADaxer.MvvmNav.Abstractions.Dialogs;
 
 /// <summary>
 /// Represents a shell-level host for the currently active dialog.

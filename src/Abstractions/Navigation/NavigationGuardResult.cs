@@ -1,4 +1,6 @@
-﻿namespace ADaxer.MvvmNav.Abstractions.Navigation;
+﻿using ADaxer.MvvmNav.Abstractions.Dialogs;
+
+namespace ADaxer.MvvmNav.Abstractions.Navigation;
 
 /// <summary>
 /// Represents the outcome of a navigation guard check.

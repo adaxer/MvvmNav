@@ -1,8 +1,7 @@
 ﻿using ADaxer.MvvmNav.Abstractions.Navigation;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
-namespace ADaxer.MvvmNav.Wpf;
+namespace ADaxer.MvvmNav.Wpf.Hosting;
 
 /// <summary>
 /// Provides helper methods for bootstrapping WPF applications that use MvvmNav.
@@ -26,26 +25,17 @@ public static class Bootstrapper
         where TShellView : class, IShellView
         where TShellViewModel : class, IShellViewModel
     {
-        var services = new ServiceCollection();
+        var builder = WpfNavigationHostBuilder<TShellView, TShellViewModel>
+            .BuildDefault();
 
-        services.AddMvvmNavWpf();
-
-        services.AddLogging(builder =>
+        if (configureServices is not null)
         {
-            builder.AddDebug();
-            builder.SetMinimumLevel(LogLevel.Debug);
-        });
+            builder.WithServices(configureServices);
+        }
 
-        services.AddSingleton<TShellView>();
-        services.AddSingleton<IShellView>(sp => sp.GetRequiredService<TShellView>());
-
-        services.AddSingleton<TShellViewModel>();
-        services.AddSingleton<IShellViewModel>(sp => sp.GetRequiredService<TShellViewModel>());
-
-        configureServices?.Invoke(services);
-
-        return services.BuildServiceProvider();
+        return builder.BuildServiceProvider();
     }
+
 
     /// <summary>
     /// Resolves and displays the application shell.
@@ -87,11 +77,19 @@ public static class Bootstrapper
     /// Optional application-specific service registrations.
     /// </param>
     public static (IServiceProvider Services, TShellView Shell, TShellViewModel ShellViewModel) BuildAndStart<TShellView, TShellViewModel>(
-        Action<IServiceCollection>? configureServices = null)
-        where TShellView : class, IShellView
-        where TShellViewModel : class, IShellViewModel
+           Action<IServiceCollection>? configureServices = null)
+           where TShellView : class, IShellView
+           where TShellViewModel : class, IShellViewModel
     {
-        var services = Build<TShellView, TShellViewModel>(configureServices);
+        var builder = WpfNavigationHostBuilder<TShellView, TShellViewModel>
+            .BuildDefault();
+
+        if (configureServices is not null)
+        {
+            builder.WithServices(configureServices);
+        }
+
+        var services = builder.BuildServiceProvider();
         var (shell, shellViewModel) = Start<TShellView, TShellViewModel>(services);
 
         return (services, shell, shellViewModel);

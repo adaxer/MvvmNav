@@ -1,8 +1,9 @@
-﻿using ADaxer.MvvmNav.Abstractions.Navigation;
+﻿using ADaxer.MvvmNav.Abstractions.Dialogs;
+using ADaxer.MvvmNav.Abstractions.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace ADaxer.MvvmNav.Wpf;
+namespace ADaxer.MvvmNav.Wpf.Hosting;
 
 /// <summary>
 /// Builds and starts WPF navigation hosts that use MvvmNav.
@@ -21,6 +22,7 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
     private readonly List<Action<ILoggingBuilder>> _loggingConfigurations = [];
 
     private bool _useDefaultLogging;
+    private DialogMode _dialogMode = DialogMode.Overlay;
 
     private WpfNavigationHostBuilder()
     {
@@ -43,6 +45,21 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
         {
             _useDefaultLogging = true
         };
+    }
+
+    /// <summary>
+    /// Configures how dialogs are hosted in the WPF shell.
+    /// </summary>
+    /// <param name="dialogMode">
+    /// The dialog hosting mode.
+    /// </param>
+    /// <returns>
+    /// The current builder instance.
+    /// </returns>
+    public WpfNavigationHostBuilder<TShellView, TShellViewModel> WithDialogMode(DialogMode dialogMode)
+    {
+        _dialogMode = dialogMode;
+        return this;
     }
 
     /// <summary>
@@ -84,11 +101,17 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
 
         services.AddMvvmNavWpf();
 
+        services.AddSingleton(new WpfDialogOptions
+        {
+            DialogMode = _dialogMode
+        });
+
         services.AddSingleton<TShellView>();
         services.AddSingleton<IShellView>(sp => sp.GetRequiredService<TShellView>());
 
         services.AddSingleton<TShellViewModel>();
         services.AddSingleton<IShellViewModel>(sp => sp.GetRequiredService<TShellViewModel>());
+        services.AddSingleton<IDialogHost>(sp => sp.GetRequiredService<TShellViewModel>());
 
         if (_useDefaultLogging || _loggingConfigurations.Count > 0)
         {
@@ -124,6 +147,7 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
 
         var shell = services.GetRequiredService<TShellView>();
         var shellViewModel = services.GetRequiredService<TShellViewModel>();
+        var dialogOptions = services.GetRequiredService<WpfDialogOptions>();
 
         shell.DataContext = shellViewModel;
         shell.Show();
@@ -131,6 +155,7 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
         return new WpfNavigationHost<TShellView, TShellViewModel>(
             services,
             shell,
-            shellViewModel);
+            shellViewModel,
+            dialogOptions);
     }
 }

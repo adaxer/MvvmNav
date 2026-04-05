@@ -1,5 +1,4 @@
 ﻿using ADaxer.MvvmNav.Maui.Navigation;
-using Microsoft.Maui.Controls;
 
 namespace ADaxer.MvvmNav.Maui.Views;
 

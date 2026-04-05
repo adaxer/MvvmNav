@@ -2,9 +2,9 @@
 using System.Windows;
 using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Sample.Common.ViewModels;
-using ADaxer.MvvmNav.Wpf;
 using ADaxer.MvvmNav.Sample.Wpf.Views;
 using Microsoft.Extensions.Logging;
+using ADaxer.MvvmNav.Wpf.Hosting;
 
 namespace ADaxer.MvvmNav.Sample.Wpf;
 
@@ -22,6 +22,7 @@ public partial class App : Application
             {
                 services.RegisterCommonServices();
             })
+            .WithDialogMode(DialogMode.Overlay) // Set this to DialogMode.Window to have dialogs open in separate windows instead of as overlays on top of the current view
             .WithLogging(logging =>
             {
                 // An example how to configure logging via code

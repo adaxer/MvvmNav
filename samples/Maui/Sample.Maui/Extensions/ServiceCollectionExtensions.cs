@@ -1,8 +1,6 @@
-﻿using ADaxer.MvvmNav.Abstractions.Navigation;
-using ADaxer.MvvmNav.Core.ViewModels;
-using ADaxer.MvvmNav.Maui.Views;
+﻿using ADaxer.MvvmNav.Abstractions.Dialogs;
+using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Sample.Common.ViewModels;
-using Sample.Maui;
 using Sample.Maui.Views;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -29,8 +27,6 @@ public static class ServiceCollectionExtensions
         services.RegisterView<SettingsViewModel, SettingsView>();
         services.RegisterView<FeaturesViewModel, FeaturesView>();
         services.RegisterView<DetailsViewModel, DetailsView>();
-
-        services.RegisterDialog<DialogViewModelBase, MauiDialog>();
 
         return services;
     }

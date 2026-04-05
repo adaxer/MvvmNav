@@ -1,4 +1,6 @@
-﻿namespace ADaxer.MvvmNav.Abstractions.Navigation;
+﻿using ADaxer.MvvmNav.Abstractions.Navigation;
+
+namespace ADaxer.MvvmNav.Abstractions.Dialogs;
 
 /// <summary>
 /// Represents a service responsible for displaying modal dialogs.

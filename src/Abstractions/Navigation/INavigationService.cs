@@ -1,4 +1,6 @@
-﻿namespace ADaxer.MvvmNav.Abstractions.Navigation;
+﻿using ADaxer.MvvmNav.Abstractions.Dialogs;
+
+namespace ADaxer.MvvmNav.Abstractions.Navigation;
 
 /// <summary>
 /// Defines a service responsible for navigation between view models

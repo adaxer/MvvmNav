@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using ADaxer.MvvmNav.Abstractions.Navigation;
+using ADaxer.MvvmNav.Abstractions.Dialogs;
 using ADaxer.MvvmNav.Wpf.Navigation;
 
 namespace Microsoft.Extensions.DependencyInjection;

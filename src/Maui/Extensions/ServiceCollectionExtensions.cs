@@ -1,4 +1,5 @@
 ﻿
+using ADaxer.MvvmNav.Abstractions.Dialogs;
 using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Core.ViewModels;
 using ADaxer.MvvmNav.Maui;
@@ -29,6 +30,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IDialogService, MauiDialogService>();
         services.AddSingleton<INavigationService, MauiNavigationService>();
         services.RegisterView<MessageViewModel, MessageView>();
+        services.RegisterDialog<DialogViewModelBase, MauiDialog>();
 
         // 👉 Resources registrieren
         if (Application.Current is not null)

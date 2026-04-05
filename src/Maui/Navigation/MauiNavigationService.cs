@@ -1,4 +1,4 @@
-﻿using ADaxer.MvvmNav.Abstractions.Navigation;
+﻿using ADaxer.MvvmNav.Abstractions.Dialogs;
 using ADaxer.MvvmNav.Core.Navigation;
 using Microsoft.Extensions.Logging;
 

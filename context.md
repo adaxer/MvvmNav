@@ -4,26 +4,23 @@ This document reflects the current architectural direction and recent design dec
 
 ## Project Goal
 
-**ADaxer.MvvmNav** is a lightweight MVVM navigation framework for .NET
-UI applications.
+**ADaxer.MvvmNav** is a lightweight MVVM navigation framework for .NET UI applications.
 
 It is a nuget package, and the project site is OSS on 
 https://github.com/adaxer/MvvmNav
 
-It focuses on simplicity, clear responsibilities, and minimal
-infrastructure while integrating naturally with the UI platform.
+It focuses on simplicity, clear responsibilities, and minimal infrastructure while integrating naturally with the UI platform.
 
 The framework is designed to work across multiple UI technologies.
 
 ### Supported Platforms (Target)
 
--   **Avalonia** (Desktop and Mobile)
--   **WPF**
--   **MAUI**
--   **Uno Platform** (Desktop and Mobile)
+- **Avalonia** (Desktop and Mobile)
+- **WPF**
+- **MAUI**
+- **Uno Platform** (Desktop and Mobile)
 
-The core navigation logic is platform‑agnostic, while the UI layer uses
-the native mechanisms of the respective platform.
+The core navigation logic is platform-agnostic, while the UI layer uses the native mechanisms of the respective platform.
 
 ------------------------------------------------------------------------
 
@@ -35,14 +32,13 @@ the native mechanisms of the respective platform.
 
 Central orchestrator responsible for:
 
--   navigation between ViewModels
--   maintaining a navigation back stack
--   evaluating navigation guards (`ICanNavigateFrom`)
--   integrating dialog results
--   creating ViewModels via dependency injection
+- navigation between ViewModels
+- maintaining a navigation back stack
+- evaluating navigation guards (`ICanNavigateFrom`)
+- integrating dialog results
+- creating ViewModels via dependency injection
 
-The NavigationService intentionally acts as the **single orchestration
-point**.
+The NavigationService intentionally acts as the **single orchestration point**.
 
 ------------------------------------------------------------------------
 
@@ -50,11 +46,11 @@ point**.
 
 Responsible for:
 
--   showing modal dialogs
--   hosting dialog views
--   returning a `DialogResult`
+- showing modal dialogs
+- hosting dialog views
+- returning a `DialogResult`
 
-Dialog views are resolved using the platform's native templating system.
+Dialog views are resolved using the platform's native mechanism.
 
 ## Recent Decisions / Current State
 
@@ -89,7 +85,8 @@ Dialog views are resolved using the platform's native templating system.
 - Not raised when:
   - navigation is blocked by a guard
   - navigation is cancelled (e.g. AskUser → None)
-  - dialogs are shown- Typical use case:
+  - dialogs are shown
+- Typical use case:
   - updating shell commands (e.g. Back button)
   - refreshing `CanExecute` state
 
@@ -103,15 +100,15 @@ Dialog views are resolved using the platform's native templating system.
 
 # View Resolution Strategy
 
-The framework **does not implement a custom ViewResolver**.
+The framework uses the native UI platform mechanism where possible.
 
-Instead it relies on the native UI platform mechanism:
+For WPF / Avalonia / Uno this remains template-based:
 
     ViewModel
        ↓
     ContentControl
        ↓
-    DataTemplate (WPF/Avalonia/Uno/etc.)
+    DataTemplate
        ↓
     View
 
@@ -121,9 +118,15 @@ Example:
         <views:SettingsView/>
     </DataTemplate>
 
-This keeps the framework simple and predictable for developers familiar
-with the platform.
+For MAUI, a lightweight explicit registration-based locator is currently used:
 
+- `IViewLocator` lives in Abstractions
+- MAUI provides a concrete implementation
+- views are registered explicitly via:
+  - `RegisterView<TViewModel, TView>()`
+  - `RegisterDialog<TViewModel, TView>()`
+
+This keeps the framework small while allowing MAUI to stay ViewModel-first without relying on Shell routing.
 
 ------------------------------------------------------------------------
 
@@ -139,9 +142,9 @@ Return type:
 
 Possible decisions:
 
--   `Allow`
--   `Disallow`
--   `AskUser`
+- `Allow`
+- `Disallow`
+- `AskUser`
 
 ------------------------------------------------------------------------
 
@@ -149,22 +152,20 @@ Possible decisions:
 
 When a ViewModel returns `AskUser`:
 
-1.  `NavigationService` shows a dialog
-2.  The dialog returns a `DialogResult`
-3.  The result is passed back to the ViewModel through a continuation
-    callback
+1. `NavigationService` shows a dialog
+2. The dialog returns a `DialogResult`
+3. The result is passed back to the ViewModel through a continuation callback
 
 Callback signature:
 
     Func<DialogResult, CancellationToken, Task>
 
-This allows the ViewModel to continue the decision asynchronously
-(e.g. saving changes).
+This allows the ViewModel to continue the decision asynchronously (e.g. saving changes).
 
 When a navigation guard returns `AskUser`, the result of the confirmation dialog determines the outcome:
 
-- `DialogResult.True` → proceed with navigation
-- `DialogResult.False` → proceed with navigation
+- `DialogResult.True` → proceed with navigation using a True Result
+- `DialogResult.False` → proceed with navigation using a False Result
 - `DialogResult.None` → cancel navigation
 
 This enables scenarios like:
@@ -176,19 +177,76 @@ This enables scenarios like:
 
 # Dialog Model
 
-Dialog ViewModels implement:
+Dialog ViewModels typically derive from:
 
-    IDialogAware
+    DialogViewModelBase
 
-Public API:
+The base class encapsulates dialog completion infrastructure.
 
-    CloseDialog(bool result)
+Public interaction remains centered around:
+
+    CloseDialog(DialogResult result)
 
 Technical dialog completion is handled internally by:
 
     IDialogCompletionSource
 
-which encapsulates the `TaskCompletionSource<bool>` mechanism.
+which encapsulates the completion task machinery.
+
+## Dialog Hosting Direction
+
+The current direction is toward a unified shell-hosted dialog model across platforms.
+
+### Shell Integration
+- `IShellViewModel` derives from both:
+  - `IModuleHost`
+  - `IDialogHost`
+- The shell therefore hosts both:
+  - `CurrentModule`
+  - `CurrentDialog`
+
+### Overlay Hosting
+- MAUI currently hosts dialogs as an overlay inside the shell.
+- The dialog overlay uses a `ContentControl` with `IsDialog="True"`.
+- The dialog shell view in MAUI is `MauiDialog`.
+- `MauiDialog` hosts the actual dialog content through an inner `ContentControl`.
+
+This keeps dialogs inside the application's visual composition instead of requiring a separate native window.
+
+### WPF Direction
+WPF supports two dialog hosting modes: shell overlay and separate window hosting.
+- Overlay is the default mode.
+- Window hosting uses WpfDialogWindow.
+
+## Dialog Command Exchange
+
+A dialog ViewModel may implement:
+
+    IDialogExchange
+
+It exposes:
+
+    DialogExchangeInfo DialogExchange { get; }
+
+`DialogExchangeInfo` currently provides:
+
+- `Commands : IReadOnlyList<DialogCommandInfo>`
+- `ContinueAsync : Func<DialogResult, CancellationToken, Task<bool>>?`
+
+`DialogCommandInfo` currently provides:
+
+- `Text`
+- `IsPrimary`
+- `DialogResult`
+
+Semantics:
+
+- the dialog host renders command buttons from the ViewModel metadata
+- clicking a command passes its `DialogResult` back to the ViewModel through `ContinueAsync`
+- the callback returns whether the dialog should actually close
+- if no exchange info is provided, the host falls back to a default single `OK` command
+
+This avoids old fixed button concepts like `YesNoCancel` while still supporting validation-driven scenarios such as login dialogs or later wizard-like flows.
 
 ------------------------------------------------------------------------
 
@@ -206,8 +264,8 @@ Derived from:
 
 Provides commonly useful properties:
 
--   `Title`
--   `IsBusy`
+- `Title`
+- `IsBusy`
 
 ------------------------------------------------------------------------
 
@@ -217,12 +275,7 @@ Derived from:
 
     ViewModelBase
 
-Implements:
-
--   `IDialogAware`
--   `IDialogCompletionSource`
-
-This base class hides the dialog completion infrastructure.
+Implements dialog completion infrastructure and acts as the common base for dialog ViewModels such as `AboutViewModel` or `LoginViewModel`.
 
 ------------------------------------------------------------------------
 
@@ -291,7 +344,6 @@ This allows scenarios like:
 - Example: `Detail(Id=10)` → `Detail(Id=11)` allowed
 - `Detail(Id=10)` → `Detail(Id=10)` blocked
 
-
 ViewModels may implement:
 
     INavigationAware
@@ -303,39 +355,41 @@ Lifecycle method:
 The same hook is used for both normal navigation and dialog navigation.
 
 ### Navigation Event
-When navigation is blocked due to identical target identity
-(same type + same NavigationKey):
+When navigation is blocked due to identical target identity (same type + same `NavigationKey`):
 
 - Navigation is not performed
-- NavigationStateChanged is NOT raised
+- `NavigationStateChanged` is NOT raised
 
 ------------------------------------------------------------------------
 
 # Platform Integration
 
-View resolution relies on native templating systems.
+## WPF / Avalonia / Uno
 
-Example for WPF/Avalonia:
+Example:
 
     ContentControl Content="{Binding CurrentModule}"
 
-The DataTemplate associated with the ViewModel type resolves the View
-automatically.
+The DataTemplate associated with the ViewModel type resolves the View automatically.
 
-------------------------------------------------------------------------
+## MAUI
 
-# Dialog Hosting Example
+MAUI currently uses a custom shell host page instead of `AppShell`.
 
-Dialogs are hosted by assigning the ViewModel to the dialog DataContext
-and binding the dialog Content to the ViewModel itself.
+### Current Direction
+- custom `ShellPage`
+- `CurrentModule` displayed through a custom `ContentControl`
+- `CurrentDialog` displayed as an overlay through a second `ContentControl`
+- no route-based navigation required for the current MAUI path
 
-Example concept:
+### ContentControl
+A MAUI `ContentControl` has been introduced with:
 
-    dlg.DataContext = dialogViewModel
-    dlg.SetBinding(ContentProperty, ".")
+- `BindingContext` = target ViewModel
+- `IsDialog = false` → resolve normal view
+- `IsDialog = true` → resolve dialog shell view
 
-The `"."` binding path binds the ViewModel itself, enabling DataTemplate
-resolution.
+This allows MAUI to follow the same ViewModel-first navigation style as the desktop platforms.
 
 ------------------------------------------------------------------------
 
@@ -347,9 +401,9 @@ Loose communication between components is implemented using:
 
 Typical use case:
 
--   status messages
--   navigation notifications
--   dialog results
+- status messages
+- navigation notifications
+- dialog results
 
 Example: updating a shell status bar.
 
@@ -365,8 +419,8 @@ Example: updating a shell status bar.
 - **Platform-agnostic core**  
   The navigation engine resides in a UI-independent Core library.
 
-- **Native view resolution**  
-  Views are resolved using the platform’s native mechanisms (e.g. WPF `DataTemplate`), not a custom view locator.
+- **Native / platform-appropriate view resolution**  
+  Views are resolved using the platform’s natural mechanism (e.g. WPF `DataTemplate`, MAUI registered view locator).
 
 - **Navigation parameters**  
   Pass parameters when navigating between ViewModels.
@@ -400,7 +454,6 @@ Example: updating a shell status bar.
 
 - **Framework-agnostic usage**  
   Can be integrated into existing bootstrapping processes without using the host builder.
-
 
 ## Planned
 
@@ -443,29 +496,32 @@ Example: updating a shell status bar.
 
 - **ViewModel Activation Policies**  
   Supports controlling ViewModel lifetime (e.g. reuse existing instances, single-instance ViewModels).
+
 ------------------------------------------------------------------------
 
 # Design Principles
 
 Key architectural principles:
 
-1.  **Interface‑first design**\
-    Base classes are optional.
+1. **Interface-first design**  
+   Base classes are optional.
 
-2.  **Use platform mechanisms**\
-    Native DataTemplates are used for View resolution.
+2. **Use platform mechanisms**  
+   The framework stays close to how the target UI platform wants to work.
 
-3.  **Minimal infrastructure**\
-    Only a few core services exist:
+3. **Minimal infrastructure**  
+   Only a few core services exist:
+   - `NavigationService`
+   - `DialogService`
 
-    -   `NavigationService`
-    -   `DialogService`
+4. **ViewModel-first navigation**  
+   Navigation always targets ViewModels.
 
-4.  **ViewModel‑first navigation**\
-    Navigation always targets ViewModels.
+5. **Small and understandable framework**  
+   The goal is not to replicate large frameworks like Prism.
 
-5.  **Small and understandable framework**\
-    The goal is not to replicate large frameworks like Prism.
+6. **Step-by-step evolution**  
+   Architectural changes should be introduced incrementally and evaluated in sample applications before broader generalization.
 
 ------------------------------------------------------------------------
 
@@ -479,9 +535,10 @@ The sample application demonstrates all major features in a simple way.
 
 Shows:
 
--   navigation
--   back stack
--   status bar
+- navigation
+- back stack
+- status bar
+- dialog overlay hosting
 
 ------------------------------------------------------------------------
 
@@ -495,8 +552,8 @@ Landing page introducing navigation.
 
 Demonstrates:
 
--   `NavigationParameters`
--   `INavigationAware`
+- `NavigationParameters`
+- `INavigationAware`
 
 ------------------------------------------------------------------------
 
@@ -504,10 +561,10 @@ Demonstrates:
 
 Demonstrates:
 
--   dirty state tracking
--   `ICanNavigateFrom`
--   `AskUser` confirmation dialog
--   save / discard / cancel scenarios
+- dirty state tracking
+- `ICanNavigateFrom`
+- `AskUser` confirmation dialog
+- save / discard / cancel scenarios
 
 ------------------------------------------------------------------------
 
@@ -515,15 +572,15 @@ Demonstrates:
 
 Demonstrates:
 
--   simple dialog
--   `DialogViewModelBase`
+- simple dialog
+- `DialogViewModelBase`
 
 ------------------------------------------------------------------------
 
 ### PlainViewModel Example
 
-Demonstrates usage **without framework base classes**, using only
-interfaces.
+Demonstrates usage **without framework base classes**, using only interfaces.
+
 ## Sample App – Current Direction
 
 ### General Approach
@@ -531,7 +588,7 @@ interfaces.
 - Platform-specific integration is demonstrated per platform:
   - WPF: `WpfNavigationHostBuilder` + Serilog
   - Avalonia: default builder
-  - MAUI: integration into existing app bootstrap
+  - MAUI: integration into existing app bootstrap with custom shell page
   - Uno: planned after WPF/Avalonia/MAUI
 
 ### Shell Navigation
@@ -558,13 +615,14 @@ interfaces.
   - ViewModel-first navigation
   - ShellView / ShellViewModel only require framework interfaces
   - NavigationService is injected into the ShellViewModel
-  - Views are resolved via DataTemplates
+  - Views are resolved via DataTemplates or MAUI view registration
 - About:
-  - Demonstrates dialog usage
+  - demonstrates dialog usage
 - Settings:
-  - Demonstrates navigation and back navigation
+  - demonstrates navigation and back navigation
 - Features:
-  - Overview page with links to detail pages
+  - overview page with links to detail pages
+
 ------------------------------------------------------------------------
 
 # Optional Sample Features
@@ -577,9 +635,9 @@ Implemented using:
 
 Displays:
 
--   navigation events
--   dialog results
--   guard cancellations
+- navigation events
+- dialog results
+- guard cancellations
 
 ------------------------------------------------------------------------
 
@@ -599,12 +657,12 @@ Example use case:
 
 Core ideas of the framework:
 
--   Navigation is orchestrated by `NavigationService`
--   Views are resolved by platform DataTemplates
--   Dialogs are hosted by `DialogService`
--   Navigation guards control navigation flow
--   Base classes are optional helpers
--   CommunityToolkit.Mvvm provides MVVM infrastructure
+- Navigation is orchestrated by `NavigationService`
+- Views are resolved in a platform-appropriate way
+- Dialogs are hosted by `DialogService`
+- Navigation guards control navigation flow
+- Base classes are optional helpers
+- CommunityToolkit.Mvvm provides MVVM infrastructure
 
 ------------------------------------------------------------------------
 
@@ -612,13 +670,13 @@ Core ideas of the framework:
 
 The framework aims to be:
 
--   small
--   understandable
--   platform‑agnostic
--   extensible
--   easy to integrate
+- small
+- understandable
+- platform-agnostic in the core
+- extensible
+- easy to integrate
 
-This constitutes a solid **version 1 architecture**.
+This constitutes a solid evolving **version 1 architecture**.
 
 ------------------------------------------------------------------------
 
@@ -628,8 +686,8 @@ This constitutes a solid **version 1 architecture**.
 TestFramework is TUnit
 
 ## Conventions
-- Test Classes are to be named like the Type to be tested with two trailing underscrores, eg. DialogViewModelBase__
-- When external references are necessary, they should be injected into the test class. Here the DIClassConstructor is to be adapted and used. Warn if that class gets too big
-- The comments // Arrange, // Act and // Assert are to be used and put together if those states overlap
+- Test classes are to be named like the type to be tested with two trailing underscores, e.g. `DialogViewModelBase__`
+- When external references are necessary, they should be injected into the test class; here the `DIClassConstructor` is to be adapted and used
+- The comments `// Arrange`, `// Act` and `// Assert` are to be used and put together if those states overlap
 
 ------------------------------------------------------------------------

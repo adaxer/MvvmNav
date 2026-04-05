@@ -1,4 +1,4 @@
-﻿namespace ADaxer.MvvmNav.Abstractions.Navigation;
+﻿namespace ADaxer.MvvmNav.Abstractions.Dialogs;
 
 /// <summary>
 /// Describes how a dialog should expose interaction capabilities to the host.

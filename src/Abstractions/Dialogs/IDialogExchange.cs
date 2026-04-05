@@ -1,4 +1,4 @@
-﻿namespace ADaxer.MvvmNav.Abstractions.Navigation;
+﻿namespace ADaxer.MvvmNav.Abstractions.Dialogs;
 
 /// <summary>
 /// Provides dialog interaction metadata and behavior for a dialog view model.

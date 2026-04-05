@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-using ADaxer.MvvmNav.Abstractions.Navigation;
+using ADaxer.MvvmNav.Abstractions.Dialogs;
 
 namespace ADaxer.MvvmNav.Maui.Views;
 

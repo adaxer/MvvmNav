@@ -1,6 +1,5 @@
 ﻿using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Sample.Common.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
 using Sample.Maui.Views;
 
 namespace Sample.Maui;

@@ -1,4 +1,4 @@
-namespace ADaxer.MvvmNav.Abstractions.Navigation;
+﻿namespace ADaxer.MvvmNav.Abstractions.Dialogs;
 
 /// <summary>
 /// Represents the outcome of a dialog interaction.

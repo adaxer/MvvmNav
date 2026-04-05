@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using ADaxer.MvvmNav.Abstractions.Navigation;
+﻿using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Core.ViewModels;
 using ADaxer.MvvmNav.Sample.Common.Interfaces;
 using ADaxer.MvvmNav.Sample.Common.Services;

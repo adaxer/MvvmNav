@@ -1,4 +1,4 @@
-﻿namespace ADaxer.MvvmNav.Abstractions.Navigation;
+﻿namespace ADaxer.MvvmNav.Abstractions.Dialogs;
 
 /// <summary>
 /// Provides a completion mechanism for dialogs that allows the <see cref="IDialogService"/>

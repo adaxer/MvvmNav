@@ -1,6 +1,5 @@
-﻿using ADaxer.MvvmNav.Abstractions.Navigation;
+﻿using ADaxer.MvvmNav.Abstractions.Dialogs;
 using ADaxer.MvvmNav.Core.Tests.TestData;
-using ADaxer.MvvmNav.Core.ViewModels;
 
 namespace ADaxer.MvvmNav.Core.Tests.ViewModels;
 

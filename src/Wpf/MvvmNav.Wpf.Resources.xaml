@@ -1,9 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                     xmlns:vm="clr-namespace:ADaxer.MvvmNav.Core.ViewModels;assembly=MvvmNav.Core"
+                    xmlns:c="clr-namespace:ADaxer.MvvmNav.Wpf.Converters"
                     xmlns:v="clr-namespace:ADaxer.MvvmNav.Wpf.Views">
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <c:TruthyToVisibilityConverter FalseValue="Collapsed" x:Key="TruthyConverter" />
 
     <DataTemplate DataType="{x:Type vm:MessageViewModel}">
         <v:MessageView/>

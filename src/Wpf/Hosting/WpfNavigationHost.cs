@@ -1,6 +1,6 @@
 ﻿using ADaxer.MvvmNav.Abstractions.Navigation;
 
-namespace ADaxer.MvvmNav.Wpf;
+namespace ADaxer.MvvmNav.Wpf.Hosting;
 
 /// <summary>
 /// Represents a started WPF navigation host.
@@ -18,11 +18,13 @@ public sealed class WpfNavigationHost<TShellView, TShellViewModel>
     internal WpfNavigationHost(
         IServiceProvider services,
         TShellView shell,
-        TShellViewModel shellViewModel)
+        TShellViewModel shellViewModel,
+        WpfDialogOptions dialogOptions)
     {
         Services = services;
         Shell = shell;
         ShellViewModel = shellViewModel;
+        DialogOptions = dialogOptions;
     }
 
     /// <summary>
@@ -39,4 +41,9 @@ public sealed class WpfNavigationHost<TShellView, TShellViewModel>
     /// Gets the resolved shell view model.
     /// </summary>
     public TShellViewModel ShellViewModel { get; }
+
+    /// <summary>
+    /// Gets the dialog hosting options used by the host.
+    /// </summary>
+    public WpfDialogOptions DialogOptions { get; }
 }

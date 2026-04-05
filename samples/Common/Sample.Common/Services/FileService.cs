@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ADaxer.MvvmNav.Sample.Common.Interfaces;
+﻿using ADaxer.MvvmNav.Sample.Common.Interfaces;
 
 namespace ADaxer.MvvmNav.Sample.Common.Services;
 

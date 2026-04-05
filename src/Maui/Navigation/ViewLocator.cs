@@ -1,5 +1,4 @@
 ﻿using ADaxer.MvvmNav.Abstractions.Navigation;
-using Microsoft.Maui.Controls;
 
 namespace ADaxer.MvvmNav.Maui.Navigation;
 

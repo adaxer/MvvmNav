@@ -1,4 +1,4 @@
-using ADaxer.MvvmNav.Abstractions.Navigation;
+﻿using ADaxer.MvvmNav.Abstractions.Dialogs;
 
 namespace ADaxer.MvvmNav.Core.ViewModels;
 
