@@ -73,7 +73,7 @@
 
         </DockPanel>
         <Border Background="#80000000"
-                    Visibility="{Binding CurrentDialog, Converter={StaticResource TruthyConverter}}">
+                    Visibility="{Binding CurrentDialog, Converter={StaticResource TruthyToVisibilityConverter}}">
             <v:WpfDialogView DataContext="{Binding CurrentDialog}" />
         </Border>
     </Grid>

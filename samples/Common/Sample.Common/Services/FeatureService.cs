@@ -54,7 +54,7 @@ public class FeatureService
     public async Task<FeatureItem> GetFeatureAsync(int id)
     {
         var result  = _features.FirstOrDefault(f => f.Id == id);
-        var path = $".\\Markdown\\{result?.Key}";
+        var path = $"markdown/{result?.Key}";
 
         if (string.IsNullOrEmpty(result?.Markdown))
         {

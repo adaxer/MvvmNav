@@ -1,6 +1,8 @@
 ﻿using ADaxer.MvvmNav.Abstractions.Dialogs;
 using ADaxer.MvvmNav.Abstractions.Navigation;
+using ADaxer.MvvmNav.Sample.Common.Interfaces;
 using ADaxer.MvvmNav.Sample.Common.ViewModels;
+using Sample.Maui.Services;
 using Sample.Maui.Views;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -27,6 +29,8 @@ public static class ServiceCollectionExtensions
         services.RegisterView<SettingsViewModel, SettingsView>();
         services.RegisterView<FeaturesViewModel, FeaturesView>();
         services.RegisterView<DetailsViewModel, DetailsView>();
+
+        services.AddTransient<IFileService, MauiFileService>();
 
         return services;
     }

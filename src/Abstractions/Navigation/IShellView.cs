@@ -13,5 +13,5 @@ public interface IShellView
     /// <summary>
     /// Shows the shell view.
     /// </summary>
-    void Show();
+    void Show() {}
 }

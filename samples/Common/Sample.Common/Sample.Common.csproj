@@ -3,43 +3,43 @@
     <RootNamespace>ADaxer.MvvmNav.Sample.Common</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Markdown\ShellViewModel.md" />
+    <None Remove="markdown\ShellViewModel.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Markdown\detail_platforms.md">
+    <Content Include="markdown\detail_platforms.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Markdown\notfound.md">
+    <Content Include="markdown\notfound.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Markdown\detail_factory.md">
+    <Content Include="markdown\detail_factory.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Markdown\detail_DI.md">
+    <Content Include="markdown\detail_DI.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Markdown\detail_logging.md">
+    <Content Include="markdown\detail_logging.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Markdown\detail_guards.md">
+    <Content Include="markdown\detail_guards.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Markdown\detail_dialogs.md">
+    <Content Include="markdown\detail_dialogs.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Markdown\detail_navigation.md">
+    <Content Include="markdown\detail_navigation.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Markdown\features.md">
+    <Content Include="markdown\features.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Markdown\settings.md">
+    <Content Include="markdown\settings.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Markdown\about.md">
+    <Content Include="markdown\about.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Markdown\home.md">
+    <Content Include="markdown\home.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

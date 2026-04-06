@@ -4,8 +4,8 @@ namespace ADaxer.MvvmNav.Sample.Common.Services;
 
 public class FileService : IFileService
 {
-    public async Task<string> GetFileAsync(string path)
+    public async Task<string> GetFileAsync(string path, CancellationToken cancellationToken=default)
     {
-        return await File.ReadAllTextAsync(path);
+        return await File.ReadAllTextAsync(path, cancellationToken);
     }
 }

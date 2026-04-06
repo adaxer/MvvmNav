@@ -57,6 +57,6 @@ public partial class SettingsViewModel : ViewModelBase, INavigationAware, ICanNa
 
     public async Task OnNavigatedToAsync(NavigationParameters context)
     {
-        Markdown = await _fileService.GetFileAsync(".\\Markdown\\settings.md");
+        Markdown = await _fileService.GetFileAsync("markdown/settings.md");
     }
 }

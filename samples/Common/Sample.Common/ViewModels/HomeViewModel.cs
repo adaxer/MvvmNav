@@ -20,7 +20,7 @@ public class HomeViewModel : INavigationAware, INotifyPropertyChanged
 
     public  async Task OnNavigatedToAsync(NavigationParameters context)
     {
-        Markdown = await _fileService.GetFileAsync(".\\Markdown\\home.md");
+        Markdown = await _fileService.GetFileAsync("markdown/home.md");
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Markdown)));
     }
 }

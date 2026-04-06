@@ -364,6 +364,14 @@ When navigation is blocked due to identical target identity (same type + same `N
 
 # Platform Integration
 
+Platform integration should be made as easy as possible, by using fluent code. In Wpf, this is done via the WpfNavigationHostBuilder, that is easily used to bootstrap the app. There it is more elaborate as Wpf per se has no good DI concept.
+
+In Maui, the current state is not bad, but it should be elaborated more, so less user required code is in the App class, if possible, put it all in the App.Builder.
+
+The other platforms should act similarly. 
+
+TBD: if shellviewmodel is also dialog host (or not), this should be figured out automatically by the framework, wenn being registered. 
+
 ## WPF / Avalonia / Uno
 
 Example:
@@ -583,6 +591,12 @@ Demonstrates usage **without framework base classes**, using only interfaces.
 
 ## Sample App – Current Direction
 
+### Sample App as Design Driver
+
+- The sample application is not only a demonstration, but actively drives architectural decisions.
+- Design choices are validated against real UI scenarios rather than theoretical abstraction.
+- This approach helps to avoid premature generalization.
+
 ### General Approach
 - Prefer a single conceptual sample application shared across platforms.
 - Platform-specific integration is demonstrated per platform:
@@ -690,4 +704,129 @@ TestFramework is TUnit
 - When external references are necessary, they should be injected into the test class; here the `DIClassConstructor` is to be adapted and used
 - The comments `// Arrange`, `// Act` and `// Assert` are to be used and put together if those states overlap
 
+## Testing Strategy – Suggested Additions
+
+### 1. Public API / Guard Tests
+
+Goal: Ensure stability of the public API
+
+- Constructor guards (`ArgumentNullException`)
+- `NavigateAsync(null)` → throws
+- `NavigationOptions.WithKey(null/empty)` → throws
+- Extension methods (`AddMvvmNavCore`, etc.) validate parameters
+
+---
+
+### 2. Dependency Injection / Registration
+
+Goal: Ensure correct framework setup
+
+- `AddMvvmNavCore` registers:
+  - `INavigationService`
+  - `IFactory<T>`
+- Registration order: later registrations override earlier ones
+- Platform-specific extensions:
+  - WPF: resources are merged correctly
+  - MAUI: `ViewLocator` is set and usable
+- Multiple registrations do not lead to inconsistent state
+
+---
+
+### 3. Base Classes
+
+Goal: Verify behavior of helper classes
+
+- `GenericFactory<T>`
+  - resolves instances correctly
+  - throws when dependency is missing
+
+- `ViewModelBase`
+  - `Title` initialized meaningfully
+  - `IsBusy` default value correct
+
+- `DialogViewModelBase`
+  - `CompletionTask` initially returns `None`
+  - `ResetDialogCompletion()` works as expected
+  - multiple `CloseDialog` calls are idempotent
+  - dialog can be reused after reset
+
+- `MessageViewModel`
+  - `DialogExchange` correctly constructed
+  - commands exposed as expected
+
+---
+
+### 4. NavigationService – Edge Cases
+
+Goal: Ensure robustness of core orchestration
+
+- `GoBackAsync()` on empty stack → no effect
+- failed ViewModel creation → no state change
+- exception in `OnNavigatedToAsync()` → defined behavior
+- `AskUser` flow:
+  - `ContinueAsync` invoked exactly once
+  - `DialogResult` propagated correctly
+- navigation to identical target is prevented
+- combination:
+  - `ClearBackStack` + `AddToBackStack`
+
+---
+
+### 5. NavigationParameters / NavigationOptions
+
+Goal: Stabilize parameter handling
+
+- `GetValueOrDefault<T>` with explicit `null`
+- `TryGetValue<T>` with base types / interfaces
+- define and test key case-sensitivity
+- stability of parameter normalization (`ToString()` implications)
+- custom `NavigationKey` correctly applied
+
+---
+
+### 6. Platform Integration Tests (Current Gap)
+
+Goal: Validate platform-specific behavior
+
+- MAUI:
+  - `RegisterView<TVm,TView>()` works correctly
+  - `RegisterDialog<TVm,TView>()` works correctly
+  - `ViewLocator` resolves views as expected
+
+- WPF:
+  - ResourceDictionary loaded correctly
+  - view resolution via DataTemplates
+
+- General:
+  - no crashes on repeated initialization
+  - basic smoke tests per platform
+
+---
+
+## Prioritization
+
+### High
+- NavigationService edge cases
+- DI / registration
+- public API guards
+
+### Medium
+- base classes
+- NavigationParameters
+
+### Low (but important long-term)
+- platform integration tests
+
+---
+
+## Summary
+
+- Core logic is already well covered
+- Main gaps are at the boundaries:
+  - DI setup
+  - platform integration
+  - failure paths
+
+👉 Guiding principle:  
+**Stabilize orchestration first, then validate integration.**
 ------------------------------------------------------------------------

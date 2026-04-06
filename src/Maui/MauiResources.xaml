@@ -4,5 +4,4 @@
             xmlns:conv="clr-namespace:ADaxer.MvvmNav.Maui.Converters"                    
              x:Class="ADaxer.MvvmNav.Maui.MauiResources">
     <conv:TruthyConverter x:Key="TruthyConverter" />
-
 </ResourceDictionary>

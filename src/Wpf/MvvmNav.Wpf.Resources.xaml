@@ -5,7 +5,7 @@
                     xmlns:v="clr-namespace:ADaxer.MvvmNav.Wpf.Views">
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    <c:TruthyToVisibilityConverter FalseValue="Collapsed" x:Key="TruthyConverter" />
+    <c:TruthyToVisibilityConverter FalseValue="Collapsed" x:Key="TruthyToVisibilityConverter" />
 
     <DataTemplate DataType="{x:Type vm:MessageViewModel}">
         <v:MessageView/>

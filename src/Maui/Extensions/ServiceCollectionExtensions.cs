@@ -32,18 +32,6 @@ public static class ServiceCollectionExtensions
         services.RegisterView<MessageViewModel, MessageView>();
         services.RegisterDialog<DialogViewModelBase, MauiDialog>();
 
-        // 👉 Resources registrieren
-        if (Application.Current is not null)
-        {
-            var resources = Application.Current.Resources;
-
-            // vermeiden von Doppel-Registrierung
-            if (!resources.MergedDictionaries.OfType<MauiResources>().Any())
-            {
-                resources.MergedDictionaries.Add(new MauiResources());
-            }
-        }
-
         return services;
     }
 
