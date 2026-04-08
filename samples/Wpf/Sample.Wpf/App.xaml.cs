@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
-using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Sample.Common.ViewModels;
 using ADaxer.MvvmNav.Sample.Wpf.Views;
 using Microsoft.Extensions.Logging;
@@ -10,14 +9,12 @@ namespace ADaxer.MvvmNav.Sample.Wpf;
 
 public partial class App : Application
 {
-    private IServiceProvider? _services;
-
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
-        var host = WpfNavigationHostBuilder<ShellWindow, ShellViewModel>
-            .BuildDefault()
+        var host = WpfNavigationHostBuilder
+            .Default()
             .WithServices(services =>
             {
                 services.RegisterCommonServices();
@@ -37,10 +34,10 @@ public partial class App : Application
                     return level >= LogLevel.Information;
                 });
             })
-            .Start();
+            .WithShell<ShellWindow, ShellViewModel>()
+            .WithStartupNavigation<HomeViewModel>()
+            .Build();
 
-        _services = host.Services;
-        var navigation = _services!.GetRequiredService<INavigationService>();
-        await navigation.NavigateAsync<HomeViewModel>();
+        await host.StartAsync();
     }
 }

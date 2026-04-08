@@ -2,7 +2,7 @@
 using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Core.Navigation;
 using ADaxer.MvvmNav.Core.Tests.DI;
-using MvvmNav.Core.Tests.TestData;
+using ADaxer.MvvmNav.Core.Tests.TestData;
 
 namespace ADaxer.MvvmNav.Core.Tests.Navigation;
 

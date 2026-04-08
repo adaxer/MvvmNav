@@ -2,8 +2,8 @@
 using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Core.Navigation;
 using ADaxer.MvvmNav.Core.Tests.DI;
+using ADaxer.MvvmNav.Core.Tests.TestData;
 using Microsoft.Extensions.Logging;
-using MvvmNav.Core.Tests.TestData;
 
 namespace ADaxer.MvvmNav.Core.Tests.Navigation;
 

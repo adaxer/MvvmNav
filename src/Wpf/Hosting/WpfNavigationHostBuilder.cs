@@ -6,45 +6,67 @@ using Microsoft.Extensions.Logging;
 namespace ADaxer.MvvmNav.Wpf.Hosting;
 
 /// <summary>
-/// Builds and starts WPF navigation hosts that use MvvmNav.
+/// Builds WPF navigation hosts that use MvvmNav.
 /// </summary>
-/// <typeparam name="TShellView">
-/// The shell view type.
-/// </typeparam>
-/// <typeparam name="TShellViewModel">
-/// The shell view model type.
-/// </typeparam>
-public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
-    where TShellView : class, IShellView
-    where TShellViewModel : class, IShellViewModel
+public sealed class WpfNavigationHostBuilder
 {
     private readonly List<Action<IServiceCollection>> _serviceConfigurations = [];
     private readonly List<Action<ILoggingBuilder>> _loggingConfigurations = [];
 
     private bool _useDefaultLogging;
     private DialogMode _dialogMode = DialogMode.Overlay;
+    private Type? _shellViewType;
+    private Type? _shellViewModelType;
+    private Type? _startupNavigationType;
+    private bool _overlayDialogModeConfigured;
 
     private WpfNavigationHostBuilder()
     {
     }
 
     /// <summary>
-    /// Creates a builder with no default logging providers.
-    /// </summary>
-    public static WpfNavigationHostBuilder<TShellView, TShellViewModel> Build()
-    {
-        return new WpfNavigationHostBuilder<TShellView, TShellViewModel>();
-    }
-
-    /// <summary>
     /// Creates a builder with default debug logging configured.
     /// </summary>
-    public static WpfNavigationHostBuilder<TShellView, TShellViewModel> BuildDefault()
+    public static WpfNavigationHostBuilder Default()
     {
-        return new WpfNavigationHostBuilder<TShellView, TShellViewModel>
+        return new WpfNavigationHostBuilder
         {
             _useDefaultLogging = true
         };
+    }
+
+    /// <summary>
+    /// Configures the shell window and shell view model.
+    /// </summary>
+    /// <typeparam name="TShellView">
+    /// The shell window type.
+    /// </typeparam>
+    /// <typeparam name="TShellViewModel">
+    /// The shell view model type.
+    /// </typeparam>
+    public WpfNavigationHostBuilder WithShell<TShellView, TShellViewModel>()
+        where TShellView : class
+        where TShellViewModel : class, IModuleHost
+    {
+        _shellViewType = typeof(TShellView);
+        _shellViewModelType = typeof(TShellViewModel);
+
+        EnsureOverlayDialogHostSupported();
+
+        return this;
+    }
+
+    /// <summary>
+    /// Configures the view model that should be navigated to after the shell is shown.
+    /// </summary>
+    /// <typeparam name="TViewModel">
+    /// The startup navigation target view model type.
+    /// </typeparam>
+    public WpfNavigationHostBuilder WithStartupNavigation<TViewModel>()
+        where TViewModel : class
+    {
+        _startupNavigationType = typeof(TViewModel);
+        return this;
     }
 
     /// <summary>
@@ -56,9 +78,16 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
     /// <returns>
     /// The current builder instance.
     /// </returns>
-    public WpfNavigationHostBuilder<TShellView, TShellViewModel> WithDialogMode(DialogMode dialogMode)
+    public WpfNavigationHostBuilder WithDialogMode(DialogMode dialogMode)
     {
         _dialogMode = dialogMode;
+        _overlayDialogModeConfigured = dialogMode == DialogMode.Overlay;
+
+        if (dialogMode == DialogMode.Overlay)
+        {
+            EnsureOverlayDialogHostSupported();
+        }
+
         return this;
     }
 
@@ -68,7 +97,7 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
     /// <param name="configureLogging">
     /// The logging configuration callback.
     /// </param>
-    public WpfNavigationHostBuilder<TShellView, TShellViewModel> WithLogging(
+    public WpfNavigationHostBuilder WithLogging(
         Action<ILoggingBuilder> configureLogging)
     {
         ArgumentNullException.ThrowIfNull(configureLogging);
@@ -83,7 +112,7 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
     /// <param name="configureServices">
     /// The service registration callback.
     /// </param>
-    public WpfNavigationHostBuilder<TShellView, TShellViewModel> WithServices(
+    public WpfNavigationHostBuilder WithServices(
         Action<IServiceCollection> configureServices)
     {
         ArgumentNullException.ThrowIfNull(configureServices);
@@ -92,10 +121,7 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
         return this;
     }
 
-    /// <summary>
-    /// Builds the service provider.
-    /// </summary>
-    public IServiceProvider BuildServiceProvider()
+    private IServiceProvider BuildServiceProvider()
     {
         var services = new ServiceCollection();
 
@@ -106,12 +132,36 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
             DialogMode = _dialogMode
         });
 
-        services.AddSingleton<TShellView>();
-        services.AddSingleton<IShellView>(sp => sp.GetRequiredService<TShellView>());
+        if (_shellViewType is Type shellViewType)
+        {
+            services.AddSingleton(shellViewType);
 
-        services.AddSingleton<TShellViewModel>();
-        services.AddSingleton<IShellViewModel>(sp => sp.GetRequiredService<TShellViewModel>());
-        services.AddSingleton<IDialogHost>(sp => sp.GetRequiredService<TShellViewModel>());
+            if (typeof(IShellView).IsAssignableFrom(shellViewType))
+            {
+                services.AddSingleton(typeof(IShellView), sp => sp.GetRequiredService(shellViewType));
+            }
+
+            if (typeof(IWpfShellView).IsAssignableFrom(shellViewType))
+            {
+                services.AddSingleton(typeof(IWpfShellView), sp => sp.GetRequiredService(shellViewType));
+            }
+        }
+
+        if (_shellViewModelType is Type shellViewModelType)
+        {
+            services.AddSingleton(shellViewModelType);
+            services.AddSingleton(typeof(IModuleHost), sp => sp.GetRequiredService(shellViewModelType));
+
+            if (typeof(IShellViewModel).IsAssignableFrom(shellViewModelType))
+            {
+                services.AddSingleton(typeof(IShellViewModel), sp => sp.GetRequiredService(shellViewModelType));
+            }
+
+            if (typeof(IDialogHost).IsAssignableFrom(shellViewModelType))
+            {
+                services.AddSingleton(typeof(IDialogHost), sp => sp.GetRequiredService(shellViewModelType));
+            }
+        }
 
         if (_useDefaultLogging || _loggingConfigurations.Count > 0)
         {
@@ -139,23 +189,28 @@ public sealed class WpfNavigationHostBuilder<TShellView, TShellViewModel>
     }
 
     /// <summary>
-    /// Builds the service provider, resolves the shell and starts the host.
+    /// Builds the WPF navigation host.
     /// </summary>
-    public WpfNavigationHost<TShellView, TShellViewModel> Start()
+    public WpfNavigationHost Build()
     {
-        var services = BuildServiceProvider();
+        return new WpfNavigationHost(
+            BuildServiceProvider,
+            _shellViewType,
+            _shellViewModelType,
+            _startupNavigationType);
+    }
 
-        var shell = services.GetRequiredService<TShellView>();
-        var shellViewModel = services.GetRequiredService<TShellViewModel>();
-        var dialogOptions = services.GetRequiredService<WpfDialogOptions>();
+    private void EnsureOverlayDialogHostSupported()
+    {
+        if (!_overlayDialogModeConfigured || _shellViewModelType is null)
+        {
+            return;
+        }
 
-        shell.DataContext = shellViewModel;
-        shell.Show();
-
-        return new WpfNavigationHost<TShellView, TShellViewModel>(
-            services,
-            shell,
-            shellViewModel,
-            dialogOptions);
+        if (!typeof(IDialogHost).IsAssignableFrom(_shellViewModelType))
+        {
+            throw new InvalidOperationException(
+                $"Overlay dialogs require the configured shell view model '{_shellViewModelType.FullName}' to implement {nameof(IDialogHost)}.");
+        }
     }
 }

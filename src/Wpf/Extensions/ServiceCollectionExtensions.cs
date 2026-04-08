@@ -1,4 +1,3 @@
-﻿using System.Windows;
 using ADaxer.MvvmNav.Abstractions.Dialogs;
 using ADaxer.MvvmNav.Wpf.Navigation;
 
@@ -19,9 +18,6 @@ public static class ServiceCollectionExtensions
 
         services.AddMvvmNavCore();
         services.AddSingleton<IDialogService, WpfDialogService>();
-        Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("pack://application:,,,/ADaxer.MvvmNav.Wpf;component/MvvmNav.Wpf.Resources.xaml",
-            UriKind.Absolute) });
-
         return services;
     }
 }
