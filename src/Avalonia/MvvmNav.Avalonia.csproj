@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <RootNamespace>ADaxer.MvvmNav.Core</RootNamespace>
+    <RootNamespace>ADaxer.MvvmNav.Avalonia</RootNamespace>
+    <AssemblyName>ADaxer.MvvmNav.Avalonia</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Avalonia" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        xmlns:v="clr-namespace:ADaxer.MvvmNav.Wpf.Views;assembly=MvvmNav.Wpf"
+        xmlns:v="clr-namespace:ADaxer.MvvmNav.Wpf.Views;assembly=ADaxer.MvvmNav.Wpf"
         Title="{Binding DataContext.Title}" Height="540" Width="960">
     <Grid>
         <DockPanel>

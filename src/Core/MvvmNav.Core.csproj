@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>ADaxer.MvvmNav.Core</RootNamespace>
+    <AssemblyName>ADaxer.MvvmNav.Core</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

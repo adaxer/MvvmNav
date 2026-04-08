@@ -20,6 +20,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <RootNamespace>ADaxer.MvvmNav.Wpf</RootNamespace>
+    <AssemblyName>ADaxer.MvvmNav.Wpf</AssemblyName>
   </PropertyGroup>
 
 </Project>

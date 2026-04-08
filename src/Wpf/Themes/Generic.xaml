@@ -3,7 +3,7 @@
                     xmlns:v="clr-namespace:ADaxer.MvvmNav.Wpf.Views">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/MvvmNav.Wpf;component/MvvmNav.Wpf.Resources.xaml" />
+        <ResourceDictionary Source="/ADaxer.MvvmNav.Wpf;component/MvvmNav.Wpf.Resources.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type v:WpfDialogWindow}">

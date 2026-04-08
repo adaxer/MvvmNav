@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
 
         services.AddMvvmNavCore();
         services.AddSingleton<IDialogService, WpfDialogService>();
-        Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("pack://application:,,,/MvvmNav.Wpf;component/MvvmNav.Wpf.Resources.xaml",
+        Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("pack://application:,,,/ADaxer.MvvmNav.Wpf;component/MvvmNav.Wpf.Resources.xaml",
             UriKind.Absolute) });
 
         return services;

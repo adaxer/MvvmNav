@@ -18,7 +18,6 @@ The framework is designed to work across multiple UI technologies.
 - **Avalonia** (Desktop and Mobile)
 - **WPF**
 - **MAUI**
-- **Uno Platform** (Desktop and Mobile)
 
 The core navigation logic is platform-agnostic, while the UI layer uses the native mechanisms of the respective platform.
 
@@ -486,6 +485,7 @@ Example: updating a shell status bar.
 ---
 
 ### Under Consideration
+- **Uno Platform** support (Desktop and Mobile)
 
 - **Navigation Scopes**  
   Allows creating scoped navigation contexts (e.g. wizard flows or multi-step processes) with isolated DI scopes.

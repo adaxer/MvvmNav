@@ -1,0 +1,8 @@
+- No abstraction without duplication
+- Prefer modifying existing code over introducing new layers
+- minimal architecture
+- no overengineering
+- prefer modifying existing code over adding layers
+- avoid new interfaces unless clearly needed
+- run relevant tests after changes
+- For changes in more than 1 file: Always wait for explicit command to do it, which can be: "Do it", "Go", "Yes" (when you ask me to start) 

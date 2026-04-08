@@ -5,7 +5,7 @@ using Sample.Maui.Views;
 
 namespace Sample.Maui;
 
-public partial class App : AppBase
+public partial class App : MauiAppBase
 {
     public App(IServiceProvider serviceProvider)
         : base(serviceProvider) 

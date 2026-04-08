@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>ADaxer.MvvmNav.Sample.Common</RootNamespace>
+    <AssemblyName>ADaxer.MvvmNav.Sample.Common</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="markdown\ShellViewModel.md" />

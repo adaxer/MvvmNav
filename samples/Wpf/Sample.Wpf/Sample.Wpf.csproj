@@ -7,6 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <RootNamespace>ADaxer.MvvmNav.Sample.Wpf</RootNamespace>
+    <AssemblyName>ADaxer.MvvmNav.Sample.Wpf</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

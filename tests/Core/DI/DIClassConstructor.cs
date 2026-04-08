@@ -4,7 +4,6 @@ using ADaxer.MvvmNav.Core.Navigation;
 using ADaxer.MvvmNav.Core.Tests.TestData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MvvmNav.Core.Tests.TestData;
 using NSubstitute;
 using TUnit.Core.Interfaces;
 

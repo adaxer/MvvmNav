@@ -1,10 +1,44 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Sample.Avalonia.App"
-             RequestedThemeVariant="Default">
+             xmlns:local="using:ADaxer.MvvmNav.Sample.Avalonia"
+             x:Class="ADaxer.MvvmNav.Sample.Avalonia.App"
+             RequestedThemeVariant="Default"            
+            xmlns:vm="using:ADaxer.MvvmNav.Sample.Common.ViewModels"
+            xmlns:v="using:ADaxer.MvvmNav.Sample.Avalonia.Views" 
+            xmlns:sys="clr-namespace:System;assembly=System.Runtime">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-
     <Application.Styles>
-        <FluentTheme />
+        <FluentTheme >
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Light" Accent="Green" RegionColor="#6FFF"  />
+                <ColorPaletteResources x:Key="Dark" Accent="LightGreen" RegionColor="#6000" />
+            </FluentTheme.Palettes>
+        </FluentTheme>
     </Application.Styles>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+            <sys:Double x:Key="ButtonMinWidth" >180</sys:Double>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.DataTemplates>
+        <DataTemplate DataType="{x:Type vm:HomeViewModel}">
+            <v:HomeView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AboutViewModel}">
+            <v:AboutView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:FeaturesViewModel}">
+            <v:FeaturesView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:DetailsViewModel}">
+            <v:DetailsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+            <v:SettingsView/>
+        </DataTemplate>
+    </Application.DataTemplates>
 </Application>

@@ -1,16 +1,16 @@
 ﻿<?xml version = "1.0" encoding = "UTF-8" ?>
-<mvvm:AppBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<mvvm:MauiAppBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Sample.Maui"
-             xmlns:mvvm="clr-namespace:ADaxer.MvvmNav.Maui;assembly=MvvmNav.Maui"
-             xmlns:conv="clr-namespace:ADaxer.MvvmNav.Maui.Converters;assembly=MvvmNav.Maui"
+             xmlns:mvvm="clr-namespace:ADaxer.MvvmNav.Maui;assembly=ADaxer.MvvmNav.Maui"
+             xmlns:conv="clr-namespace:ADaxer.MvvmNav.Maui.Converters;assembly=ADaxer.MvvmNav.Maui"
              x:Class="Sample.Maui.App">
-    <mvvm:AppBase.Resources>
+    <mvvm:MauiAppBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </mvvm:AppBase.Resources>
-</mvvm:AppBase>
+    </mvvm:MauiAppBase.Resources>
+</mvvm:MauiAppBase>

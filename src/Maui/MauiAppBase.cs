@@ -2,12 +2,12 @@
 
 namespace ADaxer.MvvmNav.Maui;
 
-public abstract class AppBase : Application
+public abstract class MauiAppBase : Application
 {
     private IServiceProvider _serviceProvider = default!;
     private INavigationService _navigationService;
 
-    public AppBase(IServiceProvider serviceProvider)
+    public MauiAppBase(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }

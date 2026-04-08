@@ -1,8 +1,9 @@
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 
-namespace Sample.Avalonia;
+namespace ADaxer.MvvmNav.Sample.Avalonia;
 
 public partial class App : Application
 {
@@ -13,10 +14,6 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = new MainWindow();
-        }
 
         base.OnFrameworkInitializationCompleted();
     }

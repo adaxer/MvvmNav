@@ -3,8 +3,8 @@
     x:Class="ADaxer.MvvmNav.Maui.Views.MauiDialog"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:abstractions="clr-namespace:ADaxer.MvvmNav.Abstractions.Navigation;assembly=MvvmNav.Abstractions"
-    xmlns:c="clr-namespace:ADaxer.MvvmNav.Maui.Views;assembly=MvvmNav.Maui"
+    xmlns:abstractions="clr-namespace:ADaxer.MvvmNav.Abstractions.Navigation;assembly=ADaxer.MvvmNav.Abstractions"
+    xmlns:c="clr-namespace:ADaxer.MvvmNav.Maui.Views;assembly=ADaxer.MvvmNav.Maui"
     x:Name="Root">
 
     <Grid Padding="24">

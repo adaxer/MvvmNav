@@ -20,13 +20,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <!-- Enable XAML source generation for faster build times and improved performance.
-		     This generates C# code from XAML at compile time instead of runtime inflation.
-		     To disable, remove this line.
-		     For individual files, you can override by setting Inflator metadata:
-		       <MauiXaml Update="MyPage.xaml" Inflator="Default" /> (reverts to defaults: Runtime for Debug, XamlC for Release)
-		       <MauiXaml Update="MyPage.xaml" Inflator="Runtime" /> (force runtime inflation) -->
-    <MauiXamlInflator>SourceGen</MauiXamlInflator>
+		<!-- Enable XAML source generation for faster build times and improved performance.
+				 This generates C# code from XAML at compile time instead of runtime inflation.
+				 To disable, remove this line.
+				 For individual files, you can override by setting Inflator metadata:
+					 <MauiXaml Update="MyPage.xaml" Inflator="Default" /> (reverts to defaults: Runtime for Debug, XamlC for Release)
+					 <MauiXaml Update="MyPage.xaml" Inflator="Runtime" /> (force runtime inflation) -->
+		<!--<MauiXamlInflator>SourceGen</MauiXamlInflator>-->
 
     <!-- Display name -->
     <ApplicationTitle>Sample.Maui</ApplicationTitle>
@@ -63,20 +63,17 @@
     <MauiFont Include="Resources\Fonts\*" />
 
     <!-- lokale Raw-Assets -->
-    <MauiAsset Include="Resources\Raw\**"
-               LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+    <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 
     <!-- verlinkte Markdown-Dateien -->
-    <MauiAsset Include="..\..\Common\Sample.Common\Markdown\**\*.md"
-               Link="Resources\Raw\markdown\%(RecursiveDir)%(Filename)%(Extension)"
-               LogicalName="markdown/%(RecursiveDir)%(Filename)%(Extension)" />
+    <MauiAsset Include="..\..\Common\Sample.Common\Markdown\**\*.md" Link="Resources\Raw\markdown\%(RecursiveDir)%(Filename)%(Extension)" LogicalName="markdown/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Indiko.Maui.Controls.Markdown" Version="1.5.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
-    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.51" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.5" />
   </ItemGroup>
 
   <ItemGroup>

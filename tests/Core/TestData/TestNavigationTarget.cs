@@ -1,6 +1,6 @@
 ﻿using ADaxer.MvvmNav.Abstractions.Navigation;
 
-namespace MvvmNav.Core.Tests.TestData;
+namespace ADaxer.MvvmNav.Core.Tests.TestData;
 
 public sealed class TestNavigationTarget : INavigationAware
 {

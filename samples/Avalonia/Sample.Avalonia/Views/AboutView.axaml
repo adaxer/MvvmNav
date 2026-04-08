@@ -1,0 +1,11 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ADaxer.MvvmNav.Sample.Common.ViewModels"
+             xmlns:v="using:ADaxer.MvvmNav.Sample.Avalonia.Views"
+             x:DataType="vm:AboutViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ADaxer.MvvmNav.Sample.Avalonia.Views.AboutView">
+  <v:MarkdownView Markdown="{Binding Markdown}" />
+</UserControl>
