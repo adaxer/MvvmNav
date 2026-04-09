@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using ADaxer.MvvmNav.Sample.Common.ViewModels;
+using ADaxer.MvvmNav.Sample.Maui;
+using Microsoft.Extensions.Logging;
+using Sample.Maui.Views;
 
 namespace Sample.Maui;
 
@@ -8,7 +11,7 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
         builder
-            .UseMauiApp<App>(sp => new App(sp))
+            .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -16,10 +19,11 @@ public static class MauiProgram
             });
 
         builder.Services
-            .AddMvvmNavMaui()
+            .AddMvvmNav()
+            .WithShell<ShellPage, ShellViewModel>()
+            .WithStartupNavigation<HomeViewModel>()
             .RegisterCommonServices()
             .RegisterPlatformServices();
-
 
 #if DEBUG
         builder.Logging.AddDebug();

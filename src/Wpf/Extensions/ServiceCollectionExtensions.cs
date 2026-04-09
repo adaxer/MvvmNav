@@ -1,4 +1,4 @@
-using ADaxer.MvvmNav.Abstractions.Dialogs;
+﻿using ADaxer.MvvmNav.Abstractions.Dialogs;
 using ADaxer.MvvmNav.Wpf.Navigation;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -12,7 +12,7 @@ public static class ServiceCollectionExtensions
     /// <summary>
     /// Registers the MvvmNav navigation services for WPF applications.
     /// </summary>
-    public static IServiceCollection AddMvvmNavWpf(this IServiceCollection services)
+    public static IServiceCollection AddMvvmNav(this IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
 

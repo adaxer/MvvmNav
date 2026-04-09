@@ -125,7 +125,7 @@ public sealed class WpfNavigationHostBuilder
     {
         var services = new ServiceCollection();
 
-        services.AddMvvmNavWpf();
+        services.AddMvvmNav();
 
         services.AddSingleton(new WpfDialogOptions
         {

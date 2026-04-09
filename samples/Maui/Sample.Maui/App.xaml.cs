@@ -1,21 +1,25 @@
-﻿using ADaxer.MvvmNav.Abstractions.Navigation;
-using ADaxer.MvvmNav.Maui;
-using ADaxer.MvvmNav.Sample.Common.ViewModels;
-using Sample.Maui.Views;
+﻿using ADaxer.MvvmNav.Maui.Hosting;
 
-namespace Sample.Maui;
+namespace ADaxer.MvvmNav.Sample.Maui;
 
-public partial class App : MauiAppBase
+public partial class App : Application
 {
-    public App(IServiceProvider serviceProvider)
-        : base(serviceProvider) 
+    private readonly IMauiMvvmNavStarter _starter;
+
+    public App(IMauiMvvmNavStarter starter)
     {
         InitializeComponent();
+        _starter = starter;
     }
 
-    protected override async Task PostCreateAsync()
+    protected override Window CreateWindow(IActivationState? activationState)
     {
-        await NavigationService.NavigateAsync<HomeViewModel>();
+        return _starter.CreateWindow(activationState);
+    }
+
+    protected override async void OnStart()
+    {
+        base.OnStart();
+        await _starter.StartAsync();
     }
 }
-

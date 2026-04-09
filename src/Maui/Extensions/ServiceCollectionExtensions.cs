@@ -3,6 +3,7 @@ using ADaxer.MvvmNav.Abstractions.Dialogs;
 using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Core.ViewModels;
 using ADaxer.MvvmNav.Maui;
+using ADaxer.MvvmNav.Maui.Hosting;
 using ADaxer.MvvmNav.Maui.Navigation;
 using ADaxer.MvvmNav.Maui.Views;
 
@@ -17,7 +18,7 @@ public static class ServiceCollectionExtensions
     /// <summary>
     /// Registers the MvvmNav navigation services for MAUI applications.
     /// </summary>
-    public static IServiceCollection AddMvvmNavMaui(this IServiceCollection services)
+    public static IServiceCollection AddMvvmNav(this IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -31,6 +32,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<INavigationService, MauiNavigationService>();
         services.RegisterView<MessageViewModel, MessageView>();
         services.RegisterDialog<DialogViewModelBase, MauiDialog>();
+        services.AddSingleton(new MauiMvvmNavOptions());
+        services.AddSingleton<IMauiMvvmNavStarter, MauiMvvmNavStarter>();
 
         return services;
     }
@@ -79,5 +82,48 @@ public static class ServiceCollectionExtensions
     {
         ViewLocator.Current.RegisterDialog(typeof(TViewModel), typeof(TView));
         return services;
+    }
+
+    public static IServiceCollection WithShell<TShellView, TShellViewModel>(this IServiceCollection services)
+        where TShellView : class, IShellView
+        where TShellViewModel : class
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        var options = GetRequiredOptions(services);
+        options.ShellViewType = typeof(TShellView);
+        options.ShellViewModelType = typeof(TShellViewModel);
+
+        services.AddSingleton(typeof(TShellView));
+        services.AddSingleton(typeof(TShellViewModel));
+
+        services.AddSingleton(typeof(IShellView), sp => sp.GetRequiredService<TShellView>());
+
+        return services;
+    }
+
+    public static IServiceCollection WithStartupNavigation<TViewModel>(this IServiceCollection services)
+        where TViewModel : class
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        var options = GetRequiredOptions(services);
+        options.StartupNavigationType = typeof(TViewModel);
+
+        return services;
+    }
+
+    private static MauiMvvmNavOptions GetRequiredOptions(IServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        var descriptor = services.LastOrDefault(x => x.ServiceType == typeof(MauiMvvmNavOptions));
+
+        if (descriptor?.ImplementationInstance is MauiMvvmNavOptions options)
+            return options;
+
+        throw new InvalidOperationException(
+            $"{nameof(MauiMvvmNavOptions)} must be registered as an implementation instance. " +
+            $"Call AddMvvmNavMaui() before using the fluent With... methods.");
     }
 }
