@@ -1,6 +1,6 @@
 ﻿using Avalonia.Reactive;
 
-namespace ADaxer.MvvmNav.Avalonia;
+namespace ADaxer.MvvmNav.Avalonia.Extensions;
 
 public static class ObservableExtensions
 {

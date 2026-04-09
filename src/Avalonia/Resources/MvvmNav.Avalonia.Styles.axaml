@@ -1,0 +1,56 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:v="using:ADaxer.MvvmNav.Avalonia.Views"
+        xmlns:d="using:ADaxer.MvvmNav.Abstractions.Dialogs">
+
+    <Style Selector="Button.primary">
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+    <Style Selector="v|AvaloniaDialogView">
+        <Setter Property="MaxWidth" Value="800" />
+        <Setter Property="MaxHeight" Value="450" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="#888"
+                        BorderThickness="1"
+                        Padding="16">
+                    <DockPanel>
+                        <Border DockPanel.Dock="Bottom"
+                                Background="#DDD"
+                                Padding="10"
+                                Margin="0,16,0,0">
+                            <ItemsControl ItemsSource="{TemplateBinding EffectiveCommands}"
+                                          HorizontalAlignment="Center">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type d:DialogCommandInfo}">
+                                        <Button Content="{Binding Text}"
+                                                Command="{Binding $parent[v:AvaloniaDialogView].ExecuteDialogCommand}"
+                                                CommandParameter="{Binding}"
+                                                Padding="5"
+                                                MinWidth="70"
+                                                Margin="0,0,10,0"
+                                                Classes.primary="{Binding IsPrimary}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Border>
+
+                        <ContentPresenter Content="{TemplateBinding DataContext}" />
+                    </DockPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

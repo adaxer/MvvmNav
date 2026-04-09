@@ -4,6 +4,8 @@
              x:Class="ADaxer.MvvmNav.Sample.Avalonia.App"
              RequestedThemeVariant="Default"            
             xmlns:vm="using:ADaxer.MvvmNav.Sample.Common.ViewModels"
+            xmlns:vmc="using:ADaxer.MvvmNav.Core.ViewModels"
+            xmlns:vc="using:ADaxer.MvvmNav.Avalonia.Views"
             xmlns:v="using:ADaxer.MvvmNav.Sample.Avalonia.Views" 
             xmlns:sys="clr-namespace:System;assembly=System.Runtime">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
@@ -14,7 +16,8 @@
                 <ColorPaletteResources x:Key="Dark" Accent="LightGreen" RegionColor="#6000" />
             </FluentTheme.Palettes>
         </FluentTheme>
-    </Application.Styles>
+          <StyleInclude Source="avares://LiveMarkdown.Avalonia/Styles.axaml"/>
+ </Application.Styles>
 
     <Application.Resources>
         <ResourceDictionary>
@@ -39,6 +42,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
             <v:SettingsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmc:MessageViewModel}">
+            <vc:MessageView/>
         </DataTemplate>
     </Application.DataTemplates>
 </Application>

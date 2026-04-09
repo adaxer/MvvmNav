@@ -6,13 +6,11 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\MvvmNav.Core.csproj" />
     <ProjectReference Include="..\Abstractions\MvvmNav.Abstractions.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Navigation\" />
   </ItemGroup>
 
 </Project>

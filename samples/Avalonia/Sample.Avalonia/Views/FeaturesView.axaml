@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:ADaxer.MvvmNav.Sample.Common.ViewModels"
              xmlns:v="using:ADaxer.MvvmNav.Sample.Avalonia.Views"
+             xmlns:m="using:ADaxer.MvvmNav.Sample.Common.Models"
              x:DataType="vm:FeaturesViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ADaxer.MvvmNav.Sample.Avalonia.Views.FeaturesView">
@@ -18,7 +19,7 @@
     <ScrollViewer Grid.Row="1" Margin="16,0,16,16">
       <ItemsControl ItemsSource="{Binding Features}">
         <ItemsControl.ItemTemplate>
-          <DataTemplate>
+          <DataTemplate DataType="{x:Type m:FeatureItem}">
             <Button Padding="4"
                     HorizontalAlignment="Left"
                     Background="Transparent"

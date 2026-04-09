@@ -1,6 +1,7 @@
-﻿using ADaxer.MvvmNav.Avalonia;
+﻿using ADaxer.MvvmNav.Avalonia.Extensions;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
 using LiveMarkdown.Avalonia;
 
 namespace ADaxer.MvvmNav.Sample.Avalonia.Views;

@@ -8,14 +8,14 @@ namespace ADaxer.MvvmNav.Maui.Hosting;
 public sealed class MauiMvvmNavStarter : IMauiMvvmNavStarter
 {
     private readonly IServiceProvider _services;
-    private readonly MauiMvvmNavOptions _options;
+    private readonly StartupOptions _options;
 
     private bool _started;
     private Window? _window;
     private Page? _shellPage;
     private IShellViewModel? _shellViewModel;
 
-    public MauiMvvmNavStarter(IServiceProvider services, MauiMvvmNavOptions options)
+    public MauiMvvmNavStarter(IServiceProvider services, StartupOptions options)
     {
         _services = services ?? throw new ArgumentNullException(nameof(services));
         _options = options ?? throw new ArgumentNullException(nameof(options));

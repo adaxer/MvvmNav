@@ -1,5 +1,8 @@
 ﻿using System;
+using ADaxer.MvvmNav.Sample.Avalonia.Desktop.Views;
+using ADaxer.MvvmNav.Sample.Common.ViewModels;
 using Avalonia;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ADaxer.MvvmNav.Sample.Avalonia.Desktop;
 
@@ -14,8 +17,22 @@ internal sealed class Program
 
     // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
+    {
+        var services = new ServiceCollection();
+
+        services.AddMvvmNav()
+            .WithShell<ShellWindow, ShellViewModel>()
+            .WithStartupNavigation<HomeViewModel>()
+            .RegisterCommonServices()
+            .RegisterPlatformServices();
+
+        var serviceProvider = services.BuildServiceProvider();
+
+        var result = AppBuilder.Configure<App>(()=>new App { ServiceProvider = serviceProvider })
             .UsePlatformDetect()
             .WithInterFont()
             .LogToTrace();
+
+        return result;
+    }
 }

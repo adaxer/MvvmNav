@@ -68,7 +68,6 @@
                            VerticalAlignment="Center"/>
 
                 </Border>
-                <ContentControl Content="{Binding CurrentModule}" />
             </Grid>
 
         </DockPanel>

@@ -32,7 +32,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<INavigationService, MauiNavigationService>();
         services.RegisterView<MessageViewModel, MessageView>();
         services.RegisterDialog<DialogViewModelBase, MauiDialog>();
-        services.AddSingleton(new MauiMvvmNavOptions());
+        services.AddSingleton(new StartupOptions());
         services.AddSingleton<IMauiMvvmNavStarter, MauiMvvmNavStarter>();
 
         return services;
@@ -113,17 +113,17 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static MauiMvvmNavOptions GetRequiredOptions(IServiceCollection services)
+    private static StartupOptions GetRequiredOptions(IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        var descriptor = services.LastOrDefault(x => x.ServiceType == typeof(MauiMvvmNavOptions));
+        var descriptor = services.LastOrDefault(x => x.ServiceType == typeof(StartupOptions));
 
-        if (descriptor?.ImplementationInstance is MauiMvvmNavOptions options)
+        if (descriptor?.ImplementationInstance is StartupOptions options)
             return options;
 
         throw new InvalidOperationException(
-            $"{nameof(MauiMvvmNavOptions)} must be registered as an implementation instance. " +
+            $"{nameof(StartupOptions)} must be registered as an implementation instance. " +
             $"Call AddMvvmNavMaui() before using the fluent With... methods.");
     }
 }

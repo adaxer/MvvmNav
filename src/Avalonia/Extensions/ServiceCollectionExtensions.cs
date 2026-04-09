@@ -1,63 +1,90 @@
 ﻿using ADaxer.MvvmNav.Abstractions.Dialogs;
 using ADaxer.MvvmNav.Abstractions.Navigation;
-using ADaxer.MvvmNav.Core.Navigation;
+using ADaxer.MvvmNav.Avalonia.Hosting;
+using ADaxer.MvvmNav.Avalonia.Navigation;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
-/// Provides extension methods for registering the MvvmNav services
-/// for Avalonia-based applications.
+/// Provides dependency injection extensions for the Avalonia integration of MvvmNav.
 /// </summary>
-/// <remarks>
-/// This extension registers the required navigation services and
-/// Avalonia-specific host implementations with the dependency
-/// injection container.
-/// 
-/// The following services are registered:
-/// <list type="bullet">
-/// <item>
-/// <description>
-/// <see cref="INavigationService"/> implemented by <see cref="NavigationService"/>
-/// </description>
-/// </item>
-/// <item>
-/// <description>
-/// <see cref="INavigationHost"/> implemented by <see cref="ShellNavigationHost"/>
-/// </description>
-/// </item>
-/// <item>
-/// <description>
-/// <see cref="IDialogHost"/> implemented by <see cref="DialogHost"/>
-/// </description>
-/// </item>
-/// </list>
-/// 
-/// All services are registered with <see cref="ServiceLifetime.Singleton"/> lifetime.
-/// </remarks>
-/// <seealso cref="INavigationService"/>
-/// <seealso cref="INavigationHost"/>
-/// <seealso cref="IDialogHost"/>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Registers the MvvmNav navigation services for Avalonia applications.
+    /// Registers the Avalonia integration of MvvmNav.
     /// </summary>
-    /// <param name="services">
-    /// The <see cref="IServiceCollection"/> used to register services.
-    /// </param>
-    /// <returns>
-    /// The same <see cref="IServiceCollection"/> instance so that additional
-    /// calls can be chained.
-    /// </returns>
-    /// <exception cref="ArgumentNullException">
-    /// Thrown if <paramref name="services"/> is <c>null</c>.
-    /// </exception>
-    public static IServiceCollection AddMvvmNavAvalonia(this IServiceCollection services)
+    /// <param name="services">The service collection.</param>
+    /// <returns>The same service collection.</returns>
+    public static IServiceCollection AddMvvmNav(this IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        services.AddSingleton<INavigationService, NavigationService>();
+        services.AddMvvmNavCore();
+        services.AddSingleton(new AvaloniaMvvmNavOptions());
+        services.AddSingleton<IMvvmNavStarter, MvvmNavStarter>();
+        services.AddSingleton<IDialogService, AvaloniaDialogService>();
 
         return services;
+    }
+
+    /// <summary>
+    /// Configures the shell view and shell view model used by Avalonia MvvmNav startup.
+    /// </summary>
+    /// <typeparam name="TShellView">The shell view type.</typeparam>
+    /// <typeparam name="TShellViewModel">The shell view model type.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The same service collection.</returns>
+    public static IServiceCollection WithShell<TShellView, TShellViewModel>(this IServiceCollection services)
+        where TShellView : class, IShellView
+        where TShellViewModel : class
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        var options = GetRequiredOptions(services);
+        options.ShellViewType = typeof(TShellView);
+        options.ShellViewModelType = typeof(TShellViewModel);
+
+        services.AddSingleton(typeof(TShellView));
+        services.AddSingleton(typeof(TShellViewModel));
+        services.AddSingleton(typeof(IShellView), sp => sp.GetRequiredService<TShellView>());
+
+        services.AddLogging(logging =>
+        {
+                logging.AddDebug();
+                logging.SetMinimumLevel(LogLevel.Debug);
+        });
+
+
+        return services;
+    }
+
+    /// <summary>
+    /// Configures the initial navigation target to be navigated to after startup.
+    /// </summary>
+    /// <typeparam name="TViewModel">The startup target view model type.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The same service collection.</returns>
+    public static IServiceCollection WithStartupNavigation<TViewModel>(this IServiceCollection services)
+        where TViewModel : class
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        var options = GetRequiredOptions(services);
+        options.StartupNavigationType = typeof(TViewModel);
+
+        return services;
+    }
+
+    private static AvaloniaMvvmNavOptions GetRequiredOptions(IServiceCollection services)
+    {
+        var descriptor = services.LastOrDefault(x => x.ServiceType == typeof(AvaloniaMvvmNavOptions));
+
+        if (descriptor?.ImplementationInstance is AvaloniaMvvmNavOptions options)
+            return options;
+
+        throw new InvalidOperationException(
+            $"{nameof(AvaloniaMvvmNavOptions)} must be registered as an implementation instance. " +
+            $"Call AddMvvmNav() before using the fluent With... methods.");
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ADaxer.MvvmNav.Maui.Hosting;
 
-public sealed class MauiMvvmNavOptions
+public sealed class StartupOptions
 {
     public Type? ShellViewType { get; set; }
     public Type? ShellViewModelType { get; set; }
