@@ -3,7 +3,7 @@
 /// <summary>
 /// Stores startup-related configuration for the Avalonia integration of MvvmNav.
 /// </summary>
-public sealed class AvaloniaMvvmNavOptions
+public sealed class MvvmNavOptions
 {
     /// <summary>
     /// Gets or sets the configured shell view type.

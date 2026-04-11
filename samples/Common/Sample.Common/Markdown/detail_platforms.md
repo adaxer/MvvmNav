@@ -17,7 +17,10 @@ MvvmNav is UI-agnostic and works with the most important .NET UI technologies:
 - 🧊 **WPF** (Windows)
 - 🌐 **Avalonia** (cross-platform)
 - 📱 **.NET MAUI** (mobile & desktop)
+
+Under consideration
 - 🧩 **Uno Platform** (WinUI, WebAssembly, and more)
+- ⚙️ Asp.Net (Blazor oder Razor)
 
 ### Key idea
 

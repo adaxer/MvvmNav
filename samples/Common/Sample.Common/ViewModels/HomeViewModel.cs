@@ -18,7 +18,7 @@ public class HomeViewModel : INavigationAware, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public  async Task OnNavigatedToAsync(NavigationParameters context)
+    public  async Task OnNavigatedToAsync(NavigationParameters parameters)
     {
         Markdown = await _fileService.GetFileAsync("markdown/home.md");
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Markdown)));

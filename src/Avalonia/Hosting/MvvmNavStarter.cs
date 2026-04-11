@@ -17,7 +17,7 @@ namespace ADaxer.MvvmNav.Avalonia.Hosting;
 public sealed class MvvmNavStarter : IMvvmNavStarter
 {
     private readonly IServiceProvider _services;
-    private readonly AvaloniaMvvmNavOptions _options;
+    private readonly MvvmNavOptions _options;
 
     private bool _initialized;
     private bool _started;
@@ -30,7 +30,7 @@ public sealed class MvvmNavStarter : IMvvmNavStarter
     /// </summary>
     /// <param name="services">The application service provider.</param>
     /// <param name="options">The configured Avalonia startup options.</param>
-    public MvvmNavStarter(IServiceProvider services, AvaloniaMvvmNavOptions options)
+    public MvvmNavStarter(IServiceProvider services, MvvmNavOptions options)
     {
         _services = services ?? throw new ArgumentNullException(nameof(services));
         _options = options ?? throw new ArgumentNullException(nameof(options));

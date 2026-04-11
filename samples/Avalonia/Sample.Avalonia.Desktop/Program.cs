@@ -1,5 +1,4 @@
-﻿using System;
-using ADaxer.MvvmNav.Sample.Avalonia.Desktop.Views;
+﻿using ADaxer.MvvmNav.Sample.Avalonia.Desktop.Views;
 using ADaxer.MvvmNav.Sample.Common.ViewModels;
 using Avalonia;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,13 +23,14 @@ internal sealed class Program
             .WithShell<ShellWindow, ShellViewModel>()
             .WithStartupNavigation<HomeViewModel>()
             .RegisterCommonServices()
-            .RegisterPlatformServices();
+            .RegisterAvaloniaSpecificServices();
 
         var serviceProvider = services.BuildServiceProvider();
 
         var result = AppBuilder.Configure<App>(()=>new App { ServiceProvider = serviceProvider })
             .UsePlatformDetect()
             .WithInterFont()
+            .WithDeveloperTools()
             .LogToTrace();
 
         return result;

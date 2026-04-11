@@ -5,7 +5,21 @@ using Microsoft.Extensions.Logging;
 
 namespace ADaxer.MvvmNav.Maui.Hosting;
 
-public sealed class MauiMvvmNavStarter : IMauiMvvmNavStarter
+/// <summary>
+/// Creates the MAUI shell window and runs optional startup navigation.
+/// </summary>
+/// <remarks>
+/// <para>
+/// Window creation resolves the configured shell view model and shell view from dependency injection,
+/// validates their expected MAUI roles, binds the shell view model, and caches the created
+/// <see cref="Window"/>.
+/// </para>
+/// <para>
+/// <see cref="StartAsync"/> ensures that window creation has happened and then performs startup
+/// navigation only when <see cref="StartupOptions.StartupNavigationType"/> is configured.
+/// </para>
+/// </remarks>
+public sealed class MvvmNavStarter : IMvvmNavStarter
 {
     private readonly IServiceProvider _services;
     private readonly StartupOptions _options;
@@ -15,12 +29,35 @@ public sealed class MauiMvvmNavStarter : IMauiMvvmNavStarter
     private Page? _shellPage;
     private IShellViewModel? _shellViewModel;
 
-    public MauiMvvmNavStarter(IServiceProvider services, StartupOptions options)
+    /// <summary>
+    /// Initializes the starter with the application service provider and startup options.
+    /// </summary>
+    /// <param name="services">
+    /// The application service provider.
+    /// </param>
+    /// <param name="options">
+    /// The configured shell and startup navigation options.
+    /// </param>
+    public MvvmNavStarter(IServiceProvider services, StartupOptions options)
     {
         _services = services ?? throw new ArgumentNullException(nameof(services));
         _options = options ?? throw new ArgumentNullException(nameof(options));
     }
 
+    /// <summary>
+    /// Creates or returns the cached application window for the configured shell.
+    /// </summary>
+    /// <param name="activationState">
+    /// The MAUI activation state for the window creation request.
+    /// </param>
+    /// <returns>
+    /// The created or cached application window.
+    /// </returns>
+    /// <remarks>
+    /// The configured shell view model must implement <see cref="IShellViewModel"/> and
+    /// <see cref="IDialogHost"/>. The configured shell view must either implement
+    /// <see cref="IMauiShellView"/> or derive from <see cref="Page"/>.
+    /// </remarks>
     public Window CreateWindow(IActivationState? activationState)
     {
         EnsureShellConfigured();
@@ -53,6 +90,18 @@ public sealed class MauiMvvmNavStarter : IMauiMvvmNavStarter
         return _window;
     }
 
+    /// <summary>
+    /// Runs the startup workflow once and performs configured startup navigation.
+    /// </summary>
+    /// <param name="cancellationToken">
+    /// A token observed before startup navigation begins.
+    /// </param>
+    /// <returns>
+    /// A task representing the startup operation.
+    /// </returns>
+    /// <remarks>
+    /// If startup has already completed, the method returns immediately.
+    /// </remarks>
     public async Task StartAsync(CancellationToken cancellationToken = default)
     {
         if (_started)

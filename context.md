@@ -363,40 +363,166 @@ When navigation is blocked due to identical target identity (same type + same `N
 
 # Platform Integration
 
-Platform integration should be made as easy as possible, by using fluent code. In Wpf, this is done via the WpfNavigationHostBuilder, that is easily used to bootstrap the app. There it is more elaborate as Wpf per se has no good DI concept.
+Platform integration should be made as easy as possible, using a fluent and consistent approach across platforms.
 
-In Maui, the current state is not bad, but it should be elaborated more, so less user required code is in the App class, if possible, put it all in the App.Builder.
+The core idea is:
 
-The other platforms should act similarly. 
+> Each platform provides a lightweight IMvvmNavStarter that encapsulates all platform-specific bootstrapping.
 
-TBD: if shellviewmodel is also dialog host (or not), this should be figured out automatically by the framework, wenn being registered. 
+This keeps the user-facing integration minimal while preserving full flexibility.
 
-## WPF / Avalonia / Uno
+---
+
+## Starter Concept (MAUI / Avalonia)
+
+Each platform provides its own implementation of:
+
+IMvvmNavStarter
+
+Responsibilities:
+
+- initialize platform-specific resources (styles, templates, etc.)
+- resolve and attach the shell
+- trigger startup navigation
+- handle platform-specific lifetime differences
+
+The starter is resolved via DI and invoked at the appropriate lifecycle point of the platform.
+
+---
+
+## WPF
+
+WPF uses a dedicated fluent builder:
+
+WpfNavigationHostBuilder
+    .Default()
+    .WithServices(...)
+    .WithLogging(...)
+    .WithShell<ShellWindow, ShellViewModel>()
+    .WithStartupNavigation<HomeViewModel>()
+    .Build();
+
+await host.StartAsync();
+
+WPF does not use IMvvmNavStarter, because the builder already encapsulates the startup process.
+
+---
+
+## Avalonia
+
+Avalonia uses IMvvmNavStarter and integrates into:
+
+OnFrameworkInitializationCompleted()
 
 Example:
 
-    ContentControl Content="{Binding CurrentModule}"
+public override async void OnFrameworkInitializationCompleted()
+{
+    var starter = Services.GetRequiredService<IMvvmNavStarter>();
 
-The DataTemplate associated with the ViewModel type resolves the View automatically.
+    starter.Initialize(this);
+    await starter.StartAsync();
+
+    base.OnFrameworkInitializationCompleted();
+}
+
+### Notes
+
+- Application must have a parameterless constructor (platform constraint)
+- services are injected via property (not constructor)
+- starter handles:
+  - lifetime detection:
+    - Desktop → MainWindow
+    - iOS → MainView
+    - Android → MainViewFactory
+  - resource loading (Styles + ResourceDictionary)
+  - shell resolution
+
+---
 
 ## MAUI
 
-MAUI currently uses a custom shell host page instead of `AppShell`.
+MAUI also uses IMvvmNavStarter, resolved via DI inside App.
+
+Example:
+
+public partial class App : Application
+{
+    private readonly IMvvmNavStarter _starter;
+
+    public App(IMvvmNavStarter starter)
+    {
+        InitializeComponent();
+        _starter = starter;
+    }
+
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        return _starter.CreateWindow();
+    }
+
+    protected override async void OnStart()
+    {
+        await _starter.StartAsync();
+    }
+}
 
 ### Current Direction
-- custom `ShellPage`
-- `CurrentModule` displayed through a custom `ContentControl`
-- `CurrentDialog` displayed as an overlay through a second `ContentControl`
-- no route-based navigation required for the current MAUI path
 
-### ContentControl
-A MAUI `ContentControl` has been introduced with:
+- custom shell host (no AppShell)
+- CurrentModule rendered via custom ContentControl
+- CurrentDialog rendered as overlay
+- ViewModel-first navigation
+- no route-based navigation required
 
-- `BindingContext` = target ViewModel
-- `IsDialog = false` → resolve normal view
-- `IsDialog = true` → resolve dialog shell view
+---
 
-This allows MAUI to follow the same ViewModel-first navigation style as the desktop platforms.
+## Shell Integration
+
+The shell is optional at configuration time, but required at runtime.
+
+- If configured:
+  - starter resolves and attaches it
+- If missing:
+  - startup throws a clear exception
+
+Shell behavior:
+
+- IShellViewModel
+  - may implement IDialogHost
+- framework detects capabilities automatically
+
+---
+
+## View Resolution (All Platforms)
+
+Example:
+
+<ContentControl Content="{Binding CurrentModule}" />
+
+The DataTemplate associated with the ViewModel resolves the View automatically.
+
+---
+
+## Dialogs
+
+- WPF:
+  - Overlay or Window mode
+- MAUI / Avalonia:
+  - Overlay only (recommended default)
+
+Dialogs are bound via:
+
+IDialogHost.CurrentDialog
+
+---
+
+## Design Goals
+
+- minimal required setup in user code
+- consistent mental model across platforms
+- platform-specific complexity hidden inside starter
+- no overengineering
 
 ------------------------------------------------------------------------
 

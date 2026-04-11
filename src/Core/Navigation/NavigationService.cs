@@ -500,7 +500,10 @@ public class NavigationService : INavigationService
 
         var confirmation = await _dialogService.ConfirmAsync(result.Context);
 
-        await result.ContinueAsync(confirmation, CancellationToken.None);
+        if (result.ContinueAsync != null)
+        {
+            await result.ContinueAsync(confirmation, CancellationToken.None);
+        }
 
         _logger.LogInformation(
             "Navigation confirmation completed. Confirmed={Confirmed}",

@@ -21,13 +21,12 @@ public sealed class MarkdownView : UserControl
     {
         _renderer = new MarkdownRenderer
         {
-            MarkdownBuilder = _builder
+            MarkdownBuilder = _builder, 
+            Margin=new Thickness(10)
         };
 
-        // Das ist jetzt wirklich "Content ist ein MarkdownRenderer"
-        Content = _renderer;
+        Content = new ScrollViewer { Content = _renderer };
 
-        // Re-render bei Änderungen
         this.GetObservable(MarkdownProperty).Subscribe(SetMarkdown);
         this.GetObservable(ImageBasePathProperty).Subscribe(p => _renderer.ImageBasePath = p);
     }

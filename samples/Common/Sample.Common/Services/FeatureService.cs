@@ -11,7 +11,7 @@ public class FeatureService
         new FeatureItem { Name = "ViewModel-first navigation", Key = "detail_navigation.md" },
         new FeatureItem { Name = "Native view resolution", Key = "detail_navigation.md" },
         new FeatureItem { Name = "Navigation parameters", Key = "detail_navigation.md" },
-        new FeatureItem { Name = "Back navigation", Key = "detail_navigation.md" },
+        new FeatureItem { Name = "Back navigation", Key = "detail_back.md" },
         new FeatureItem { Name = "Navigation guards", Key = "detail_guards.md" },
         new FeatureItem { Name = "Dialog integration", Key = "detail_dialogs.md" },
         new FeatureItem { Name = "Generic factory support", Key = "detail_factory.md" },

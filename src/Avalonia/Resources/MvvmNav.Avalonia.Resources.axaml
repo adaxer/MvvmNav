@@ -3,4 +3,18 @@
                     xmlns:conv="using:ADaxer.MvvmNav.Avalonia.Converters">
     <conv:TruthyConverter x:Key="TruthyToBoolConverter" />
 
+    <!-- Basistext -->
+    <x:Double x:Key="FontSizeM">16</x:Double>
+
+    <!-- leichte Betonung (z. B. größere Texte / kleine Headings) -->
+    <x:Double x:Key="FontSizeL">18</x:Double>
+
+    <!-- H3 -->
+    <x:Double x:Key="FontSizeXl">22</x:Double>
+
+    <!-- H2 -->
+    <x:Double x:Key="FontSize2Xl">26</x:Double>
+
+    <!-- H1 -->
+    <x:Double x:Key="FontSize3Xl">32</x:Double>
 </ResourceDictionary>

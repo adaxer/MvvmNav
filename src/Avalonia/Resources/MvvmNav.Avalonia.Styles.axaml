@@ -7,6 +7,20 @@
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
+    <Style Selector="Button.round">
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="CornerRadius" Value="1000"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Button.round.small">
+        <Setter Property="Width" Value="28"/>
+        <Setter Property="Height" Value="28"/>
+    </Style>
+
     <Style Selector="v|AvaloniaDialogView">
         <Setter Property="MaxWidth" Value="800" />
         <Setter Property="MaxHeight" Value="450" />
@@ -36,6 +50,7 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate DataType="{x:Type d:DialogCommandInfo}">
                                         <Button Content="{Binding Text}"
+                                                HorizontalContentAlignment="Center"
                                                 Command="{Binding $parent[v:AvaloniaDialogView].ExecuteDialogCommand}"
                                                 CommandParameter="{Binding}"
                                                 Padding="5"

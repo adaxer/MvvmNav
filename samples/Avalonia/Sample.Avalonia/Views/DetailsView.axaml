@@ -25,11 +25,11 @@
                 HorizontalAlignment="Center"
                 Orientation="Horizontal"
                 Margin="-40,0,0,20">
-      <Button Classes="navButton"
+      <Button Classes="round small"
               Content="←"
               Command="{Binding PreviousCommand}"
               ToolTip.Tip="Previous Feature - this shows the navigation to the same DataType - normally forbidden - but possible with different parameters" />
-      <Button Classes="navButton"
+      <Button Classes="round small"
               Content="→"
               Command="{Binding NextCommand}"
               ToolTip.Tip="Previous Feature - this shows the navigation to the same DataType - normally forbidden - but possible with different parameters" />

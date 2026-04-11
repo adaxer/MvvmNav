@@ -8,11 +8,11 @@ using ADaxer.MvvmNav.Sample.Common.ViewModels;
 namespace Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
-/// Provides extension methods for registering the core services for the sample app.
+/// Provides extension methods for registering the Avalonia specific services for the sample app.
 /// </summary>
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection RegisterPlatformServices(this IServiceCollection services)
+    public static IServiceCollection RegisterAvaloniaSpecificServices(this IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
 

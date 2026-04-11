@@ -4,9 +4,9 @@ namespace ADaxer.MvvmNav.Sample.Maui;
 
 public partial class App : Application
 {
-    private readonly IMauiMvvmNavStarter _starter;
+    private readonly IMvvmNavStarter _starter;
 
-    public App(IMauiMvvmNavStarter starter)
+    public App(IMvvmNavStarter starter)
     {
         InitializeComponent();
         _starter = starter;

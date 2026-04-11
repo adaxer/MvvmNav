@@ -14,3 +14,5 @@ Navigation is performed using the `NavigationService`.
 ℹ️ If you change data above, a dialog will ask you to keep them (so it uses a **dirty** flag) 
 
 👉 And this works, because SettingsViewModel is registered as a **singleton** in the `AppBootstrapper` (thus keeping its values between navigations).
+
+👉 And it implements `ICanNavigateFrom` so it can prevent the app from navigating away.

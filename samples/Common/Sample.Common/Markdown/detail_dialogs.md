@@ -9,6 +9,7 @@ Dialogs are handled via the `IDialogService`.
 - Dialog content is resolved via DataTemplates (being a ViewModel)
 - A `DialogResult` is returned
 - Flexible handling of Commands (e.g. OK/Cancel, Yes/No/Cancel)
+👉 This makes it easy to implement **Wizards**.
 
 ### Benefits
 

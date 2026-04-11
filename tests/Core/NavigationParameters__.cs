@@ -69,7 +69,9 @@ public sealed class NavigationParameters__
         {
             await Assert.That(sut["Id"]).IsEqualTo(42);
             await Assert.That(sut["Name"]).IsEqualTo("Alice");
+#pragma warning disable TUnitAssertions0015 // Prefer IsTrue()/IsFalse() over IsEqualTo(true/false)
             await Assert.That(sut["Flag"]).IsEqualTo(true);
+#pragma warning restore TUnitAssertions0015 // Prefer IsTrue()/IsFalse() over IsEqualTo(true/false)
         }
     }
 

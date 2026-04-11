@@ -1,5 +1,4 @@
-﻿
-using ADaxer.MvvmNav.Abstractions.Dialogs;
+﻿using ADaxer.MvvmNav.Abstractions.Dialogs;
 using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Core.ViewModels;
 using ADaxer.MvvmNav.Maui;
@@ -33,7 +32,7 @@ public static class ServiceCollectionExtensions
         services.RegisterView<MessageViewModel, MessageView>();
         services.RegisterDialog<DialogViewModelBase, MauiDialog>();
         services.AddSingleton(new StartupOptions());
-        services.AddSingleton<IMauiMvvmNavStarter, MauiMvvmNavStarter>();
+        services.AddSingleton<IMvvmNavStarter, MvvmNavStarter>();
 
         return services;
     }
@@ -84,6 +83,34 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Configures the shell view and shell view model used by the MAUI starter.
+    /// </summary>
+    /// <typeparam name="TShellView">
+    /// The concrete shell view type.
+    /// </typeparam>
+    /// <typeparam name="TShellViewModel">
+    /// The concrete shell view model type.
+    /// </typeparam>
+    /// <param name="services">
+    /// The service collection.
+    /// </param>
+    /// <returns>
+    /// The updated service collection.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// The configured types are stored in <see cref="StartupOptions"/> and are
+    /// later used during application startup to create and attach the shell.
+    /// </para>
+    /// <para>
+    /// This method also registers the concrete shell types as singletons and exposes
+    /// the shell view through <see cref="IShellView"/>.
+    /// </para>
+    /// <para>
+    /// <see cref="AddMvvmNav"/> must be called before this method.
+    /// </para>
+    /// </remarks>
     public static IServiceCollection WithShell<TShellView, TShellViewModel>(this IServiceCollection services)
         where TShellView : class, IShellView
         where TShellViewModel : class
@@ -102,6 +129,23 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Configures the view model that should be navigated to during framework startup.
+    /// </summary>
+    /// <typeparam name="TViewModel">
+    /// The startup target view model type.
+    /// </typeparam>
+    /// <param name="services">
+    /// The service collection.
+    /// </param>
+    /// <returns>
+    /// The updated service collection.
+    /// </returns>
+    /// <remarks>
+    /// The configured type is stored in <see cref="StartupOptions"/> and is used by
+    /// the MAUI starter after the shell has been created.
+    /// <see cref="AddMvvmNav"/> must be called before this method.
+    /// </remarks>
     public static IServiceCollection WithStartupNavigation<TViewModel>(this IServiceCollection services)
         where TViewModel : class
     {
@@ -113,6 +157,19 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Gets the registered <see cref="StartupOptions"/> instance required by the fluent MAUI setup methods.
+    /// </summary>
+    /// <param name="services">
+    /// The service collection.
+    /// </param>
+    /// <returns>
+    /// The registered <see cref="StartupOptions"/> implementation instance.
+    /// </returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when <see cref="StartupOptions"/> is not registered as an implementation instance.
+    /// This usually indicates that <see cref="AddMvvmNav"/> was not called first.
+    /// </exception>
     private static StartupOptions GetRequiredOptions(IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
@@ -124,6 +181,6 @@ public static class ServiceCollectionExtensions
 
         throw new InvalidOperationException(
             $"{nameof(StartupOptions)} must be registered as an implementation instance. " +
-            $"Call AddMvvmNavMaui() before using the fluent With... methods.");
+            $"Call AddMvvmNav() before using the fluent With... methods.");
     }
 }

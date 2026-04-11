@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(services);
 
         services.AddMvvmNavCore();
-        services.AddSingleton(new AvaloniaMvvmNavOptions());
+        services.AddSingleton(new MvvmNavOptions());
         services.AddSingleton<IMvvmNavStarter, MvvmNavStarter>();
         services.AddSingleton<IDialogService, AvaloniaDialogService>();
 
@@ -76,15 +76,15 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static AvaloniaMvvmNavOptions GetRequiredOptions(IServiceCollection services)
+    private static MvvmNavOptions GetRequiredOptions(IServiceCollection services)
     {
-        var descriptor = services.LastOrDefault(x => x.ServiceType == typeof(AvaloniaMvvmNavOptions));
+        var descriptor = services.LastOrDefault(x => x.ServiceType == typeof(MvvmNavOptions));
 
-        if (descriptor?.ImplementationInstance is AvaloniaMvvmNavOptions options)
+        if (descriptor?.ImplementationInstance is MvvmNavOptions options)
             return options;
 
         throw new InvalidOperationException(
-            $"{nameof(AvaloniaMvvmNavOptions)} must be registered as an implementation instance. " +
+            $"{nameof(MvvmNavOptions)} must be registered as an implementation instance. " +
             $"Call AddMvvmNav() before using the fluent With... methods.");
     }
 }
