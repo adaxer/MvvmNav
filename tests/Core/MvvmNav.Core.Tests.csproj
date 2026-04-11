@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\core\MvvmNav.Core.csproj" />
+    <ProjectReference Include="..\..\src\Core\MvvmNav.Core.csproj" />
   </ItemGroup>
 
 </Project>

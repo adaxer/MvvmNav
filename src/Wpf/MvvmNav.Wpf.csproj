@@ -6,8 +6,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\core\MvvmNav.Core.csproj" />
-    <ProjectReference Include="..\abstractions\MvvmNav.Abstractions.csproj" />
+    <ProjectReference Include="..\Core\MvvmNav.Core.csproj" />
+    <ProjectReference Include="..\Abstractions\MvvmNav.Abstractions.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
