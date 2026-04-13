@@ -631,6 +631,9 @@ Example: updating a shell status bar.
 - **ViewModel Activation Policies**  
   Supports controlling ViewModel lifetime (e.g. reuse existing instances, single-instance ViewModels).
 
+- **SplashScreen**  
+  Show an interactive Splashscreen during startup to show an image, progress and messages.
+
 ------------------------------------------------------------------------
 
 # Design Principles

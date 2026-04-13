@@ -11,7 +11,7 @@ Navigation is performed using the `NavigationService`.
 - The current ViewModel is pushed onto the **back stack**
 - Use the **back** button to return.
 
-ℹ️ If you change data above, a dialog will ask you to keep them (so it uses a **dirty** flag) 
+ⓘ If you change data above, a dialog will ask you to keep them (so it uses a **dirty** flag) 
 
 👉 And this works, because SettingsViewModel is registered as a **singleton** in the `AppBootstrapper` (thus keeping its values between navigations).
 

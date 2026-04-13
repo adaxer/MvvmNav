@@ -8,7 +8,12 @@
     <UseWPF>true</UseWPF>
     <RootNamespace>ADaxer.MvvmNav.Sample.Wpf</RootNamespace>
     <AssemblyName>ADaxer.MvvmNav.Sample.Wpf</AssemblyName>
+    <ApplicationIcon>Assets\mvvmnav.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\mvvmnav.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Markdig.Wpf" />
@@ -17,6 +22,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Wpf\MvvmNav.Wpf.csproj" />
     <ProjectReference Include="..\..\Common\Sample.Common\Sample.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\mvvmnav.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

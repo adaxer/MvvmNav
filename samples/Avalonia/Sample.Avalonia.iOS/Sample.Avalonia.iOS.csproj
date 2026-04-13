@@ -15,4 +15,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Sample.Avalonia\Sample.Avalonia.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <AppIcon Include="AppIcon" />
+  </ItemGroup>
 </Project>

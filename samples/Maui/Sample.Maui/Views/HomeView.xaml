@@ -3,5 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:idk="clr-namespace:Indiko.Maui.Controls.Markdown;assembly=Indiko.Maui.Controls.Markdown"
              x:Class="Sample.Maui.Views.HomeView">
-    <idk:MarkdownView   MarkdownText="{Binding Markdown}" TextFontSize="18" Margin="8"/>
+
+    <ScrollView Grid.Row="0">
+        <idk:MarkdownView   MarkdownText="{Binding Markdown}" TextFontSize="18" Margin="8"/>
+    </ScrollView>
 </ContentView>

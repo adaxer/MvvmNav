@@ -5,8 +5,10 @@
              x:Class="Sample.Maui.Views.DetailsView">
     <Grid RowDefinitions="*,Auto">
 
-        <idk:MarkdownView   MarkdownText="{Binding Markdown}" TextFontSize="18" Margin="8"/>
-
+        <ScrollView Grid.Row="0">
+            <idk:MarkdownView   MarkdownText="{Binding Markdown}" TextFontSize="18" Margin="8"/>
+        </ScrollView>
+        
         <HorizontalStackLayout Grid.Row="1"
                            HorizontalOptions="Center"
                            Spacing="12"

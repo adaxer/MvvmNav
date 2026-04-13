@@ -21,7 +21,7 @@ public partial class ShellViewModel : ViewModelBase, IShellViewModel, IDialogHos
         NavigationItems =
         [
             new NavigationItem("🏠 Home","Overview", NavigateHomeCommand),
-            new NavigationItem("ℹ️ About", "Simple dialog example", ShowAboutCommand),
+            new NavigationItem("ⓘ About", "Simple dialog example", ShowAboutCommand),
             new NavigationItem("⚙️ Settings", "Back Navigation example", NavigateSettingsCommand),
             new NavigationItem("✨ Features", "Framework overview", NavigateFeaturesCommand)
         ];

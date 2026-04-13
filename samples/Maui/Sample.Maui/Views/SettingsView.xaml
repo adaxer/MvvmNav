@@ -29,7 +29,9 @@
             </HorizontalStackLayout>
         </Border>
 
-        <idk:MarkdownView   MarkdownText="{Binding Markdown}" TextFontSize="18" Margin="8"/>
+        <ScrollView Grid.Row="0">
+            <idk:MarkdownView   MarkdownText="{Binding Markdown}" TextFontSize="18" Margin="8"/>
+        </ScrollView>
 
     </VerticalStackLayout>
 </ContentView>
