@@ -22,7 +22,7 @@ public partial class DetailsViewModel : ViewModelBase, INavigationAware
     }
 
     [ObservableProperty]
-    private string markdown = string.Empty;
+    private string _markdown = string.Empty;
 
     [ObservableProperty]
     private FeatureItem? _feature;

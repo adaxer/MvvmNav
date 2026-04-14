@@ -39,6 +39,6 @@ public partial class FeaturesViewModel : ViewModelBase, INavigationAware
     public async Task OnNavigatedToAsync(NavigationParameters context)
     {
         Features = await _featureService.GetFeaturesAsync();
-        Markdown = await _fileService.GetFileAsync("markdown/features.md");
+        Markdown = await _fileService.GetFileAsync("MarkDown", "features.md");
     }
 }

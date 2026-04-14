@@ -14,12 +14,12 @@ public sealed class NavigationParameters
     /// </summary>
     public static NavigationParameters Empty { get; } = new();
 
-    private IReadOnlyDictionary<string, object?> _parameters { get; }
+    private IReadOnlyDictionary<string, object?> Parameters { get; }
 
     /// <summary>
     /// Initializes a new empty instance of the <see cref="NavigationParameters"/> class.
     /// </summary>
-    public NavigationParameters()
+    private NavigationParameters()
         : this(new Dictionary<string, object?>())
     {
     }
@@ -33,7 +33,7 @@ public sealed class NavigationParameters
     {
         ArgumentNullException.ThrowIfNull(parameters);
 
-        _parameters = new ReadOnlyDictionary<string, object?>(
+        Parameters = new ReadOnlyDictionary<string, object?>(
             new Dictionary<string, object?>(parameters));
     }
 
@@ -53,7 +53,7 @@ public sealed class NavigationParameters
     /// </summary>
     /// <param name="key">The parameter key.</param>
     public object? this[string key]
-        => _parameters.TryGetValue(key, out var value) ? value : null;
+        => Parameters.TryGetValue(key, out var value) ? value : null;
 
     /// <summary>
     /// Tries to get the parameter value associated with the specified key
@@ -71,7 +71,7 @@ public sealed class NavigationParameters
     /// </returns>
     public bool TryGetValue<T>(string key, out T? value)
     {
-        if (_parameters.TryGetValue(key, out var raw) && raw is T typed)
+        if (Parameters.TryGetValue(key, out var raw) && raw is T typed)
         {
             value = typed;
             return true;
@@ -104,14 +104,14 @@ public sealed class NavigationParameters
     /// <returns>A stable string representation of the contained parameters.</returns>
     public string ToNormalizedString()
     {
-        if (_parameters.Count == 0)
+        if (Parameters.Count == 0)
         {
             return string.Empty;
         }
 
         var builder = new StringBuilder();
 
-        foreach (var pair in _parameters.OrderBy(x => x.Key, StringComparer.Ordinal))
+        foreach (var pair in Parameters.OrderBy(x => x.Key, StringComparer.Ordinal))
         {
             if (builder.Length > 0)
             {

@@ -4,8 +4,11 @@ namespace ADaxer.MvvmNav.Sample.Common.Services;
 
 public class FileService : IFileService
 {
-    public async Task<string> GetFileAsync(string path, CancellationToken cancellationToken=default)
+    public Task<string> GetFileAsync(string folderName, string fileName, CancellationToken cancellationToken = default)
     {
-        return await File.ReadAllTextAsync(path, cancellationToken);
+        var basePath = AppContext.BaseDirectory;
+        var filePath = Path.Combine(basePath, folderName, fileName);
+
+        return File.ReadAllTextAsync(filePath,  cancellationToken);
     }
 }

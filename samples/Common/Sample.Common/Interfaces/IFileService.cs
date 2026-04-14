@@ -2,5 +2,5 @@
 
 public interface IFileService
 {
-    Task<string> GetFileAsync(string path, CancellationToken cancellationToken=default);
+    Task<string> GetFileAsync(string folderName, string fileName, CancellationToken cancellationToken=default);
 }
