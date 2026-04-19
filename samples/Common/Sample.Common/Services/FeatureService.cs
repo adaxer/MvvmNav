@@ -55,11 +55,10 @@ public class FeatureService
     public async Task<FeatureItem> GetFeatureAsync(int id)
     {
         var result  = _features.FirstOrDefault(f => f.Id == id);
-        var path = $"markdown/{result?.Key}";
 
-        if (string.IsNullOrEmpty(result?.Markdown))
+        if (string.IsNullOrEmpty(result?.Markdown) && !string.IsNullOrEmpty(result?.Key))
         {
-            result?.Markdown = await _fileService.GetFileAsync(path);
+            result?.Markdown = await _fileService.GetFileAsync("Markdown", result?.Key!);
         }
         return result ?? FeatureItem.Empty;
     }

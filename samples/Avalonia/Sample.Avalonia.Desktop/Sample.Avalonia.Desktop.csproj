@@ -1,9 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net10.0'">
     <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net10.0-macos'">
+    <OutputType>Exe</OutputType>
+    <UseAppHost>true</UseAppHost>
+    <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
+    <ApplicationId>com.adaxer.mvvmnav.sample</ApplicationId>
+
+    <!-- DAS ist der entscheidende Punkt -->
+    <EnableMacOSAppHost>true</EnableMacOSAppHost>
+  </PropertyGroup>
+  
+  <PropertyGroup>
     <!--If you are willing to use platform-specific APIs, use conditional compilation.
     See https://docs.avaloniaui.net/docs/guides/platforms/platform-specific-code/dotnet for more details.-->
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net10.0;net10.0-macos</TargetFrameworks>
     <Nullable>enable</Nullable>
     <RootNamespace>ADaxer.MvvmNav.Sample.Avalonia.Desktop</RootNamespace>
     <AssemblyName>ADaxer.MvvmNav.Sample.Avalonia.Desktop</AssemblyName>
@@ -27,8 +40,19 @@
   <ItemGroup>
     <ProjectReference Include="..\Sample.Avalonia\Sample.Avalonia.csproj" />
   </ItemGroup>
-
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-macos'">
+    <Content Remove="..\..\Common\Sample.Common\markdown\**" />
+  </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
+  </ItemGroup>
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+    <None Include="Platforms/MacOS/Info.plist">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+
+    <Content Include="AppIcon.icns">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>
