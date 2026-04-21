@@ -3,58 +3,89 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-            xmlns:v="clr-namespace:ADaxer.MvvmNav.Avalonia.Views;assembly=ADaxer.MvvmNav.Avalonia"
-            xmlns:vm="using:ADaxer.MvvmNav.Sample.Common.ViewModels"
-            xmlns:m="using:ADaxer.MvvmNav.Sample.Common.Models"
-            x:DataType="vm:ShellViewModel"
+             xmlns:v="clr-namespace:ADaxer.MvvmNav.Avalonia.Views;assembly=ADaxer.MvvmNav.Avalonia"
+             xmlns:vm="using:ADaxer.MvvmNav.Sample.Common.ViewModels"
+             xmlns:m="using:ADaxer.MvvmNav.Sample.Common.Models"
+             xmlns:av="using:ADaxer.MvvmNav.Sample.Avalonia.Android.Views"
+             x:DataType="vm:ShellViewModel" x:Name="Root"
              x:Class="ADaxer.MvvmNav.Sample.Avalonia.Android.Views.ShellView">
-    <Grid>
-        <DockPanel>
-
-            <!-- Header -->
-            <Border DockPanel.Dock="Top"
-                    Padding="10"
-                    Background="#EEE">
-                <StackPanel Orientation="Horizontal">
-                    <Button Command="{Binding GoBackCommand}"
-                            Margin="0,0,10,0"
-                            Classes="round"
-                            Content="🔙" />
-                    <TextBlock Text="{Binding Title}"
-                               FontSize="20"
-                               FontWeight="Bold"
+    <UserControl.Resources>
+        <!-- Expanded Template (when pane is open) -->
+        <DataTemplate x:Key="ExpandedTemplate" DataType="{x:Type m:NavigationItem}">
+            <Button HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
+                    BorderThickness="0"
+                    Background="#E5E5E5"
+                    Command="{Binding Command}"
+                    Margin="0,0,0,6"
+                    Padding="6">
+                <Grid ColumnDefinitions="30,*">
+                    <TextBlock Grid.Column="0" 
+                               Text="{Binding Title, Converter={x:Static av:ShellView.FirstTwoCharsConverter}}"
+                               FontSize="16"
+                               HorizontalAlignment="Center"
                                VerticalAlignment="Center" />
-                </StackPanel>
-            </Border>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Title, Converter={x:Static av:ShellView.TitleWithoutEmojiConverter}}"
+                                   FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding Subtitle}"
+                                   FontSize="11"
+                                   Opacity="0.7" />
+                    </StackPanel>
+                </Grid>
+            </Button>
+        </DataTemplate>
 
-            <!-- Navigation -->
-            <Border DockPanel.Dock="Left"
-                    Background="#F5F5F5"
-                    Padding="10">
+        <!-- Compact Template (when pane is closed) -->
+        <DataTemplate x:Key="CompactTemplate" DataType="{x:Type m:NavigationItem}">
+            <Button HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
+                    BorderThickness="0"
+                    Background="#E5E5E5"
+                    Command="{Binding Command}"
+                    Margin="0,0,0,6"
+                    Padding="6">
+                <TextBlock Text="{Binding Title, Converter={x:Static av:ShellView.FirstTwoCharsConverter}   }"
+                           FontWeight="Regular"
+                           FontSize="14" />
+            </Button>
+        </DataTemplate>
+    </UserControl.Resources>
 
-                <ItemsControl ItemsSource="{Binding NavigationItems}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type m:NavigationItem}">
-                            <Button HorizontalContentAlignment="Left" HorizontalAlignment="Stretch"
-                                    BorderThickness="0"
-                                    Background="#E5E5E5"
-                                    Command="{Binding Command}"
-                                    Margin="0,0,0,6"
-                                    Padding="6">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Title}"
-                                               FontWeight="SemiBold" />
-                                    <TextBlock Text="{Binding Subtitle}"
-                                               FontSize="11"
-                                               Opacity="0.7" />
-                                </StackPanel>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
+    <Grid RowDefinitions="Auto,*">
+        <!-- Header -->
+        <Border DockPanel.Dock="Top"
+                Padding="10"
+                Background="#EEE">
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding GoBackCommand}"
+                        Margin="0,0,10,0"
+                        Classes="round"
+                        Content="🔙" />
+                <TextBlock Text="{Binding Title}"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+        </Border>
+
+        <!-- Navigation -->
+        <SplitView DockPanel.Dock="Left" IsPaneOpen="{Binding #Root.IsPaneOpen}"
+                   Background="#F5F5F5" DisplayMode="CompactInline" OpenPaneLength="180"
+                   Padding="10" Grid.Row="1">
+            <SplitView.Pane>
+                <ItemsControl ItemsSource="{Binding NavigationItems}" x:Name="NavItemsControl">
+                    <ItemsControl.Styles>
+                        <Style Selector="ItemsControl">
+                            <Setter Property="ItemTemplate" Value="{StaticResource ExpandedTemplate}" />
+                        </Style>
+                        <Style Selector="ItemsControl[Tag=False]">
+                            <Setter Property="ItemTemplate" Value="{StaticResource CompactTemplate}" />
+                        </Style>
+                    </ItemsControl.Styles>
+                    <ItemsControl.Tag>
+                        <Binding Path="#Root.IsPaneOpen" />
+                    </ItemsControl.Tag>
                 </ItemsControl>
-
-            </Border>
-
+            </SplitView.Pane>
             <!-- Active Module -->
             <Grid Background="White">
 
@@ -79,10 +110,12 @@
 
             </Grid>
 
-        </DockPanel>
+        </SplitView>
+
+
 
         <!-- Dialog Overlay -->
-        <Border Background="#80000000"
+        <Border Background="#80000000" Grid.RowSpan="2"
                 IsVisible="{Binding CurrentDialog, Converter={StaticResource TruthyToBoolConverter}}">
             <v:AvaloniaDialogView DataContext="{Binding CurrentDialog}" />
         </Border>

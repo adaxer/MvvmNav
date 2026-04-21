@@ -3,7 +3,8 @@
     x:Class="Sample.Maui.Views.ShellPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:vm="clr-namespace:ADaxer.MvvmNav.Sample.Common.ViewModels;assembly=Sample.Common"
+    xmlns:m="clr-namespace:ADaxer.MvvmNav.Sample.Common.Models;assembly=ADaxer.MvvmNav.Sample.Common"
+    xmlns:vm="clr-namespace:ADaxer.MvvmNav.Sample.Common.ViewModels;assembly=ADaxer.MvvmNav.Sample.Common"
     xmlns:c="clr-namespace:ADaxer.MvvmNav.Maui.Views;assembly=ADaxer.MvvmNav.Maui"
     xmlns:local="clr-namespace:Sample.Maui.Views"
     x:Name="RootPage"
@@ -42,7 +43,7 @@
                                 Margin="0,8,0,0"
                                 BindableLayout.ItemsSource="{Binding NavigationItems}">
                     <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="vm:NavigationItem">
+                        <DataTemplate x:DataType="m:NavigationItem">
                             <Border Margin="0,0,0,6"
                                     Padding="6"
                                     BackgroundColor="#01000000">

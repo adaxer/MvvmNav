@@ -33,7 +33,6 @@ public class MainApplication : AvaloniaAndroidApplication<App>
         var result = AppBuilder.Configure<App>(() => new App { ServiceProvider = serviceProvider })
             .UseAndroid()
             .WithInterFont()
-            .WithDeveloperTools()
             .LogToTrace();
 
         return result;
