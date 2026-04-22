@@ -11,11 +11,14 @@ public sealed class MauiFileService : IFileService
     {
         _logger = logger;
     }
-    public async Task<string> GetFileAsync(string path, CancellationToken cancellationToken = default)
+    public async Task<string> GetFileAsync(string folderName, string fileName, CancellationToken cancellationToken = default)
     {
+        var path = Path.Combine(folderName, fileName);
         try
         {
+#pragma warning disable CA1416 // FileSystem is a cross-platform MAUI API
             await using var stream = await FileSystem.Current.OpenAppPackageFileAsync(path);
+#pragma warning restore CA1416
             using var reader = new StreamReader(stream);
             return await reader.ReadToEndAsync(cancellationToken);
         }

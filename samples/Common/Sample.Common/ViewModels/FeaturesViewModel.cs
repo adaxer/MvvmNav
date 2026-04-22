@@ -19,7 +19,7 @@ public partial class FeaturesViewModel : ViewModelBase, INavigationAware
         _fileService = fileService;
         _navigationService = navigationService;
         _featureService = featureService;
-        Title= "✨ Features";
+        Title= "🎯 Features";
     }
 
     [ObservableProperty]
@@ -39,6 +39,6 @@ public partial class FeaturesViewModel : ViewModelBase, INavigationAware
     public async Task OnNavigatedToAsync(NavigationParameters context)
     {
         Features = await _featureService.GetFeaturesAsync();
-        Markdown = await _fileService.GetFileAsync("MarkDown", "features.md");
+        Markdown = await _fileService.GetFileAsync("markdown", "features.md");
     }
 }

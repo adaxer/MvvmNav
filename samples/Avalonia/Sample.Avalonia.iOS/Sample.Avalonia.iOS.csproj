@@ -19,4 +19,16 @@
   <ItemGroup>
     <AppIcon Include="AppIcon" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\ShellView.axaml.cs">
+      <DependentUpon>ShellView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="..\..\Common\Sample.Common\Markdown\**\*.md">
+      <Link>Assets\markdown\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </AvaloniaResource>
+  </ItemGroup>
 </Project>

@@ -6,9 +6,10 @@
              xmlns:v="clr-namespace:ADaxer.MvvmNav.Avalonia.Views;assembly=ADaxer.MvvmNav.Avalonia"
              xmlns:vm="using:ADaxer.MvvmNav.Sample.Common.ViewModels"
              xmlns:m="using:ADaxer.MvvmNav.Sample.Common.Models"
-             xmlns:av="using:ADaxer.MvvmNav.Sample.Avalonia.Android.Views"
+             xmlns:iv="using:ADaxer.MvvmNav.Sample.Avalonia.iOS.Views"
              x:DataType="vm:ShellViewModel" x:Name="Root"
-             x:Class="ADaxer.MvvmNav.Sample.Avalonia.Android.Views.ShellView">
+             x:Class="ADaxer.MvvmNav.Sample.Avalonia.iOS.Views.ShellView">
+
     <UserControl.Resources>
         <!-- Expanded Template (when pane is open) -->
         <DataTemplate x:Key="ExpandedTemplate" DataType="{x:Type m:NavigationItem}">
@@ -19,13 +20,13 @@
                     Margin="0,0,0,6"
                     Padding="6">
                 <Grid ColumnDefinitions="30,*">
-                    <TextBlock Grid.Column="0" 
-                               Text="{Binding Title, Converter={x:Static av:ShellView.FirstTwoCharsConverter}}"
+                    <TextBlock Grid.Column="0"
+                               Text="{Binding Title, Converter={x:Static iv:ShellView.FirstTwoCharsConverter}}"
                                FontSize="16"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center" />
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding Title, Converter={x:Static av:ShellView.TitleWithoutEmojiConverter}}"
+                        <TextBlock Text="{Binding Title, Converter={x:Static iv:ShellView.TitleWithoutEmojiConverter}}"
                                    FontWeight="SemiBold" />
                         <TextBlock Text="{Binding Subtitle}"
                                    FontSize="11"
@@ -43,7 +44,7 @@
                     Command="{Binding Command}"
                     Margin="0,0,0,6"
                     Padding="6">
-                <TextBlock Text="{Binding Title, Converter={x:Static av:ShellView.FirstTwoCharsConverter}   }"
+                <TextBlock Text="{Binding Title, Converter={x:Static iv:ShellView.FirstTwoCharsConverter}   }"
                            FontWeight="Regular"
                            FontSize="14" />
             </Button>
@@ -85,6 +86,7 @@
                     </ItemsControl.Tag>
                 </ItemsControl>
             </SplitView.Pane>
+
             <!-- Active Module -->
             <Grid Background="White">
 
@@ -108,10 +110,7 @@
                 </Border>
 
             </Grid>
-
         </SplitView>
-
-
 
         <!-- Dialog Overlay -->
         <Border Background="#80000000" Grid.RowSpan="2"

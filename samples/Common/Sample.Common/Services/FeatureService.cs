@@ -58,7 +58,7 @@ public class FeatureService
 
         if (string.IsNullOrEmpty(result?.Markdown) && !string.IsNullOrEmpty(result?.Key))
         {
-            result?.Markdown = await _fileService.GetFileAsync("Markdown", result?.Key!);
+            result?.Markdown = await _fileService.GetFileAsync("markdown", result?.Key!);
         }
         return result ?? FeatureItem.Empty;
     }

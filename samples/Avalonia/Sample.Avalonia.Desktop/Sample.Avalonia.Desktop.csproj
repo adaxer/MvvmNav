@@ -43,9 +43,6 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-macos'">
     <Content Remove="..\..\Common\Sample.Common\markdown\**" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\" />
-  </ItemGroup>
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
     <None Include="Platforms/MacOS/Info.plist">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -54,5 +51,8 @@
     <Content Include="AppIcon.icns">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\markdown\" />
   </ItemGroup>
 </Project>

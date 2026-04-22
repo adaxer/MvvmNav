@@ -32,4 +32,21 @@ public class AndroidFileService : IFileService
             throw;
         }
     }
+
+    public async Task<string> GetFileAsync(string folderName, string fileName, CancellationToken cancellationToken = default)
+    {
+        var path = Path.Combine(folderName, fileName);
+        try
+        {
+            using var stream = _assets.Open(path);
+            using var reader = new StreamReader(stream);
+            var result = await reader.ReadToEndAsync(cancellationToken);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error reading file {Path}", path);
+            throw;
+        }
+    }
 }

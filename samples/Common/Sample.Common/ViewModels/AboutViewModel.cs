@@ -22,6 +22,6 @@ public partial class AboutViewModel : DialogViewModelBase, INavigationAware, IDi
 
     public async Task OnNavigatedToAsync(NavigationParameters context)
     {
-        Markdown = await _fileService.GetFileAsync("MarkDown", "about.md");
+        Markdown = await _fileService.GetFileAsync("markdown", "about.md");
     }
 }

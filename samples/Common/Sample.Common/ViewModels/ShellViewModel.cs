@@ -23,7 +23,7 @@ public partial class ShellViewModel : ViewModelBase, IShellViewModel, IDialogHos
             new NavigationItem("🏠 Home","Overview", NavigateHomeCommand),
             new NavigationItem("ⓘ About", "Simple dialog example", ShowAboutCommand),
             new NavigationItem("⚙️ Settings", "Back Navigation example", NavigateSettingsCommand),
-            new NavigationItem("✨ Features", "Framework overview", NavigateFeaturesCommand)
+            new NavigationItem("🎯 Features", "Framework overview", NavigateFeaturesCommand)
         ];
     }
 
