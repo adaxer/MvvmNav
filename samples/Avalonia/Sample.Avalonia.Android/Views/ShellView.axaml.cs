@@ -2,7 +2,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
-using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using ADaxer.MvvmNav.Avalonia.Extensions;
