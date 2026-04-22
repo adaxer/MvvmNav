@@ -6,7 +6,15 @@
     <Nullable>enable</Nullable>
     <RootNamespace>ADaxer.MvvmNav.Sample.Avalonia.iOS</RootNamespace>
     <AssemblyName>ADaxer.MvvmNav.Sample.Avalonia.iOS</AssemblyName>
+    <ApplicationId>com.adaxer.mvvmnav.avalonia.ios</ApplicationId>
+    <ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+  </PropertyGroup> 
+
+  <PropertyGroup>
+    <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
   </PropertyGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Avalonia.iOS" />

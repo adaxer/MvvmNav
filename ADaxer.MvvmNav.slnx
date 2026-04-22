@@ -15,8 +15,7 @@
       <Build Solution="Debug|*" Project="false" />
     </Project>
     <Project Path="samples/Avalonia/Sample.Avalonia.iOS/Sample.Avalonia.iOS.csproj" Id="c556b191-2442-42b3-987b-f1903e90fd3e">
-      <Build Solution="Debug|*" Project="false" />
-      <Deploy Solution="Release|*" />
+      <Deploy />
     </Project>
     <Project Path="samples/Avalonia/Sample.Avalonia/Sample.Avalonia.csproj" Id="df15b951-3d3d-4667-81b8-b643470a51ed">
       <Build Solution="Debug|*" Project="false" />
