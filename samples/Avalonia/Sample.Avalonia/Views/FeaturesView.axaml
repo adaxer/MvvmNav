@@ -8,29 +8,29 @@
              x:DataType="vm:FeaturesViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ADaxer.MvvmNav.Sample.Avalonia.Views.FeaturesView">
-  <Grid Margin="12">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
+    <ScrollViewer >
+        <Grid Margin="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-    <v:MarkdownView Grid.Row="0" Markdown="{Binding Markdown}" />
+            <v:MarkdownView Grid.Row="0" Markdown="{Binding Markdown}" />
 
-    <ScrollViewer Grid.Row="1" Margin="16,0,16,16">
-      <ItemsControl ItemsSource="{Binding Features}">
-        <ItemsControl.ItemTemplate>
-          <DataTemplate DataType="{x:Type m:FeatureItem}">
-            <Button Padding="4"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Command="{Binding $parent[UserControl].DataContext.ShowFeatureCommand}"
-                    CommandParameter="{Binding Name}">
-              <TextBlock Text="{Binding Name}" FontSize="15" TextDecorations="Underline" />
-            </Button>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
+            <ItemsControl ItemsSource="{Binding Features}" Grid.Row="1" Margin="16,0,16,16">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type m:FeatureItem}">
+                        <Button Padding="4"
+                                HorizontalAlignment="Left"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Command="{Binding $parent[UserControl].DataContext.ShowFeatureCommand}"
+                                CommandParameter="{Binding Name}">
+                            <TextBlock Text="{Binding Name}" FontSize="15" TextDecorations="Underline" />
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
     </ScrollViewer>
-  </Grid>
 </UserControl>

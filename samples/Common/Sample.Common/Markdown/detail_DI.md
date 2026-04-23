@@ -8,7 +8,7 @@
 - Services are injected via constructors
 - Framework components are registered automatically
 - No service locator required
-- Generic Factory (`IFactory<T>`) is included for creating instances correctly
+- Generic Factory (`IFactory<T>`) is included for dynamically creating instances
 
 👉 Registration order for common and platform independent services (see `FileService` in this sample).
 

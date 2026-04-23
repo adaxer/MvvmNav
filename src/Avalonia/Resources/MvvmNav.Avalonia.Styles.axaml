@@ -24,6 +24,7 @@
     <Style Selector="v|AvaloniaDialogView">
         <Setter Property="MaxWidth" Value="800" />
         <Setter Property="MaxHeight" Value="450" />
+        <Setter Property="Margin" Value="10" />
         <Setter Property="Background" Value="White" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />

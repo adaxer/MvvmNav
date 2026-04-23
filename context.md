@@ -608,6 +608,9 @@ Example: updating a shell status bar.
 - **Typed Navigation Parameters**  
   Supports strongly typed navigation parameters to avoid string-based parameter keys.
 
+- **Integrating Mobile specific Back Navigation**  
+  Support Androids intrinsic BackNavigation and offer an iOS consistent look for back navigation.
+
 ---
 
 ### Under Consideration

@@ -2,7 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ADaxer.MvvmNav.Maui.Views.MessageView">
-    <VerticalStackLayout>
+    <VerticalStackLayout Margin="10">
         <Label Margin="8" Text="{Binding Message}"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />

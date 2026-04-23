@@ -46,8 +46,6 @@ public async Task<string> GetFileAsync(string folderName, string fileName, Cance
     -   als `AvaloniaResource` markiert sein
 -   Zugriff erfolgt ausschließlich über `avares://`
 
-Typische Ursache: \> Assets liegen im Projekt, aber nicht im Assembly
-
 ## Typische Stolperfallen (Mac / iOS / Avalonia / MAUI)
 
 ### 1. Try/Catch greift nicht bei async
@@ -81,13 +79,33 @@ Typische Ursache: \> Assets liegen im Projekt, aber nicht im Assembly
 
 ### 7. „Datei ist doch da!"
 
--   Im Repo ja, im Bundle nein
+-   Im Repo ja
+-   Im Bundle nein
 
-## Kurzfazit
+## 🔐 iOS Signing & Deployment
 
-Wenn etwas mit Files auf iOS nicht funktioniert, prüfe:
+### 8. Fehlende Codesigning-Identität
 
-1.  Ist es als `AvaloniaResource` eingebunden?
-2.  Stimmt der `avares://` Pfad inkl. Assembly?
-3.  Wird wirklich `await` verwendet?
-4.  Läuft es nur auf Desktop, aber nicht mobil?
+-   Kein Apple Development Zertifikat im Keychain
+-   oder ohne privaten Schlüssel
+-   Lösung: Xcode → Accounts → Manage Certificates
+
+### 9. Keine Bereitstellungsprofile gefunden
+
+-   Kein Profil für den exakten Bundle Identifier
+-   Lösung: Xcode Run auf echtem Gerät → Profil wird erzeugt
+
+### 10. Bundle Identifier ist entscheidend
+
+-   Product Name egal
+-   Bundle Identifier = Identität
+-   Muss exakt übereinstimmen
+
+### 11. Xcode vor Rider benutzen
+
+-   Bei Problemen immer zuerst in Xcode testen
+
+### 12. RuntimeIdentifier entscheidet
+
+`ios-arm64` → echtes Gerät\
+`iossimulator-*` → Simulator

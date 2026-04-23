@@ -7,7 +7,7 @@
     xmlns:c="clr-namespace:ADaxer.MvvmNav.Maui.Views;assembly=ADaxer.MvvmNav.Maui"
     x:Name="Root">
 
-    <Grid Padding="24">
+    <Grid Padding="24" Margin="10">
         <Border Stroke="#C8C8C8"
                 StrokeThickness="1"
                 BackgroundColor="White"

@@ -1,10 +1,12 @@
 ﻿## MvvmNav SampleApp
 
-This sample demonstrates **MvvmNav** in a small cross-platform application.
+_Maintained by Andreas Daxer – github.com/adaxer_
+
+ⓘ This sample demonstrates **MvvmNav** in a small cross-platform application.
 
 - **ViewModel-first navigation**
 - Based on **CommunityToolkit.Mvvm**, so properties and commands are handled in a modern way
-- `ShellView` and `ShellViewModel` only need to implement the required interfaces
+- `ShellView` and `ShellViewModel` only need to implement small interfaces
 - The `NavigationService` is injected into the `ShellViewModel`
 - Navigation stays fully **ViewModel-first**
 - Views are resolved using native **DataTemplates**

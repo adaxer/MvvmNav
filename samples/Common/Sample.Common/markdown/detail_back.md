@@ -7,7 +7,7 @@ MvvmNav provides built-in back navigation with full stack control.
 - Each entry includes ViewModel type, parameters and NavigationKey
 - `GoBackAsync()` restores the previous target with original parameters
 - Navigation guards are evaluated before navigating back
-- Platform-specific back navigation (e.g. mobile back button) is supported
+- Platform-specific back navigation (e.g. mobile back button) easily supportable
 
 ### Behavior
 - `ClearBackStack` resets navigation history

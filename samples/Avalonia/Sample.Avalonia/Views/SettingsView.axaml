@@ -7,20 +7,23 @@
              x:DataType="vm:SettingsViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ADaxer.MvvmNav.Sample.Avalonia.Views.SettingsView">
-  <DockPanel>
-    <DockPanel DockPanel.Dock="Top" Margin="10" Background="#FDD">
-      <CheckBox VerticalAlignment="Center"
-                Content="Check or uncheck to change state"
-                IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                Margin="0,0,8,0" />
-      <TextBlock VerticalAlignment="Center"
-                 Text="Enter text:"
-                 Margin="0,0,8,0" />
-      <TextBox Background="Transparent"
-               VerticalAlignment="Center"
-               Text="{Binding State, Mode=TwoWay}" />
-    </DockPanel>
+    <DockPanel>
+        <StackPanel Margin="8" DockPanel.Dock="Top" Background="#FDD">
+            <CheckBox VerticalAlignment="Center"
+                      Content="Check or uncheck to change state"
+                      IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                      Margin="8,8,8,4" />
+            <Grid ColumnDefinitions="Auto,*" Margin="8,4">
+                <TextBlock VerticalAlignment="Center"
+                           Text="Enter text:"
+                           Margin="0,0,8,0" />
+                <TextBox Background="Transparent" Grid.Column="1"
+                         VerticalAlignment="Center" 
+                         HorizontalAlignment="Stretch"
+                         Text="{Binding State, Mode=TwoWay}" />
+            </Grid>
+        </StackPanel>
 
-    <v:MarkdownView Markdown="{Binding Markdown}" />
-  </DockPanel>
+        <v:MarkdownView Markdown="{Binding Markdown}" />
+    </DockPanel>
 </UserControl>

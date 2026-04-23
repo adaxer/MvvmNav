@@ -11,15 +11,11 @@
     <Project Path="samples/Avalonia/Sample.Avalonia.Android/Sample.Avalonia.Android.csproj" Id="03dfa1f0-9e7b-465d-ba38-54eaddbe7f40">
       <Deploy />
     </Project>
-    <Project Path="samples/Avalonia/Sample.Avalonia.Desktop/Sample.Avalonia.Desktop.csproj" Id="c867c831-6d98-40ad-a7ed-85907eb5d7b2">
-      <Build Solution="Debug|*" Project="false" />
-    </Project>
+    <Project Path="samples/Avalonia/Sample.Avalonia.Desktop/Sample.Avalonia.Desktop.csproj" Id="c867c831-6d98-40ad-a7ed-85907eb5d7b2" />
     <Project Path="samples/Avalonia/Sample.Avalonia.iOS/Sample.Avalonia.iOS.csproj" Id="c556b191-2442-42b3-987b-f1903e90fd3e">
       <Deploy />
     </Project>
-    <Project Path="samples/Avalonia/Sample.Avalonia/Sample.Avalonia.csproj" Id="df15b951-3d3d-4667-81b8-b643470a51ed">
-      <Build Solution="Debug|*" Project="false" />
-    </Project>
+    <Project Path="samples/Avalonia/Sample.Avalonia/Sample.Avalonia.csproj" Id="df15b951-3d3d-4667-81b8-b643470a51ed" />
   </Folder>
   <Folder Name="/samples/Common/">
     <Project Path="samples/Common/Sample.Common/Sample.Common.csproj" Id="b20c8895-0afc-4bb6-b9a0-7dc53c04412a" />
