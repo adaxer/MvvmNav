@@ -1,25 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net10.0;net10.0-android</TargetFrameworks>
+    <TargetFrameworks>net10.0-android</TargetFrameworks>
     <TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
 
     <UseMaui>true</UseMaui>
     <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
     <SingleProject>true</SingleProject>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+
     <RootNamespace>ADaxer.MvvmNav.Maui</RootNamespace>
     <AssemblyName>ADaxer.MvvmNav.Maui</AssemblyName>
 
-    <!-- Enable XAML source generation for faster build times and improved performance.
-		     This generates C# code from XAML at compile time instead of runtime inflation.
-		     To disable, remove this line.
-		     For individual files, you can override by setting Inflator metadata:
-		       <MauiXaml Update="MyPage.xaml" Inflator="Default" /> (reverts to defaults: Runtime for Debug, XamlC for Release)
-		       <MauiXaml Update="MyPage.xaml" Inflator="Runtime" /> (force runtime inflation) -->
-    <!--<MauiXamlInflator>SourceGen</MauiXamlInflator>-->
+    <PackageId>ADaxer.MvvmNav.Maui</PackageId>
+    <Version>0.1.0</Version>
+    <Description>MAUI integration for ADaxer.MvvmNav, providing ViewModel-first navigation for .NET MAUI applications.</Description>
+    <PackageTags>mvvm navigation maui mvvmnav</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>mvvmnav.png</PackageIcon>
 
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
@@ -30,12 +28,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.51" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.201" PrivateAssets="All" />
+    <PackageReference Include="ADaxer.MvvmNav.Core" Version="0.1.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
+    <PackageReference Include="ADaxer.MvvmNav.Abstractions" Version="0.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\MvvmNav.Core.csproj" />
-    <ProjectReference Include="..\Abstractions\MvvmNav.Abstractions.csproj" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\mvvmnav.png" Pack="true" PackagePath="\" Link="mvvmnav.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,26 +7,28 @@
     <PackageVersion Include="Markdig.Wpf" Version="0.5.0.1" />
     <PackageVersion Include="Markdown.Xaml" Version="1.0.0" />
     <PackageVersion Include="MdXaml" Version="1.27.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageVersion Include="FluentAssertions" Version="8.2.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.7" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="ModernWpf.Toolkit.UI.Controls.Markdown" Version="0.1.0" />
     <PackageVersion Include="NSubstitute" Version="5.3.0" />
-    <PackageVersion Include="TUnit" Version="1.30.8" />
+    <PackageVersion Include="TUnit" Version="1.39.0" />
     <PackageVersion Include="Xaml.Behaviors.Avalonia" Version="12.0.0" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.201" />
-    <PackageVersion Include="Avalonia" Version="12.0.0" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.0.0" />
-    <PackageVersion Include="Avalonia.Fonts.Inter" Version="12.0.0" />
-    <PackageVersion Include="Avalonia.Desktop" Version="12.0.0" />
-    <PackageVersion Include="Avalonia.iOS" Version="12.0.0" />
-    <PackageVersion Include="Avalonia.Android" Version="12.0.0" />
-    <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.0" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.203" />
+    <PackageVersion Include="Avalonia" Version="12.0.1" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.0.1" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="12.0.1" />
+    <PackageVersion Include="Avalonia.Desktop" Version="12.0.1" />
+    <PackageVersion Include="Avalonia.iOS" Version="12.0.1" />
+    <PackageVersion Include="Avalonia.Android" Version="12.0.1" />
+    <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.1" />
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.2.0.2" />
     <PackageVersion Include="Tmds.DBus.Protocol" Version="0.92.0" />
+    <PackageVersion Include="ADaxer.MvvmNav.Abstractions" Version="0.1.0" />
+    <PackageVersion Include="ADaxer.MvvmNav.Core" Version="0.1.0" />
   </ItemGroup>
 </Project>

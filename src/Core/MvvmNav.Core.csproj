@@ -1,17 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>ADaxer.MvvmNav.Core</RootNamespace>
     <AssemblyName>ADaxer.MvvmNav.Core</AssemblyName>
+    
+    <PackageId>ADaxer.MvvmNav.Core</PackageId>
+    <Version>0.1.0</Version>
+    <Description>Core library for ADaxer.MvvmNav, a lightweight MVVM navigation framework for WPF, Avalonia and .NET MAUI.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
   </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\mvvmnav.png" Pack="true" PackagePath="\" Link="mvvmnav.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="ADaxer.MvvmNav.Abstractions" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Abstractions\MvvmNav.Abstractions.csproj" />
-  </ItemGroup>
-
+  
 </Project>
