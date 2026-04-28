@@ -6,6 +6,7 @@
     <File Path=".editorconfig" />
     <File Path=".gitignore" />
     <File Path="Pack-Local.ps1" />
+    <File Path="README.md" />
     <File Path="UpVersion.cs" />
   </Folder>
   <Folder Name="/samples/" />
