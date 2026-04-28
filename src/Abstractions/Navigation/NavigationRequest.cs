@@ -9,21 +9,21 @@ public sealed class NavigationRequest
     /// Gets the target type that should be activated.
     /// This may be <c>null</c> for back navigation.
     /// </summary>
-    public Type? TargetType { get; init; }
+    public Type? TargetType { get; set; }
 
     /// <summary>
     /// Gets the navigation parameters passed to the request.
     /// </summary>
-    public NavigationParameters Parameters { get; init; } = NavigationParameters.Empty;
+    public NavigationParameters Parameters { get; set; } = NavigationParameters.Empty;
 
     /// <summary>
     /// Gets the normalized navigation key that identifies the semantic navigation target.
     /// Equal keys represent the same target for navigation comparison purposes.
     /// </summary>
-    public string? NavigationKey { get; init; }
+    public string? NavigationKey { get; set; }
 
     /// <summary>
     /// Gets a value indicating whether the request represents a back navigation.
     /// </summary>
-    public bool IsBackNavigation { get; init; }
+    public bool IsBackNavigation { get; set; }
 }

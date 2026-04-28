@@ -23,8 +23,10 @@ public sealed class DialogCommandInfo
     /// </param>
     public DialogCommandInfo(string text, DialogResult result)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(text);
-        ArgumentNullException.ThrowIfNull(result);
+        if (string.IsNullOrWhiteSpace(text))
+            throw new ArgumentException("Value cannot be null or whitespace.", nameof(text));
+        if (result == null)
+            throw new ArgumentNullException(nameof(result));
 
         Text = text;
         Result = result;
@@ -53,6 +55,6 @@ public sealed class DialogCommandInfo
     /// command (e.g. highlight the button or apply a primary style).
     /// 
     /// This property does not affect dialog logic.
-    /// </remarks>
-    public bool IsPrimary { get; init; }
+    /// </remarks> 
+    public bool IsPrimary { get; set; }
 }

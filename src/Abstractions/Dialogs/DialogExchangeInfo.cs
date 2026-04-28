@@ -54,5 +54,5 @@ public sealed class DialogExchangeInfo
     /// If no callback is provided, the dialog host will close the dialog
     /// immediately using the selected result.
     /// </remarks>
-    public Func<DialogResult, CancellationToken, Task<bool>>? ContinueAsync { get; init; }
+    public Func<DialogResult, CancellationToken, Task<bool>>? ContinueAsync { get; set; }
 }

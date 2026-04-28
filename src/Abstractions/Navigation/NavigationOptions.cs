@@ -14,20 +14,20 @@ public sealed class NavigationOptions
     /// Gets a value indicating whether the current target should be added
     /// to the back stack before activating the new target.
     /// </summary>
-    public bool AddToBackStack { get; init; } = true;
+    public bool AddToBackStack { get; set; } = true;
 
     /// <summary>
     /// Gets a value indicating whether the back stack should be cleared
     /// before the navigation is performed.
     /// </summary>
-    public bool ClearBackStack { get; init; }
+    public bool ClearBackStack { get; set; }
 
     /// <summary>
     /// Gets the optional custom navigation key used to identify the semantic target.
     /// If not specified, the navigation service may derive a default key
     /// from the target type and navigation parameters.
     /// </summary>
-    public string? NavigationKey { get; init; }
+    public string? NavigationKey { get; set; }
 
     /// <summary>
     /// Creates a new <see cref="NavigationOptions"/> instance with the specified navigation key.
@@ -36,7 +36,8 @@ public sealed class NavigationOptions
     /// <returns>A new <see cref="NavigationOptions"/> instance.</returns>
     public static NavigationOptions WithKey(string navigationKey)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(navigationKey);
+        if (string.IsNullOrWhiteSpace(navigationKey))
+            throw new ArgumentException("Value cannot be null or whitespace.", nameof(navigationKey));
 
         return new NavigationOptions
         {

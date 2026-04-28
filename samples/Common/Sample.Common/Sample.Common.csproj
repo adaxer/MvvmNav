@@ -10,9 +10,9 @@
     </Content>
   </ItemGroup>  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="ADaxer.MvvmNav.Core" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Abstractions\MvvmNav.Abstractions.csproj" />
-    <ProjectReference Include="..\..\..\src\Core\MvvmNav.Core.csproj" />
   </ItemGroup>
 </Project>

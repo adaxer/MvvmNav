@@ -1,4 +1,4 @@
-namespace ADaxer.MvvmNav.Core;
+﻿namespace ADaxer.MvvmNav.Core;
 
 using ADaxer.MvvmNav.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +22,8 @@ public sealed class GenericFactory<T> : IFactory<T>
     /// </param>
     public GenericFactory(IServiceProvider serviceProvider)
     {
-        ArgumentNullException.ThrowIfNull(serviceProvider);
+        if (serviceProvider == null)
+            throw new ArgumentNullException(nameof(serviceProvider));
         _serviceProvider = serviceProvider;
     }
 

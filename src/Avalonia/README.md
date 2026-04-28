@@ -1,27 +1,25 @@
-# ADaxer.MvvmNav.Wpf
+# ADaxer.MvvmNav.Avalonia
 
-WPF integration for **ADaxer.MvvmNav**, a lightweight MVVM navigation
+Avalonia integration for **ADaxer.MvvmNav**, a lightweight MVVM navigation
 framework for WPF, Avalonia and .NET MAUI.
 
-This package provides the WPF-specific implementation required to
-connect the platform-independent navigation logic from `Core` with WPF
+This package provides the Avalonia-specific implementation required to
+connect the platform-independent navigation logic from `Core` with Avalonia
 views.
 
 ## Purpose
 
-`ADaxer.MvvmNav.Wpf` connects the navigation framework to WPF by:
+`ADaxer.MvvmNav.Avalonia` connects the navigation framework to Avalonia by:
 
 -   resolving Views for ViewModels
--   integrating with WPF controls
+-   integrating with Avalonia controls
 -   enabling ViewModel-first navigation
 
 ## Basic Usage
 
 ``` csharp
-services.AddMvvmNavWpf();
+services.AddMvvmNavAvalonia();
 ```
-
-Views are resolved automatically based on the configured `IViewLocator`.
 
 ## Architecture
 
@@ -29,13 +27,13 @@ The framework is structured in layers:
 
 -   `Abstractions` -- contracts
 -   `Core` -- navigation logic
--   `Wpf` -- WPF-specific implementation
+-   `Avalonia` -- Avalonia-specific implementation
 
 ## Related Packages
 
 -   `ADaxer.MvvmNav.Abstractions`
 -   `ADaxer.MvvmNav.Core`
--   `ADaxer.MvvmNav.Avalonia`
+-   `ADaxer.MvvmNav.Wpf`
 -   `ADaxer.MvvmNav.Maui`
 
 ## License

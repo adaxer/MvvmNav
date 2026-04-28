@@ -1,49 +1,41 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net10.0-android</TargetFrameworks>
     <TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
-
     <UseMaui>true</UseMaui>
     <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
     <SingleProject>true</SingleProject>
-
     <RootNamespace>ADaxer.MvvmNav.Maui</RootNamespace>
     <AssemblyName>ADaxer.MvvmNav.Maui</AssemblyName>
-
     <PackageId>ADaxer.MvvmNav.Maui</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.3</Version>
     <Description>MAUI integration for ADaxer.MvvmNav, providing ViewModel-first navigation for .NET MAUI applications.</Description>
     <PackageTags>mvvm navigation maui mvvmnav</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>mvvmnav.png</PackageIcon>
-
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
     <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.51" />
-    <PackageReference Include="ADaxer.MvvmNav.Core" Version="0.1.0" />
+    <PackageReference Include="ADaxer.MvvmNav.Core" Version="0.1.3" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
-    <PackageReference Include="ADaxer.MvvmNav.Abstractions" Version="0.1.0" />
+    <PackageReference Include="ADaxer.MvvmNav.Abstractions" Version="0.1.3" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
     <None Include="..\..\mvvmnav.png" Pack="true" PackagePath="\" Link="mvvmnav.png" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Update="MauiResources.xaml.cs">
       <DependentUpon>MauiResources.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <MauiXaml Update="MauiResources.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -55,12 +47,10 @@
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Platforms\Android\" />
     <Folder Include="Platforms\iOS\" />
     <Folder Include="Platforms\MacCatalyst\" />
     <Folder Include="Platforms\Windows\" />
   </ItemGroup>
-
 </Project>

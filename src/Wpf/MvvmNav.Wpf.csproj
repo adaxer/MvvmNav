@@ -1,27 +1,24 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <RootNamespace>ADaxer.MvvmNav.Wpf</RootNamespace>
     <AssemblyName>ADaxer.MvvmNav.Wpf</AssemblyName>
-
     <PackageId>ADaxer.MvvmNav.Wpf</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.3</Version>
     <Description>WPF library for ADaxer.MvvmNav, a lightweight MVVM navigation framework for WPF, Avalonia and .NET MAUI.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
     <None Include="..\..\mvvmnav.png" Pack="true" PackagePath="\" Link="mvvmnav.png" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="ADaxer.MvvmNav.Core" />
   </ItemGroup>
-
 </Project>

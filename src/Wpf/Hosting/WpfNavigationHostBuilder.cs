@@ -169,7 +169,6 @@ public sealed class WpfNavigationHostBuilder
             {
                 if (_useDefaultLogging)
                 {
-                    logging.AddDebug();
                     logging.SetMinimumLevel(LogLevel.Debug);
                 }
 

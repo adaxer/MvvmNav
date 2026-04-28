@@ -15,7 +15,8 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddMvvmNavCore(this IServiceCollection services)
     {
-        ArgumentNullException.ThrowIfNull(services);
+        if (services == null)
+            throw new ArgumentNullException(nameof(services));
 
         services.AddSingleton(typeof(IFactory<>), typeof(GenericFactory<>));
         services.AddSingleton<INavigationService, NavigationService>();

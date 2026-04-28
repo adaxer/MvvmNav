@@ -17,7 +17,7 @@ public partial class MessageViewModel : DialogViewModelBase, IDialogExchange
     /// <summary>
     /// CommandInfos handed in from outside, to determine, which buttons should be shown in the dialog. If not set, the views default is used.
     /// </summary>
-    public IEnumerable<DialogCommandInfo> CommandInfos { get; set; } = [];
+    public IEnumerable<DialogCommandInfo> CommandInfos { get; set; } = Array.Empty<DialogCommandInfo>();
 
     /// <inheritdoc/>
     public DialogExchangeInfo DialogExchange => new(CommandInfos.ToList());

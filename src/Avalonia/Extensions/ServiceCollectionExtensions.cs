@@ -51,7 +51,6 @@ public static class ServiceCollectionExtensions
 
         services.AddLogging(logging =>
         {
-                logging.AddDebug();
                 logging.SetMinimumLevel(LogLevel.Debug);
         });
 

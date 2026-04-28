@@ -24,7 +24,8 @@ public static class INavigationServiceExtensions
         params (string key, object? value)[] parameters)
         where TTarget : class
     {
-        ArgumentNullException.ThrowIfNull(navigationService);
+        if (navigationService == null)
+            throw new ArgumentNullException(nameof(navigationService));
 
         return navigationService.NavigateAsync<TTarget>(
             new NavigationParameters(parameters));
@@ -51,8 +52,10 @@ public static class INavigationServiceExtensions
         params (string key, object? value)[] parameters)
         where TTarget : class
     {
-        ArgumentNullException.ThrowIfNull(navigationService);
-        ArgumentNullException.ThrowIfNull(options);
+        if (navigationService == null)
+            throw new ArgumentNullException(nameof(navigationService));
+        if (options == null)
+            throw new ArgumentNullException(nameof(options));
 
         return navigationService.NavigateAsync<TTarget>(
             new NavigationParameters(parameters),
@@ -76,7 +79,8 @@ public static class INavigationServiceExtensions
         params (string key, object? value)[] parameters)
         where TDialog : class
     {
-        ArgumentNullException.ThrowIfNull(navigationService);
+        if (navigationService == null)
+            throw new ArgumentNullException(nameof(navigationService));
 
         return navigationService.ShowDialogAsync<TDialog>(
             new NavigationParameters(parameters));
@@ -102,7 +106,8 @@ public static class INavigationServiceExtensions
         params (string key, object? value)[] parameters)
         where TDialog : class
     {
-        ArgumentNullException.ThrowIfNull(navigationService);
+        if (navigationService == null)
+            throw new ArgumentNullException(nameof(navigationService));
 
         return navigationService.ShowDialogAsync<TDialog, TResult>(
             new NavigationParameters(parameters));

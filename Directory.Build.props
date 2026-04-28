@@ -15,8 +15,10 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/ADaxer/MvvmNav</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageTags>mvvm navigation wpf avalonia maui</PackageTags>
+    <PackageTags>mvvm;navigation;wpf;avalonia;maui;viewmodel-first;dialogs</PackageTags>
     <PackageProjectUrl>https://github.com/ADaxer/MvvmNav</PackageProjectUrl>
+    <PackageReleaseNotes>Initial release of the platform-independent Mvvm navigation framework ADaxer.MvvmNav.</PackageReleaseNotes>
+    <Copyright>Copyright © 2026 Andreas Daxer</Copyright>
     <PackageIcon>mvvmnav.png</PackageIcon>
 
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>

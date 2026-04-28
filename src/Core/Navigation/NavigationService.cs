@@ -39,9 +39,12 @@ public class NavigationService : INavigationService
         IDialogService dialogService,
         ILogger<NavigationService> logger)
     {
-        ArgumentNullException.ThrowIfNull(services);
-        ArgumentNullException.ThrowIfNull(dialogService);
-        ArgumentNullException.ThrowIfNull(logger);
+        if (services == null)
+            throw new ArgumentNullException(nameof(services));
+        if (dialogService == null)
+            throw new ArgumentNullException(nameof(dialogService));
+        if (logger == null)
+            throw new ArgumentNullException(nameof(logger));
 
         _services = services;
         _dialogService = dialogService;
@@ -70,7 +73,8 @@ public class NavigationService : INavigationService
         NavigationParameters? parameters = null,
         NavigationOptions? options = null)
     {
-        ArgumentNullException.ThrowIfNull(targetType);
+        if (targetType == null)
+            throw new ArgumentNullException(nameof(targetType));
 
         parameters ??= NavigationParameters.Empty;
         options ??= NavigationOptions.Default;
@@ -319,7 +323,7 @@ public class NavigationService : INavigationService
     {
         if (!string.IsNullOrWhiteSpace(options.NavigationKey))
         {
-            return options.NavigationKey;
+            return options.NavigationKey!;
         }
 
         var normalizedParameters = parameters.ToNormalizedString();
@@ -409,7 +413,8 @@ public class NavigationService : INavigationService
         Type dialogType,
         NavigationParameters context)
     {
-        ArgumentNullException.ThrowIfNull(dialogType);
+        if (dialogType == null)
+            throw new ArgumentNullException(nameof(dialogType));
 
         _logger.LogDebug(
             "Dialog requested. DialogType={DialogType}",
@@ -515,35 +520,69 @@ public class NavigationService : INavigationService
     /// <summary>
     /// Represents a semantic navigation target and its state.
     /// </summary>
-    /// <param name="Target">
-    /// The resolved target instance.
-    /// </param>
-    /// <param name="TargetType">
-    /// The target type.
-    /// </param>
-    /// <param name="Parameters">
-    /// The navigation parameters associated with the target.
-    /// </param>
-    /// <param name="NavigationKey">
-    /// The semantic navigation key.
-    /// </param>
-    private sealed record NavigationEntry(
-        object Target,
-        Type TargetType,
-        NavigationParameters Parameters,
-        string NavigationKey);
+    private sealed class NavigationEntry
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NavigationEntry"/> class.
+        /// </summary>
+        /// <param name="target">The resolved target instance.</param>
+        /// <param name="targetType">The target type.</param>
+        /// <param name="parameters">The navigation parameters associated with the target.</param>
+        /// <param name="navigationKey">The semantic navigation key.</param>
+        public NavigationEntry(object target, Type targetType, NavigationParameters parameters, string navigationKey)
+        {
+            Target = target;
+            TargetType = targetType;
+            Parameters = parameters;
+            NavigationKey = navigationKey;
+        }
+
+        /// <summary>
+        /// Gets the resolved target instance.
+        /// </summary>
+        public object Target { get; }
+
+        /// <summary>
+        /// Gets the target type.
+        /// </summary>
+        public Type TargetType { get; }
+
+        /// <summary>
+        /// Gets the navigation parameters associated with the target.
+        /// </summary>
+        public NavigationParameters Parameters { get; }
+
+        /// <summary>
+        /// Gets the semantic navigation key.
+        /// </summary>
+        public string NavigationKey { get; }
+    }
 
     /// <summary>
     /// Represents the result of evaluating whether the current target
     /// may be left.
     /// </summary>
-    /// <param name="ShouldProceed">
-    /// Indicates whether navigation should continue.
-    /// </param>
-    /// <param name="Result">
-    /// The underlying dialog result associated with the decision.
-    /// </param>
-    private readonly record struct LeaveDecision(
-        bool ShouldProceed,
-        DialogResult Result);
+    private readonly struct LeaveDecision
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LeaveDecision"/> struct.
+        /// </summary>
+        /// <param name="shouldProceed">Indicates whether navigation should continue.</param>
+        /// <param name="result">The underlying dialog result associated with the decision.</param>
+        public LeaveDecision(bool shouldProceed, DialogResult result)
+        {
+            ShouldProceed = shouldProceed;
+            Result = result;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether navigation should continue.
+        /// </summary>
+        public bool ShouldProceed { get; }
+
+        /// <summary>
+        /// Gets the underlying dialog result associated with the decision.
+        /// </summary>
+        public DialogResult Result { get; }
+    }
 }

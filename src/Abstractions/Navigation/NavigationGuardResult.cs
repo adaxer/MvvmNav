@@ -41,7 +41,7 @@ public sealed class NavigationGuardResult
     /// <summary>
     /// Gets the guard decision.
     /// </summary>
-    public NavigationGuardDecision Decision { get; init; }
+    public NavigationGuardDecision Decision { get; set; }
 
     /// <summary>
     /// Gets the optional dialog context used when the guard asks the user.
@@ -51,7 +51,7 @@ public sealed class NavigationGuardResult
     /// <summary>
     /// Gets the continuation callback invoked after the confirmation dialog completed.
     /// </summary>
-    public Func<DialogResult, CancellationToken, Task>? ContinueAsync { get; init; }
+    public Func<DialogResult, CancellationToken, Task>? ContinueAsync { get; set; }
 
     /// <summary>
     /// Creates a result allowing navigation to continue.

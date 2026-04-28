@@ -18,10 +18,10 @@
     <PackageReference Include="Avalonia.Fonts.Inter" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="LiveMarkdown.Avalonia" />
+    <PackageReference Include="ADaxer.MvvmNav.Avalonia" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Avalonia\MvvmNav.Avalonia.csproj" />
     <ProjectReference Include="..\..\Common\Sample.Common\Sample.Common.csproj" />
   </ItemGroup>
 </Project>

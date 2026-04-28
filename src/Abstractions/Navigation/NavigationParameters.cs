@@ -31,7 +31,8 @@ public sealed class NavigationParameters
     /// <param name="parameters">The parameters to copy.</param>
     public NavigationParameters(IDictionary<string, object?> parameters)
     {
-        ArgumentNullException.ThrowIfNull(parameters);
+        if (parameters == null)
+            throw new ArgumentNullException(nameof(parameters));
 
         Parameters = new ReadOnlyDictionary<string, object?>(
             new Dictionary<string, object?>(parameters));
@@ -140,8 +141,8 @@ public sealed class NavigationParameters
     private static string Escape(string value)
     {
         return value
-            .Replace("\\", "\\\\", StringComparison.Ordinal)
-            .Replace("|", "\\|", StringComparison.Ordinal)
-            .Replace("=", "\\=", StringComparison.Ordinal);
+            .Replace("\\", "\\\\")
+            .Replace("|", "\\|")
+            .Replace("=", "\\=");
     }
 }
