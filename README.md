@@ -1,5 +1,12 @@
 # ADaxer.MvvmNav
 
+[![Downloads](https://img.shields.io/nuget/dt/ADaxer.MvvmNav.Core?label=downloads&color=green)](https://www.nuget.org/packages/ADaxer.MvvmNav.Core)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
+
+Supports: **WPF [![NuGet](https://img.shields.io/nuget/v/ADaxer.MvvmNav.Wpf?label=nuget&color=blue)](https://www.nuget.org/packages/ADaxer.MvvmNav.Wpf)
+· Avalonia [![NuGet](https://img.shields.io/nuget/v/ADaxer.MvvmNav.Avalonia?label=nuget&color=blue)](https://www.nuget.org/packages/ADaxer.MvvmNav.Avalonia)
+· MAUI [![NuGet](https://img.shields.io/nuget/v/ADaxer.MvvmNav.Maui?label=nuget&color=blue)](https://www.nuget.org/packages/ADaxer.MvvmNav.Maui)**
+
 A lightweight, ViewModel-first navigation framework for .NET UI
 applications.
 
