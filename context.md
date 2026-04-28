@@ -27,6 +27,62 @@ the native mechanisms of the respective platform.
 
 ------------------------------------------------------------------------
 
+
+
+------------------------------------------------------------------------
+
+# Additional Architectural Insights (Packaging & Cross-Platform Learnings)
+
+## Target Framework Strategy
+
+Target Framework selection is not just a technical detail, but an architectural decision.
+
+### Layer-specific strategy:
+
+- Abstractions → netstandard2.0
+- Core → netstandard2.0
+- WPF → net8.0-windows
+- Avalonia → net8.0 + net10.0
+- MAUI → net10.0-* (platform-specific)
+
+### Key insights:
+
+- Lower layers should maximize compatibility
+- Upper/platform layers must follow platform constraints
+- Avoid forcing high TFMs (e.g. net10) into reusable libraries
+
+👉 Conclusion:
+Target frameworks directly define usability and adoption of the framework.
+
+------------------------------------------------------------------------
+
+## Platform Constraints (MAUI / Avalonia)
+
+Modern cross-platform UI frameworks impose constraints that directly influence architecture.
+
+### Observations:
+
+MAUI:
+- tightly coupled to SDK/workloads
+- forces usage of latest .NET versions
+- requires platform-specific TFMs (android, ios, etc.)
+- cannot realistically support older frameworks
+
+Avalonia:
+- desktop supports broader TFMs (e.g. net8.0)
+- mobile aligns with newer runtimes
+- requires multi-targeting for full coverage
+
+### Impact:
+
+- A single TFM for all platforms is no longer viable
+- Multi-targeting becomes necessary
+- Platform packages must follow platform lifecycle
+
+👉 Conclusion:
+Cross-platform development reduces control over runtime decisions and requires adaptive architecture.
+
+------------------------------------------------------------------------
 # Architecture Overview
 
 ## Core Components

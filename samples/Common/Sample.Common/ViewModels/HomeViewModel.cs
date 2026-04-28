@@ -8,11 +8,12 @@ public class HomeViewModel : INavigationAware, INotifyPropertyChanged
 {
     private readonly IFileService _fileService;
 
-    public HomeViewModel(IFileService fileService)
+    public HomeViewModel(IFileService fileService, IPlatformNameProvider platformName)
     {
         _fileService = fileService;
+        Title = $"🏠 Welcome to MvvmNav on {platformName.Name}!";
     }
-    public string Title => "🏠 Welcome to MvvmNav!";
+    public string Title { get; }
 
     public string Markdown {  get; set; } = string.Empty;
 

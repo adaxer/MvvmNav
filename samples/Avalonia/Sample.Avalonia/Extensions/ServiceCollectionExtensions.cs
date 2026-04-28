@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ShellViewModel>();
         services.AddSingleton<IShellViewModel>(sp => sp.GetRequiredService<ShellViewModel>());
         services.AddSingleton<IDialogHost>(sp => sp.GetRequiredService<ShellViewModel>());
+        services.AddSingleton<IPlatformNameProvider, AvaloniaPlatformNameProvider>();
 
         return services;
     }

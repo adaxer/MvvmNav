@@ -2,6 +2,7 @@
 using ADaxer.MvvmNav.Abstractions.Navigation;
 using ADaxer.MvvmNav.Sample.Common.Interfaces;
 using ADaxer.MvvmNav.Sample.Common.ViewModels;
+using ADaxer.MvvmNav.Sample.Maui;
 using Sample.Maui.Services;
 using Sample.Maui.Views;
 
@@ -31,6 +32,7 @@ public static class ServiceCollectionExtensions
         services.RegisterView<DetailsViewModel, DetailsView>();
 
         services.AddTransient<IFileService, MauiFileService>();
+        services.AddTransient<IPlatformNameProvider, MauiPlatformNameProvider>();
 
         return services;
     }
