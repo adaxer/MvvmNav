@@ -3,152 +3,61 @@
 [![Downloads](https://img.shields.io/nuget/dt/ADaxer.MvvmNav.Core?label=downloads&color=green)](https://www.nuget.org/packages/ADaxer.MvvmNav.Core)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
 
-Supports: **WPF [![NuGet](https://img.shields.io/nuget/v/ADaxer.MvvmNav.Wpf?label=nuget&color=blue)](https://www.nuget.org/packages/ADaxer.MvvmNav.Wpf)
-· Avalonia [![NuGet](https://img.shields.io/nuget/v/ADaxer.MvvmNav.Avalonia?label=nuget&color=blue)](https://www.nuget.org/packages/ADaxer.MvvmNav.Avalonia)
-· MAUI [![NuGet](https://img.shields.io/nuget/v/ADaxer.MvvmNav.Maui?label=nuget&color=blue)](https://www.nuget.org/packages/ADaxer.MvvmNav.Maui)**
+A lightweight, ViewModel-first navigation framework for .NET UI applications.
 
-A lightweight, ViewModel-first navigation framework for .NET UI
-applications.
+Run the same navigation concepts across:
+**Windows · Linux · macOS · Android · iOS**
 
-Supports WPF, Avalonia and MAUI with a consistent mental model and
-minimal setup.
+Supports WPF, Avalonia and MAUI with a consistent mental model and minimal setup.
+
+---
 
 ## ✨ Why MvvmNav?
 
--   ViewModel-first navigation
--   Clean separation of concerns
--   Minimal infrastructure (no heavy frameworks)
--   Cross-platform core
--   Fully DI and logging compatible
--   Works with existing applications
+- ViewModel-first navigation
+- Clean separation of concerns
+- Minimal infrastructure (no heavy frameworks)
+- Cross-platform core
+- Fully DI and logging compatible
+- Works with existing applications
 
-## ❤️ Support
+👉 Want to understand how it works internally?  
+See [Architecture & Concepts](docs/architecture.md)
 
-If this project helps you, consider supporting its development:
-
--   GitHub Sponsors: https://github.com/sponsors/adaxer
-
-------------------------------------------------------------------------
+---
 
 ## 🚀 Quick Start
 
-Each platform provides a simple entry point:
-
--   WPF → `AddMvvmNavWpf(...)`
--   Avalonia → `AddMvvmNavAvalonia(...)`
--   MAUI → `AddMvvmNavMaui(...)`
-
-You can also fully configure everything via:
-
-``` csharp
-services.AddMvvmNav(...)
+```csharp
+services
+    .AddMvvmNav()
+    .WithShell<ShellWindow, ShellViewModel>()
+    .WithStartupNavigation<HomeViewModel>();
 ```
 
-including:
+Inject `INavigationService` into your ViewModels and start navigating.
 
--   Dependency Injection
--   Logging (`Microsoft.Extensions.Logging`)
--   View resolution
--   Dialog behavior
-
-------------------------------------------------------------------------
-
-## 📸 Sample Application
-
-The repository contains a cross-platform sample application demonstrating navigation, dialogs, and guards in real-world scenarios.
+👉 More detailed setup and concepts:  
+[Getting Started & Concepts](docs/concepts.md)
 
 ---
 
-### 🖥️ WPF
+## 🧩 The Shell Concept (Core Idea)
 
-<p align="center">
-  <img src="assets/images/Sample.Wpf.jpg" width="700"/>
-</p>
+MvvmNav uses a central Shell ViewModel that hosts:
 
-> Desktop sample using WPF with DataTemplate-based view resolution and fluent host builder setup.
+- `CurrentModule`
+- `CurrentDialog`
 
----
-
-### 🧩 Avalonia
-
-<p align="center">
-  <img src="assets/images/Sample.Avalonia.Win.jpg" width="30%"/>
-  <img src="assets/images/Sample.Avalonia.Linux.jpg" width="30%"/>
-  <img src="assets/images/Sample.Avalonia.MacOS.jpg" width="30%"/>
-</p>
-
-<p align="center">
-  <img src="assets/images/Sample.Avalonia.Android.jpg" width="30%"/>
-  <img src="assets/images/Sample.Avalonia.iOS.jpg" width="30%"/>
-</p>
-
-> Cross-platform UI with Avalonia, sharing the same ViewModel logic across Desktop and Mobile.
+This is the composition root of your UI.
 
 ---
 
-### 📱 MAUI
+## 🖥️ WPF
 
-<p align="center">
-  <img src="assets/images/Sample.Maui.Win.jpg" width="30%"/>
-  <img src="assets/images/Sample.Maui.Android.jpg" width="30%"/>
-</p>
-
-> Native cross-platform application using .NET MAUI with a ViewModel-first navigation approach and shell-based dialog overlays.
-
----
-------------------------------------------------------------------------
-
-## 🧭 Core Concepts
-
--   Navigation happens between **ViewModels**
--   Views are resolved by the platform
--   Navigation is handled by a central `INavigationService`
--   Dialogs are handled by `IDialogService`
--   Optional base classes, interface-first design
-
-------------------------------------------------------------------------
-
-## ⚙️ Configuration
-
-Basic setup:
-
-``` csharp
-services.AddMvvmNav();
-```
-
-Or platform-specific:
-
-``` csharp
-services.AddMvvmNavWpf();
-services.AddMvvmNavAvalonia();
-services.AddMvvmNavMaui();
-```
-
-You can extend:
-
-``` csharp
-services.AddLogging(...);
-services.AddSingleton<MyService>();
-```
-
-- Just mark your main ViewModel class with IShellViewModel and deliver properties for CurrentModule (and if wished CurrentDialog), 
-- and mark your main Window/Page with the IShellView marker. 
-- Inject INavigationService into your viewmodels and you are good to go. 
-
-------------------------------------------------------------------------
-
-# 🖥️ WPF
-
-## Setup
-
-``` csharp
+```csharp
 WpfNavigationHostBuilder
     .Default()
-    .WithServices(services =>
-    {
-        services.RegisterCommonServices();
-        services.AddSingleton<IPlatformNameProvider, WpfPlatformNameProvider>();
-    })
     .WithShell<ShellWindow, ShellViewModel>()
     .WithStartupNavigation<HomeViewModel>()
     .Build();
@@ -156,213 +65,98 @@ WpfNavigationHostBuilder
 await host.StartAsync();
 ```
 
+---
 
+## 🧩 Avalonia
 
-## Navigate
-
-``` csharp
-await navigation.NavigateAsync<HomeViewModel>();
+```csharp
+services.AddMvvmNav()
+    .WithShell<ShellWindow, ShellViewModel>()
+    .WithStartupNavigation<HomeViewModel>();
 ```
 
-## Dialog
+---
 
-``` csharp
-var result = await navigation.ShowDialogAsync<AboutViewModel>();
+## 📱 MAUI
 
-if (result == DialogResult.True)
-{
-    // handle result
-}
-```
-
-------------------------------------------------------------------------
-
-# 🧩 Avalonia
-
-## Setup
-
-``` csharp
-// In Program.cs
-public static AppBuilder BuildAvaloniaApp()
-{
-    var services = new ServiceCollection();
-
-    services.AddMvvmNav()
-        .WithShell<ShellWindow, ShellViewModel>()
-        .WithStartupNavigation<HomeViewModel>()
-        .RegisterCommonServices()
-        .RegisterAvaloniaSpecificServices();
-
-    var serviceProvider = services.BuildServiceProvider();
-
-    var result = AppBuilder.Configure<App>(()=>new App { ServiceProvider = serviceProvider })
-        .UsePlatformDetect()
-        .WithInterFont()
-        .WithDeveloperTools()
-        .LogToTrace();
-
-    return result;
-}
-
-// In App.cs
-public override async void OnFrameworkInitializationCompleted()
-{
-    var starter = Services.GetRequiredService<IMvvmNavStarter>();
-
-    starter.Initialize(this);
-    await starter.StartAsync();
-}
-```
-
-## Navigate
-
-``` csharp
-await navigation.NavigateAsync<HomeViewModel>();
-```
-
-## Dialog
-
-``` csharp
-var result = await navigation.ShowDialogAsync<AboutViewModel>();
-```
-
-------------------------------------------------------------------------
-
-# 📱 MAUI
-
-## Setup
-
-``` csharp
-// In MauiProgram
+```csharp
 builder.Services
     .AddMvvmNav()
     .WithShell<ShellPage, ShellViewModel>()
-    .WithStartupNavigation<HomeViewModel>()
-    .RegisterCommonServices()
-    .RegisterPlatformServices();
-
-
-// App.cs
-public partial class App : Application
-{
-    private readonly IMvvmNavStarter _starter;
-
-    public App(IMvvmNavStarter starter)
-    {
-        InitializeComponent();
-        _starter = starter;
-    }
-
-    protected override Window CreateWindow(IActivationState? activationState)
-        => _starter.CreateWindow();
-
-    protected override async void OnStart()
-        => await _starter.StartAsync();
-}
+    .WithStartupNavigation<HomeViewModel>();
 ```
 
-## Navigate
+---
 
-``` csharp
-await navigation.NavigateAsync<HomeViewModel>();
-```
-
-## Dialog
-
-``` csharp
-var result = await navigation.ShowDialogAsync<AboutViewModel>();
-```
-
-------------------------------------------------------------------------
-
-## 🔄 Navigation with Parameters
-
-``` csharp
-await navigation.NavigateAsync<DetailsViewModel>(
-    ("Id", 42),
-    ("Mode", "Edit"));
-```
-
-------------------------------------------------------------------------
-
-## 🎯 Initialize Navigation Target
-
-ViewModels can react to navigation by implementing `INavigationAware`.
-
-This is typically used to initialize state based on navigation parameters.
-
-### Example
+## 🔄 Navigation
 
 ```csharp
-public class DetailsViewModel : INavigationAware
-{
-    public int Id { get; private set; }
+await navigation.NavigateAsync<HomeViewModel>();
+```
+👉 Deep dive into navigation, parameters and back stack:  
+[Navigation Guide](docs/navigation.md)
 
-    public Task OnNavigatedToAsync(NavigationParameters parameters)
-    {
-        Id = parameters.GetValueOrDefault<int>("Id");
-
-        // load data, initialize state, etc.
-        return Task.CompletedTask;
-    }
-}
-------------------------------------------------------------------------
+---
 
 ## 🛑 Navigation Guards
 
-Implement:
+Prevent navigation when needed (e.g. unsaved changes).
 
-``` csharp
-ICanNavigateFrom
-```
+👉 Full guard flows and advanced scenarios:  
+[Navigation Guards & Flow](docs/navigation.md)
 
-Return:
+---
 
--   Allow
--   Disallow
--   AskUser
+## 📸 Sample Application
 
-------------------------------------------------------------------------
+Cross-platform sample included in the repository.
 
-## 🧠 Design Goals
+- Navigation & back stack
+- Dialogs 
+- Guards
+- Markdown help pages
 
--   Small and understandable
--   Platform-native integration
--   No overengineering
--   Incremental evolution
+👉 Walkthrough of the sample app and architecture decisions:  
+[Sample App Guide](docs/samples.md)
 
-------------------------------------------------------------------------
+---
 
-## 📦 Packages
+## 📚 Documentation
 
--   ADaxer.MvvmNav.Core
--   ADaxer.MvvmNav.Wpf
--   ADaxer.MvvmNav.Avalonia
--   ADaxer.MvvmNav.Maui
+- [Architecture & Concepts](docs/architecture.md)
+- [Navigation Guide](docs/navigation.md)
+- [Dialogs](docs/dialogs.md)
+- [Sample App](docs/samples.md)
 
-------------------------------------------------------------------------
-
-## 🧪 Sample App Features
-
--   Navigation & back stack
--   Dialog handling
--   Navigation guards (save/discard)
--   Markdown-based help pages
--   Cross-platform shell
-
-------------------------------------------------------------------------
+---
 
 ## 🛠️ Status
 
-Actively developed.
+Actively developed – API stabilizing toward v1.
 
-API is stabilizing toward v1.
+---
 
-------------------------------------------------------------------------
+## 🎯 Roadmap
+
+### Current
+- ViewModel-first navigation
+- Cross-platform core
+- Navigation parameters
+- Dialog integration
+
+### Planned
+- Authorization / redirects
+- State persistence
+- Typed parameters
+
+---
+
+## ❤️ Support
+
+https://github.com/sponsors/adaxer
+
+---
 
 ## 📄 License
 
 Apache License 2.0
-
-
-------------------------------------------------------------------------
