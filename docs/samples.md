@@ -6,6 +6,47 @@ The sample is designed to demonstrate real-world usage of navigation, dialogs an
 
 ---
 
+## Images
+
+
+### 🖥️ WPF
+
+<p align="center">
+  <img src="../assets/images/Sample.Wpf.jpg" width="700"/>
+</p>
+
+> Desktop sample using WPF with DataTemplate-based view resolution and fluent host builder setup.
+
+---
+
+### 🧩 Avalonia
+
+<p align="center">
+  <img src="../assets/images/Sample.Avalonia.Win.jpg" width="30%"/>
+  <img src="../assets/images/Sample.Avalonia.Linux.jpg" width="30%"/>
+  <img src="../assets/images/Sample.Avalonia.MacOS.jpg" width="30%"/>
+</p>
+
+<p align="center">
+  <img src="../assets/images/Sample.Avalonia.Android.jpg" width="30%"/>
+  <img src="../assets/images/Sample.Avalonia.iOS.jpg" width="30%"/>
+</p>
+
+> Cross-platform UI with Avalonia, sharing the same ViewModel logic across Desktop and Mobile.
+
+---
+
+### 📱 MAUI
+
+<p align="center">
+  <img src="../assets/images/Sample.Maui.Win.jpg" width="30%"/>
+  <img src="../assets/images/Sample.Maui.Android.jpg" width="30%"/>
+</p>
+
+> Native cross-platform application using .NET MAUI with a ViewModel-first navigation approach and shell-based dialog overlays.
+
+---
+
 ## Goals of the Sample
 
 The sample application is not just a demo.
